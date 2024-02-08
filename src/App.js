@@ -1,11 +1,14 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import {
+  BrowserRouter as Router,
+} from "react-router-dom";
+import Layout from "./routes/layout";
 
 function App() {
   return (
-    <div className="App">
-      <span className='text-3xl'>This is a text</span>
-    </div>
+    <Router>
+      <Layout />
+    </Router>
   );
 }
 
