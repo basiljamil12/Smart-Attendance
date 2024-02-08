@@ -8,7 +8,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import RoleSelect from "../pages/role_selection";
-
+import StudentLogin from "../components/login/student_login";
 function Layout() {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
@@ -24,6 +24,10 @@ function Layout() {
           <Route
             path="/"
             element={<RoleSelect />}
+          />
+           <Route
+            path="/student/login"
+            element={<StudentLogin />}
           />
         </Routes>
       </div>
