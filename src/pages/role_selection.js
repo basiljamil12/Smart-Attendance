@@ -13,6 +13,12 @@ function RoleSelect() {
   const goToStudentLogin = () => {
     navigate("/student/login");
   };
+  const goToFacultyLogin = () => {
+    navigate("/faculty/login");
+  };
+  const goToParentLogin = () => {
+    navigate("/parent/login");
+  };
 
   return (
     <div className="flex flex-col min-h-[100vh]">
@@ -25,7 +31,8 @@ function RoleSelect() {
             <img src={Teacher} />
           </div>
           <div className="pt-3">
-            <button className="bg-sa-maroon rounded-xl w-48 h-12 shadow-md mx-5">
+            <button className="bg-sa-maroon rounded-xl w-48 h-12 shadow-md mx-5"
+            onClick={goToFacultyLogin}>
               <span className="text-white font-bold text-xl">
                 Go To Faculty
               </span>
@@ -50,7 +57,9 @@ function RoleSelect() {
             <img src={Parent} />
           </div>
           <div className="pt-5">
-            <button className="bg-sa-maroon rounded-xl w-48 h-12 shadow-md mx-5">
+            <button className="bg-sa-maroon rounded-xl w-48 h-12 shadow-md mx-5"
+            onClick={goToParentLogin}
+            >
               <span className="text-white font-bold text-xl">Go To Parent</span>
             </button>
           </div>

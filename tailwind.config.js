@@ -8,6 +8,7 @@ module.exports = {
         "sa-pink": "#FFE3E3",
         "sa-grey": "#D9D9D9",
         "sa-blue": "#345CC3",
+        "sa-black":"#404040",
       },
     },
   },

@@ -13,7 +13,10 @@ import StudentLogin from "../pages/student_pages/student_login";
 import StudentDashboard from "../pages/student_pages/student_dashboard";
 import ParentDashboard from "../pages/parent_pages/parent_dashboard";
 import FacultyDashboard from "../pages/faculty_pages/faculty_dashboard";
-
+import ParentLogin from "../pages/parent_pages/parent_login";
+import FacultyLogin from "../pages/faculty_pages/faculty_login";
+import AdminLogin from "../pages/admin_pages/admin_login";
+import ApplyLeave from "../pages/student_pages/apply_leave";
 function Layout() {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
@@ -28,9 +31,13 @@ function Layout() {
         <Routes>
           <Route path="/" element={<RoleSelect />} />
           <Route path="/student/login" element={<StudentLogin />} />
+          <Route path="/parent/login" element={<ParentLogin />} />
+          <Route path="/faculty/login" element={<FacultyLogin />} />
+          <Route path="adboard/signin" element={<AdminLogin />} />
           <Route path="/student/dashboard" element={<StudentDashboard />} />
           <Route path="/parent/dashboard" element={<ParentDashboard />} />
           <Route path="/faculty/dashboard" element={<FacultyDashboard />} />
+          <Route path="/student/leave" element={<ApplyLeave />} />
         </Routes>
       </div>
     </div>

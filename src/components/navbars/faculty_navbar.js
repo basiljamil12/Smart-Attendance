@@ -38,31 +38,31 @@ function FacultyNavbar() {
         </div>
         {open && (
           <div className="absolute top-full left-0 right-0 bg-sa-maroon z-10 pt-2 pb-4 px-4">
-            <span className="block text-xl text-white font-bold mb-2 pb-2 hover:cursor-pointer">
+            <span className="transition-opacity hover:opacity-60 block text-xl text-white font-bold mb-2 pb-2 hover:cursor-pointer">
               Home
             </span>
-            <span className="block text-xl text-white font-bold mb-2 py-2 hover:cursor-pointer">
+            <span className="transition-opacity hover:opacity-60 block text-xl text-white font-bold mb-2 py-2 hover:cursor-pointer">
               Course
             </span>
-            <span className="block text-xl text-white font-bold mb-2 py-2 hover:cursor-pointer">
+            <span className="transition-opacity hover:opacity-60 block text-xl text-white font-bold mb-2 py-2 hover:cursor-pointer">
               Leave
             </span>
-            <span className="block text-xl text-white font-bold mb-2 py-2 hover:cursor-pointer">
+            <span className="transition-opacity hover:opacity-60 block text-xl text-white font-bold mb-2 py-2 hover:cursor-pointer">
               Account
             </span>
           </div>
         )}
         <div className="md:block hidden">
-          <span className="text-xl text-white font-bold mx-5 hover:cursor-pointer">
+          <span className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer">
             Home
           </span>
-          <span className="text-xl text-white font-bold mx-5 hover:cursor-pointer">
+          <span className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer">
             Course
           </span>
-          <span className="text-xl text-white font-bold mx-5 hover:cursor-pointer">
+          <span className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer">
             Leave
           </span>
-          <span className="text-xl text-white font-bold mx-5 hover:cursor-pointer">
+          <span className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer">
             Account
           </span>
         </div>
