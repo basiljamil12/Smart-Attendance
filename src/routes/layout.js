@@ -10,6 +10,9 @@ import {
 
 import RoleSelect from "../pages/role_selection";
 import StudentLogin from "../pages/student_pages/student_login";
+import StudentDashboard from "../pages/student_pages/student_dashboard";
+import ParentDashboard from "../pages/parent_pages/parent_dashboard";
+import FacultyDashboard from "../pages/faculty_pages/faculty_dashboard";
 
 function Layout() {
   const location = useLocation();
@@ -23,14 +26,11 @@ function Layout() {
     <div className={`App`}>
       <div className="App-content">
         <Routes>
-          <Route
-            path="/"
-            element={<RoleSelect />}
-          />
-           <Route
-            path="/student/login"
-            element={<StudentLogin />}
-          />
+          <Route path="/" element={<RoleSelect />} />
+          <Route path="/student/login" element={<StudentLogin />} />
+          <Route path="/student/dashboard" element={<StudentDashboard />} />
+          <Route path="/parent/dashboard" element={<ParentDashboard />} />
+          <Route path="/faculty/dashboard" element={<FacultyDashboard />} />
         </Routes>
       </div>
     </div>
