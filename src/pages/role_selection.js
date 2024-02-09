@@ -5,15 +5,14 @@ import Parent from "../assets/images/parent.jpg";
 import Student from "../assets/images/student.png";
 import Teacher from "../assets/images/teacher.png";
 import { useNavigate } from "react-router-dom";
+
 function RoleSelect() {
-  const navigate = useNavigate(); // Initialize navigate function
 
-  // Define functions to handle navigation
+  const navigate = useNavigate();
+
   const goToStudentLogin = () => {
-    navigate("/student/login"); // Navigate to /student/login
+    navigate("/student/login");
   };
-
-
 
   return (
     <div className="flex flex-col min-h-[100vh]">
