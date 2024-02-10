@@ -51,6 +51,21 @@ function ApplyLeave() {
   };
 
   const handleSubmit = () => {
+    if (!subject.trim()) {
+      // If subject is empty or contains only whitespace
+      alert("Subject cannot be empty");
+      return; // Prevent form submission
+    }
+    if (!startDate1 || !endDate1) {
+      // If either start or end date is empty
+      alert("Both start and end dates are required");
+      return; // Prevent form submission
+    }
+    if (!reason.trim()) {
+      // If subject is empty or contains only whitespace
+      alert("Reason cannot be empty");
+      return; // Prevent form submission
+    }
     navigate("/student/dashboard");
   };
 
@@ -60,10 +75,10 @@ function ApplyLeave() {
         <StudentNavbar />
       </div>
       <div className="md:ml-14 ml-5 mx-[6%] ">
-        <p className="text-sa-maroon text-[36px] text-left md:mt-10 mt-6 font-bold">
+        <p className="text-sa-maroon text-[36px] text-left md:mt-8 mt-6 font-bold">
           Apply Leave
         </p>
-        <div className="md:ml-3 ml-2 mt-5 md:mt-6 mb-5 ">
+        <div className="md:ml-3 ml-2 mt-5 md:mt-4 mb-5 ">
           <label
             className="text-sa-black block text-left  text-[20px] font-[600] mb-2 text-filter-heading"
             htmlFor="link"
@@ -76,14 +91,14 @@ function ApplyLeave() {
             placeholder="Subject..."
             onChange={handleSubjectChange}
             value={subject}
-            className={`placeholder-gray-500 w-full   border-[1px] border-black border-solid   text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon ${
+            className={`placeholder-gray-500 w-full  h-14 md:h-16 py-4  border-[1px] border-black border-solid   text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon ${
               subject1
                 ? "border-red-500"
                 : "border-[1px] border-black border-solid "
             }`}
           />
         </div>
-        <div className=" mb-3 md:ml-0 ml-2 flex flex-col md:flex-row">
+        <div className=" md:ml-0 ml-2 flex flex-col md:flex-row">
           <div className="w-full mb-5 md:ml-3  md:mr-[2%] md:mx-0 ">
             <label
               className="text-sa-black block text-left mb-1 text-[20px] font-[600] text-filter-heading"
@@ -97,7 +112,7 @@ function ApplyLeave() {
                 value={startDate1}
                 onChange={handleStartChange}
                 id="startDate"
-                className={`w-full hover:cursor-pointer text-filter-heading bg-clue-black p-2 rounded-[10px] border-[1px] border-black border-solid focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon ${
+                className={`w-full hover:cursor-pointer  h-14 md:h-16 py-4 text-filter-heading bg-clue-black p-2 rounded-[10px] border-[1px] border-black border-solid focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon ${
                   startDate1Empty
                     ? "border-red-500"
                     : "border-[1px] border-black border-solid"
@@ -118,7 +133,7 @@ function ApplyLeave() {
                 value={endDate1}
                 onChange={handleEndChange}
                 id="endDate"
-                className={`w-full hover:cursor-pointer text-filter-heading bg-clue-black p-2 rounded-[10px] border-[1px] border-black border-solid focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon ${
+                className={`w-full hover:cursor-pointer  h-14 md:h-16 py-4 text-filter-heading bg-clue-black p-2 rounded-[10px] border-[1px] border-black border-solid focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon ${
                   endDate1Empty
                     ? "border-red-500"
                     : "border-[1px] border-black border-solid "
@@ -127,32 +142,21 @@ function ApplyLeave() {
             </div>
           </div>
         </div>
-        <div className="md:ml-3 ml-2 md:mb-7 mb-6 ">
+        <div className="md:ml-3 ml-2 md:mb-5 mb-6 ">
           <label
             className="text-sa-black block text-left  text-[20px] font-[600] mb-2 text-filter-heading"
             htmlFor="link"
           >
             Attachement (Optional)
           </label>
-          {/* <input
-    id="attachment"
-    placeholder="Optional..."
-    onChange={handleAttachmentChange}
-    value={attachment}
-    type="file"
-    accept=".jpeg, .jpg, .png"
-    className={`placeholder-gray-500 w-full border-[1px] border-black border-solid text-black bg-clue-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-clue-purchase ${attachment1
-        ? "border-red-500"
-        : "border-[1px] border-black border-solid "
-    }`}
-/> */}
+       
 
           <input
             id="attachment"
             placeholder="Optional..."
             onChange={handleAttachmentChange}
             type="file"
-            className={`placeholder-gray-500  w-full border-[1px] border-black border-solid text-black bg-clue-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon`}
+            className={`placeholder-gray-500 h-14 md:h-16 py-4 w-full border-[1px] border-black border-solid text-black bg-clue-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon`}
           />
         </div>
         <div className="md:ml-3 ml-2 md:mb-6 mb-10 ">
@@ -167,7 +171,7 @@ function ApplyLeave() {
             placeholder="Reason..."
             onChange={handleReasonChange}
             value={reason}
-            className={`placeholder-gray-500 w-full md:h-52 h-40 resize-none border-[1px] border-black border-solid text-black bg-clue-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:focus:border-sa-maroon ${
+            className={`placeholder-gray-500 w-full md:h-44 h-40 resize-none border-[1px] border-black border-solid text-black bg-clue-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:focus:border-sa-maroon ${
               reason1
                 ? "border-red-500"
                 : "border-[1px] border-black border-solid "
@@ -177,7 +181,7 @@ function ApplyLeave() {
         <div class="flex items-center justify-center mb-14   ">
           <button
             //className="mb-4 h-[45px] md:h-[56px] bg-sa-maroon rounded-[20px] md:w-[102%] w-[245px] md:mr-3  shadow-md mx-5 text-white font-bold text-[26px]"
-            class=" transition-opacity hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-sa-maroon peer m-0 block h-[45px] md:h-[56px]  md:w-[280px] w-[220px]  rounded-[20px]   bg-clip-padding px-3 py-2 text-base  leading-tight text-white text-[20px] md:text-[24px]"
+            class=" transition-opacity hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px]  md:w-[280px] w-[220px]  rounded-[20px]   bg-clip-padding px-3 py-2  leading-tight text-white text-[20px] md:text-[24px]"
             onClick={handleSubmit}
           >
             Submit
