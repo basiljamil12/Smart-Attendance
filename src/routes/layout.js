@@ -17,6 +17,8 @@ import ParentLogin from "../pages/parent_pages/parent_login";
 import FacultyLogin from "../pages/faculty_pages/faculty_login";
 import AdminLogin from "../pages/admin_pages/admin_login";
 import ApplyLeave from "../pages/student_pages/apply_leave";
+import CreateCourse from "../pages/admin_pages/create_course";
+import StudentResetPassword from "../pages/student_pages/student_change_pw";
 import AdminDashboard from "../pages/admin_pages/admin_dashboard";
 function Layout() {
   const location = useLocation();
@@ -35,10 +37,13 @@ function Layout() {
           <Route path="/parent/login" element={<ParentLogin />} />
           <Route path="/faculty/login" element={<FacultyLogin />} />
           <Route path="adboard/signin" element={<AdminLogin />} />
+          <Route path="adboard/dashboard/course/create" element={<CreateCourse />} />
           <Route path="/student/dashboard" element={<StudentDashboard />} />
           <Route path="/parent/dashboard" element={<ParentDashboard />} />
           <Route path="/faculty/dashboard" element={<FacultyDashboard />} />
           <Route path="/student/leave" element={<ApplyLeave />} />
+          <Route path="/student/reset-password" element={<StudentResetPassword />} />
+          <Route path="/adboard/dashboard" element={<AdminDashboard />} />
         </Routes>
       </div>
     </div>

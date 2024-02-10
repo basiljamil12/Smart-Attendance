@@ -4,12 +4,14 @@ import PlainNavbar from "../../components/navbars/plainbar";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import { useNavigate } from "react-router-dom";
-
+import Toast from "../../components/toast/toast";
 function StudentLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
+  const [toastMessages, setToastMessages] = useState([]);
+
   const navigate = useNavigate();
 
   const toggleShowPassword = () => {
@@ -23,10 +25,51 @@ function StudentLogin() {
     setPassword(e.target.value);
   };
   const handleSignIn = () => {
+    if(!email.trim()) {
+      // If subject is empty or contains only whitespace
+      setToastMessages([
+        ...toastMessages,
+        {
+          type: "invalid",
+          title: "Invalid Email",
+          body: "Email cannot be empty",
+        },
+      ]);
+
+      return; // Prevent form submission
+    }
+    if (!password.trim()) {
+      // If subject is empty or contains only whitespace
+      setToastMessages([
+        ...toastMessages,
+        {
+          type: "invalid",
+          title: "Invalid Email",
+          body: "Password cannot be empty",
+        },
+      ]);
+      return; // Prevent form submission
+    }
     navigate("/student/dashboard");
+  };
+  const handleForgotPassword = (e) => {
+   
   };
   return (
     <div className="flex flex-col min-h-[100vh]">
+      {toastMessages.map((toast, index) => (
+        <Toast
+          className="mb-0"
+          key={index}
+          toasts={[toast]}
+          onClose={() => {
+            // Remove the toast message when it's closed
+            const updatedToasts = [...toastMessages];
+            updatedToasts.splice(index, 1);
+            setToastMessages(updatedToasts);
+          }}
+        />
+      ))}
       <div>
         <PlainNavbar />
       </div>
@@ -37,7 +80,7 @@ function StudentLogin() {
         <div className={"relative mb-6 text-black"}>
           <input
             type="email"
-            class=" shadow-xl focus:outline-none focus:ring-0 focus:border-onclickfield peer m-0 block h-[45px] md:h-[56px] md:mr-44  md:w-[102%]  rounded-[20px] w-[245px]  border-[1px] border-solid border-black bg-transparent bg-clip-padding px-3 py-4 text-base font-normal leading-tight text-black "
+            class=" shadow-xl focus:outline-none focus:ring-0 focus:border-sa-maroon  peer m-0 block h-[45px] md:h-[56px] md:mr-44  md:w-[102%]  rounded-[20px] w-[245px]  border-[1px] border-solid border-black bg-transparent bg-clip-padding px-3 py-4 text-base font-normal leading-tight text-black "
             id="email"
             value={email}
             onChange={handleEmailChange}
@@ -48,7 +91,7 @@ function StudentLogin() {
         <div class="relative mb-6 ">
           <input
             type={showPassword ? "text" : "password"}
-            class="shadow-xl focus:outline-none focus:ring-0 focus:border-clue-purchase peer m-0 block h-[45px] md:h-[56px]   md:mr-44  md:w-[102%] w-[245px]  rounded-[20px] border-[1px] border-solid  border-black  bg-transparent bg-clip-padding px-3 py-4 text-base font-normal leading-tight text-black"
+            class="shadow-xl focus:outline-none focus:ring-0 focus:border-sa-maroon peer m-0 block h-[45px] md:h-[56px]   md:mr-44  md:w-[102%] w-[245px]  rounded-[20px] border-[1px] border-solid  border-black  bg-transparent bg-clip-padding px-3 py-4 text-base font-normal leading-tight text-black"
             id="password"
             value={password}
             onChange={handlePasswordChange}
@@ -56,12 +99,12 @@ function StudentLogin() {
           />
           {showPassword ? (
             <VisibilityOutlinedIcon
-              className="absolute md:top-[18px] top-[10px] right-[16px] md:right-[10px] cursor-pointer text-gray-300"
+              className="absolute md:top-[16px] top-[10px] right-[16px] md:right-[10px] cursor-pointer text-sa-black"
               onClick={toggleShowPassword}
             />
           ) : (
             <VisibilityOffOutlinedIcon
-              className="absolute md:top-[18px] top-[10px] right-[16px] md:right-[10px] cursor-pointer text-gray-300"
+              className="absolute md:top-[16px] top-[10px] right-[16px] md:right-[10px] cursor-pointer text-sa-black"
               onClick={toggleShowPassword}
             />
           )}
@@ -77,7 +120,9 @@ function StudentLogin() {
         </div>
         <div>
           <p className="text-[14px] font-bold mb-20 text-sa-blue md:text-[14px] md:ml-[47%] w-60 md:w-72 ml-[98px]  text-clue-yellow  cursor-pointer">
-            <a href="/account/reset-password" className="underline">
+            <a href="/account/reset-password" className="underline"
+            onClick={handleForgotPassword}
+            >
               Forgot Password?
             </a>
           </p>
