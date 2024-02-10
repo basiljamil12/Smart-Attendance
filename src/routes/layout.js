@@ -19,6 +19,7 @@ import AdminLogin from "../pages/admin_pages/admin_login";
 import ApplyLeave from "../pages/student_pages/apply_leave";
 import CreateCourse from "../pages/admin_pages/create_course";
 import StudentResetPassword from "../pages/student_pages/student_change_pw";
+import CreateParent from "../pages/admin_pages/create_parent";
 function Layout() {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
@@ -37,6 +38,7 @@ function Layout() {
           <Route path="/faculty/login" element={<FacultyLogin />} />
           <Route path="adboard/signin" element={<AdminLogin />} />
           <Route path="adboard/dashboard/course/create" element={<CreateCourse />} />
+          <Route path="adboard/dashboard/parent/create" element={<CreateParent />} />
           <Route path="/student/dashboard" element={<StudentDashboard />} />
           <Route path="/parent/dashboard" element={<ParentDashboard />} />
           <Route path="/faculty/dashboard" element={<FacultyDashboard />} />

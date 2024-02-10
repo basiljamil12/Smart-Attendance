@@ -11,7 +11,11 @@ function StudentLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
   const [toastMessages, setToastMessages] = useState([]);
-
+  const isValidEmail = (email) => {
+    // Regular expression for validating email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
   const navigate = useNavigate();
 
   const toggleShowPassword = () => {
@@ -37,6 +41,17 @@ function StudentLogin() {
       ]);
 
       return; // Prevent form submission
+    }
+    if (!isValidEmail(email)) {
+      setToastMessages([
+        ...toastMessages,
+        {
+          type: "invalid",
+          title: "Invalid Email",
+          body: "Enter valid email address",
+        },
+      ]);
+      return;
     }
     if (!password.trim()) {
       // If subject is empty or contains only whitespace
