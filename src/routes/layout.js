@@ -17,6 +17,7 @@ import ParentLogin from "../pages/parent_pages/parent_login";
 import FacultyLogin from "../pages/faculty_pages/faculty_login";
 import AdminLogin from "../pages/admin_pages/admin_login";
 import ApplyLeave from "../pages/student_pages/apply_leave";
+import AdminDashboard from "../pages/admin_pages/admin_dashboard";
 function Layout() {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
