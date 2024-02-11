@@ -45,7 +45,7 @@ function FacultyAdboard() {
               Add Faculty
             </span>
           </div>
-          <div className="overflow-x-auto mt-10 mx-10 md:ml-20 md:w-[90%] md:shadow-xl rounded-2xl">
+          <div className="overflow-x-auto mt-10 mx-10 md:ml-[6%] md:w-[90%] md:shadow-xl rounded-2xl">
             <table className="table-fixed min-w-full bg-sa-pink w-[800px] md:w-[50vw] rounded-2xl">
               <thead>
                 <tr className="border-b border-sa-grey">
@@ -55,9 +55,7 @@ function FacultyAdboard() {
                   <th className="p-0 py-5  border-r border-sa-grey">
                     Faculty Name
                   </th>
-                  <th className="p-0 py-5  border-r border-sa-grey">
-                    Email
-                  </th>
+                  <th className="p-0 py-5  border-r border-sa-grey">Email</th>
                   <th className="p-0 py-5  border-r border-sa-grey">
                     Contact No.
                   </th>

@@ -3,9 +3,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
-import Select from "react-select";
+//import Select from "react-select";
 import Toast from "../../../components/toast/toast";
 import Sidebar from "../../../components/sidebar/sidebar";
+
 function CreateFaculty() {
 
   const navigate = useNavigate();
