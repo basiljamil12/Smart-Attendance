@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import Sidebar from "../../components/sidebar/sidebar";
 
 function CreateCourse() {
 
@@ -32,12 +33,15 @@ function CreateCourse() {
   };
 
   return (
-    <div>
-      <div className="md:ml-14 ml-5 mx-[6%] ">
-        <p className="text-sa-maroon text-[36px] mb-5 text-left md:mt-10 mt-6 font-bold">
+    <div className="flex">
+      <div>
+        <Sidebar />
+      </div>
+      <div className="md:ml-14 ml-5  w-full mx-[6%] ">
+        <p className="text-sa-maroon  text-[36px] mb-5 text-left md:mt-10 mt-20 font-bold">
           Create Course
         </p>
-        <div className="md:ml-3 ml-2 mt-5 md:mt-6 mb-5 ">
+        <div className="md:ml-3 ml-2 mt-5  md:mt-6 mb-5 ">
 
           <input
             type="text"

@@ -5,6 +5,8 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import Select from "react-select";
 import Toast from "../../components/toast/toast";
+import Sidebar from "../../components/sidebar/sidebar";
+
 function CreateParent() {
 
     const navigate = useNavigate();
@@ -12,8 +14,7 @@ function CreateParent() {
     const [toastMessages, setToastMessages] = useState([]);
 
     const [showPassword, setShowPassword] = useState(false);
-
-    const [parentName, setParentName] = useState("");
+   const [parentName, setParentName] = useState("");
     const [parentName1, setParentName1] = useState("");
     const [contactno, setContactno] = useState("");
     const [email, setEmail] = useState("");
@@ -110,16 +111,32 @@ function CreateParent() {
         { value: "student2@example.com", label: "Student 2" },
         { value: "student3@example.com", label: "Student 3" },
       ];
-   
+      const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+      useEffect(() => {
+        const handleResize = () => {
+          setIsMobile(window.innerWidth < 768);
+        };
+    
+        window.addEventListener('resize', handleResize);
+    
+        return () => {
+          window.removeEventListener('resize', handleResize);
+        };
+      }, []);
+      
+    
       const customStyles = {
+        
         control: (provided, state) => ({
           ...provided,
           border: "1px solid black", // customize border color when focused
           borderRadius: "10px",
           boxShadow: "none",
-          height: "64px", // height for normal and md breakpoints
-          minHeight: "64px", // height for lg and xl breakpoints
+          height: isMobile ? "56px" : "64px", // height for normal and md breakpoints
+         // height for lg and xl breakpoints
           textAlign: "left", 
+          background:"transparent"
         }),
         option: (provided, state) => ({
           ...provided,
@@ -127,8 +144,15 @@ function CreateParent() {
           textAlign: "left", 
         }),
       };
+      const passwordRef = useRef(null);
+      const selectRef = useRef(null);
+      useEffect(() => {
+        // When sidebar opens, unfocus password field and select field
+        if (passwordRef.current) passwordRef.current.blur();
+        if (selectRef.current) selectRef.current.blur();
+    }, [isMobile]); 
     return (
-        <div>
+        <div className="flex">
             {toastMessages.map((toast, index) => (
         <Toast
           className="mb-0"
@@ -142,8 +166,11 @@ function CreateParent() {
           }}
         />
       ))}
-            <div className="md:ml-14 ml-5 mx-[6%] ">
-                <p className="text-sa-maroon text-[36px] mb-5 text-left md:mt-10 mt-8 font-bold">
+      <div>
+        <Sidebar />
+      </div>
+            <div className="md:ml-14 ml-5 w-full mx-[6%] ">
+                <p className="text-sa-maroon text-[36px]  mb-5 text-left md:mt-10 mt-20 font-bold">
                     Create Parent
                 </p>
                 
@@ -167,12 +194,12 @@ function CreateParent() {
                         className="placeholder-gray-500 w-full h-14 md:h-16 border-[1px] border-black border-solid   text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon"
                     />
                 </div>
-                <div class="relative  md:ml-3 ml-2 mt-5 md:mt-6 mb-5 ">
+                <div class="relative  md:ml-3 ml-2 mt-5 md:mt-6 mb-5  ">
           <input
             type={showPassword ? "text" : "password"}
             //class="shadow-xl focus:outline-none focus:ring-0 focus:border-sa-maroon peer m-0 block h-[45px] md:h-[56px]   md:mr-44  md:w-[102%] w-[245px]  rounded-[20px] border-[1px] border-solid  border-black  bg-transparent bg-clip-padding px-3 py-4 text-base font-normal leading-tight text-black"
-            className="placeholder-gray-500 w-full h-14 md:h-16 border-[1px] border-black border-solid   text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon"
-            
+            className="placeholder-gray-500 w-full h-14 md:h-16 border-[1px] border-black border-solid bg-transparent  text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon"
+            ref={passwordRef}
             id="password"
             value={password}
             onChange={handlePasswordChange}

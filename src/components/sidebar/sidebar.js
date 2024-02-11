@@ -2,7 +2,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState, useEffect } from "react";
 
-function Sidebar() {
+function Sidebar({ isOpen, onClose }) {
   const [open, setOpen] = useState(window.innerWidth >= 768);
 
   useEffect(() => {
@@ -23,15 +23,15 @@ function Sidebar() {
 
   return (
     <>
-    {open && window.innerWidth < 768 && (
+      {open && window.innerWidth < 768 && (
         <div
-          className="fixed top-0 left-0 w-full h-full bg-black opacity-50"
+          className="fixed top-0 left-0 w-full h-full bg-black opacity-50 z-40"
           onClick={handleToggleSidebar}
         ></div>
       )}
       <div
-        className={`flex md:w-72 md:relative fixed md:overflow-y-auto md:overflow-x-hidden bg-sa-maroon h-screen pt-5 transition-transform duration-300 flex-shrink-0 z-10 ${
-          open ? "translate-x-0 w-72" : "-translate-x-full w-0"
+        className={`flex md:w-72 md:relative fixed md:overflow-y-auto md:overflow-x-hidden bg-sa-maroon h-screen pt-5 transition-transform duration-300 flex-shrink-0 z-50 ${
+          open ? "translate-x-0 w-72 " : "-translate-x-full w-0"
         }`}
         style={{ maxHeight: "100vh" }}
       >
@@ -39,13 +39,13 @@ function Sidebar() {
           <div className="w-full">
             {window.innerWidth < 768 && (
               <span
-                className="flex justify-end mr-5"
+                className="flex justify-end mr-5 cursor-pointer"
                 onClick={handleToggleSidebar}
               >
                 <CloseIcon style={{ color: "white", fontSize: 30 }} />
               </span>
             )}
-            <div className="px-10 pb-10 pt-5 md:pt-10">
+            <div className="px-10 pb-10 pt-5 md:pt-10 ">
               <span className="text-white font-bold text-xl md:text-2xl">
                 Smart Attendance
               </span>
