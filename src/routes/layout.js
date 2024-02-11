@@ -20,6 +20,9 @@ import ApplyLeave from "../pages/student_pages/apply_leave";
 import CreateCourse from "../pages/admin_pages/create_course";
 import StudentResetPassword from "../pages/student_pages/student_change_pw";
 import AdminDashboard from "../pages/admin_pages/admin_dashboard";
+import FacultyAdboard from "../pages/admin_pages/faculty/admin_faculty_board";
+import AddFaculty from "../pages/admin_pages/faculty/addfaculty";
+import EditFaculty from "../pages/admin_pages/faculty/editfaculty";
 function Layout() {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
@@ -44,6 +47,9 @@ function Layout() {
           <Route path="/student/leave" element={<ApplyLeave />} />
           <Route path="/student/reset-password" element={<StudentResetPassword />} />
           <Route path="/adboard/dashboard" element={<AdminDashboard />} />
+          <Route path="/adboard/faculty" element={<FacultyAdboard />} />
+          <Route path="/adboard/faculty/add" element={<AddFaculty />} />
+          <Route path="/adboard/faculty/edit" element={<EditFaculty />} />
         </Routes>
       </div>
     </div>
