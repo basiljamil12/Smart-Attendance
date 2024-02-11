@@ -7,6 +7,7 @@ function StudentResetPassword() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const token = searchParams.get("token");
+  console.log(token);
   const navigate = useNavigate();
   useEffect(() => {
     if (!token) {
@@ -14,6 +15,7 @@ function StudentResetPassword() {
     }
   }, [token, navigate]);
 
+//http://localhost:3000/api/v1/student/validate-reset-pass-token
 
   const [startDate1, setStartDate] = useState();
   const [endDate1, setEndDate] = useState();

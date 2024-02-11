@@ -68,7 +68,7 @@ function StudentLogin() {
     navigate("/student/dashboard");
   };
   const handleForgotPassword = (e) => {
-   
+  //  /http://localhost:3000/api/v1/student/forgot-password
   };
   return (
     <div className="flex flex-col min-h-[100vh]">
