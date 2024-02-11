@@ -1,4 +1,6 @@
+import React from "react";
 import Sidebar from "../../components/sidebar/sidebar";
+import { useNavigate } from "react-router";
 
 function AdminDashboard() {
   return (
@@ -6,7 +8,7 @@ function AdminDashboard() {
       <div>
         <Sidebar />
       </div>
-      <div>This is a text that can be displayed</div>
+      <div className="w-full"></div>
     </div>
   );
 }

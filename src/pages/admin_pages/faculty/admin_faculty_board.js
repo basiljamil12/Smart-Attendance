@@ -1,51 +1,48 @@
 import React from "react";
-import ParentNavbar from "../../components/navbars/parent_navbar";
+import Sidebar from "../../../components/sidebar/sidebar";
 import { useNavigate } from "react-router";
 
-function ParentDashboard() {
-  const AttendanceData = [
+function FacultyAdboard() {
+  const facultyData = [
     {
-      courseTitle: "SDD",
-      teacherName: "Ali",
-      presentHrs: "20",
-      absentHrs: "2",
-      totalHrs: "48",
+      name: "Diyan Ali Shaikh",
+      email: "shaikhdiyanali2002@gmail.com",
+      contactNo: "03322829895",
     },
     {
-      courseTitle: "DSA",
-      teacherName: "IBU",
-      presentHrs: "25",
-      absentHrs: "7",
-      totalHrs: "48",
+      name: "Basil Jamil",
+      email: "basiljamil112@gmail.com",
+      contactNo: "69696969669",
     },
   ];
 
   const navigate = useNavigate();
 
-  // const goToAddFaculty = () => {
-  //   navigate("/adboard/faculty/add");
-  // };
+  const goToAddFaculty = () => {
+    navigate("/adboard/faculty/add");
+  };
 
   return (
-    <div className="flex-col">
+    <div className="flex">
       <div>
-        <ParentNavbar />
+        <Sidebar />
       </div>
       <div className="w-full">
-        {/* <div className="md:mt-10 md:ml-14 mt-16 md:flex md:items-start md:justify-start">
+        <div className="md:mt-8 md:ml-8 mt-16 md:flex md:items-start md:justify-start">
           <span className="text-sa-maroon  font-bold text-[32px] md:text-[36px]">
-              Dashboard
+            Faculty Dashboard
           </span>
-        </div> */}
+        </div>
         <div className="md:mt-14 mt-10">
           <div className="flex justify-between mx-10 md:mx-24">
-            <span className="text-sa-maroon font-bold text-[28px] md:text-[36px]">
-            Dashboard
+            <span className="text-sa-maroon font-bold text-xl md:text-[26px]">
+              Faculty List
             </span>
             <span
-              className="text-sa-maroon font-bold text-[20px] md:text-[32px]  pt-0.5 "      
+              className="text-sa-maroon font-bold text-md  md:text-[20px] pt-0.5 underline hover:cursor-pointer"
+              onClick={goToAddFaculty}
             >
-              Diyan Ali Shaikh
+              Add Faculty
             </span>
           </div>
           <div className="overflow-x-auto mt-10 mx-10 md:ml-20 md:w-[90%] md:shadow-xl rounded-2xl">
@@ -56,24 +53,19 @@ function ParentDashboard() {
                     #
                   </th>
                   <th className="p-0 py-5  border-r border-sa-grey">
-                    Course Title
+                    Faculty Name
                   </th>
                   <th className="p-0 py-5  border-r border-sa-grey">
-                    Teacher Name
+                    Email
                   </th>
                   <th className="p-0 py-5  border-r border-sa-grey">
-                    Present Hours
+                    Contact No.
                   </th>
-                  <th className="p-0 py-5  border-r border-sa-grey">
-                    Absent Hours
-                  </th>
-                  <th className="p-0 py-5  border-sa-grey">
-                    Total Hours
-                  </th>
-                    </tr>
+                  <th className="p-2 py-5  border-sa-grey">Actions</th>
+                </tr>
               </thead>
               <tbody>
-                {AttendanceData.map((faculty, index) => (
+                {facultyData.map((faculty, index) => (
                   <tr key={index} className="border-b border-sa-grey">
                     <td className="p-0 py-5  border-r border-sa-grey w-[100px]">
                       {index + 1}
@@ -83,7 +75,7 @@ function ParentDashboard() {
                         className="block w-full h-full overflow-hidden overflow-ellipsis"
                         style={{ wordWrap: "break-word" }}
                       >
-                        {faculty.courseTitle}
+                        {faculty.name}
                       </span>
                     </td>
                     <td className="p-0 py-5  border-r border-sa-grey">
@@ -91,7 +83,7 @@ function ParentDashboard() {
                         className="block w-full h-full overflow-hidden overflow-ellipsis"
                         style={{ wordWrap: "break-word" }}
                       >
-                        {faculty.teacherName}
+                        {faculty.email}
                       </span>
                     </td>
                     <td className="p-0 py-5  border-r border-sa-grey">
@@ -99,26 +91,10 @@ function ParentDashboard() {
                         className="block w-full h-full overflow-hidden overflow-ellipsis"
                         style={{ wordWrap: "break-word" }}
                       >
-                        {faculty.presentHrs}
+                        {faculty.contactNo}
                       </span>
                     </td>
-                    <td className="p-0 py-5  border-r border-sa-grey">
-                      <span
-                        className="block w-full h-full overflow-hidden overflow-ellipsis"
-                        style={{ wordWrap: "break-word" }}
-                      >
-                        {faculty.absentHrs}
-                      </span>
-                    </td>
-                    <td className="p-0 py-5  border-sa-grey">
-                      <span
-                        className="block w-full h-full overflow-hidden overflow-ellipsis"
-                        style={{ wordWrap: "break-word" }}
-                      >
-                        {faculty.totalHrs}
-                      </span>
-                    </td>
-                    {/* <td className="p-2 py-5  border-sa-grey">
+                    <td className="p-2 py-5  border-sa-grey">
                       <span className="text-sa-maroon text-md underline mx-2 hover:cursor-pointer">
                         Edit
                       </span>
@@ -126,7 +102,7 @@ function ParentDashboard() {
                       <span className="text-sa-maroon text-md underline mx-2 hover:cursor-pointer">
                         Delete
                       </span>
-                    </td> */}
+                    </td>
                   </tr>
                 ))}
                 <tr className="border-b-0">
@@ -134,7 +110,7 @@ function ParentDashboard() {
                   <td className="md:py-32 py-16 border-r border-sa-grey"></td>
                   <td className="md:py-32 py-16 border-r border-sa-grey"></td>
                   <td className="md:py-32 py-16 border-r border-sa-grey"></td>
-                  <td className="md:py-32 py-16 border-r border-sa-grey"></td>
+                  <td className="md:py-32 py-16  border-sa-grey"></td>
                 </tr>
               </tbody>
             </table>
@@ -145,4 +121,4 @@ function ParentDashboard() {
   );
 }
 
-export default ParentDashboard;
+export default FacultyAdboard;

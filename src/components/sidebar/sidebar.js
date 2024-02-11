@@ -1,8 +1,10 @@
 import CloseIcon from "@mui/icons-material/Close";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 
-function Sidebar({ isOpen, onClose }) {
+function Sidebar() {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(window.innerWidth >= 768);
 
   useEffect(() => {
@@ -21,9 +23,25 @@ function Sidebar({ isOpen, onClose }) {
     setOpen(!open);
   };
 
+  const goToFaculty = () => {
+    navigate("/adboard/faculty");
+  };
+
+  const goToParent = () => {
+    navigate("/adboard/parent");
+  };
+
+  const goToStudent = () => {
+    navigate("/adboard/student");
+  };
+
+  const goToAdmin = () => {
+    navigate("/adboard/dashboard");
+  };
+
   return (
     <>
-      {open && window.innerWidth < 768 && (
+        {open && window.innerWidth < 768 && (
         <div
           className="fixed top-0 left-0 w-full h-full bg-black opacity-50 z-40"
           onClick={handleToggleSidebar}
@@ -51,30 +69,43 @@ function Sidebar({ isOpen, onClose }) {
               </span>
             </div>
             <div className="border-b-2 border-white mx-4 mb-10 opacity-20"></div>
-            <div className="px-10 pt-5 border-b-10">
+            
+            <div
+              className="px-10 pt-5 border-b-10 hover:cursor-pointer"
+              onClick={goToFaculty}
+            >
               <span className="text-white font-bold text-xl">Faculty</span>
             </div>
             <div className="border-b-2 border-white mx-4 my-5 opacity-20"></div>
-            <div className="px-10 border-b-10">
+            <div
+              className="px-10 border-b-10 hover:cursor-pointer"
+              onClick={goToStudent}
+            >
               <span className="text-white font-bold text-xl">Student</span>
             </div>
             <div className="border-b-2 border-white mx-4 my-5 opacity-20"></div>
-            <div className="px-10 border-b-10">
+            <div
+              className="px-10 border-b-10 hover:cursor-pointer"
+              onClick={goToParent}
+            >
               <span className="text-white font-bold text-xl">Parent</span>
             </div>
             <div className="border-b-2 border-white mx-4 my-5 opacity-20"></div>
-            <div className="px-10 border-b-10">
+            <div
+              className="px-10 border-b-10 hover:cursor-pointer"
+              onClick={goToAdmin}
+            >
               <span className="text-white font-bold text-xl">Admin</span>
             </div>
             <div className="border-b-2 border-white mx-4 my-5 opacity-20"></div>
-            <div className="px-10 border-b-10">
+            <div className="px-10 border-b-10 hover:cursor-pointer">
               <span className="text-white font-bold text-xl">Sign Out</span>
             </div>
           </div>
         ) : (
           <div className="px-4 py-4">
             <button className="text-black" onClick={handleToggleSidebar}>
-              <MenuIcon />
+              <MenuIcon style={{ color: "#925454" }} />
             </button>
           </div>
         )}
