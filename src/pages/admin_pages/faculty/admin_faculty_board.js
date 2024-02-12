@@ -24,9 +24,6 @@ function FacultyAdboard() {
 
   return (
     <div className="flex">
-      <div>
-        <Sidebar />
-      </div>
       <div className="w-full">
         <div className="md:mt-8 md:ml-8 mt-16 md:flex md:items-start md:justify-start">
           <span className="text-sa-maroon  font-bold text-xl md:text-3xl">

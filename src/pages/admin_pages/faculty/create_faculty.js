@@ -144,9 +144,6 @@ function CreateFaculty() {
           }}
         />
       ))}
-      <div>
-        <Sidebar />
-      </div>
       <div className="md:ml-14 ml-5 w-full mx-[6%] ">
         <p className="text-sa-maroon text-[32px] md:text-[36px]  mb-5 text-left md:mt-14 mt-20 font-bold">
           Create Faculty

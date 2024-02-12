@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Sidebar from "../../components/sidebar/sidebar";
 
 function CreateCourse() {
-
   const navigate = useNavigate();
   const [courseName, setCourseName] = useState("");
   const [credhours, setCredHours] = useState("");
@@ -34,39 +33,36 @@ function CreateCourse() {
 
   return (
     <div className="flex">
-      <div>
-        <Sidebar />
-      </div>
       <div className="md:ml-14 ml-5  w-full mx-[6%] ">
         <p className="text-sa-maroon  text-[36px] mb-5 text-left md:mt-10 mt-20 font-bold">
           Create Course
         </p>
         <div className="md:ml-3 ml-2 mt-5  md:mt-6 mb-5 ">
-
           <input
             type="text"
             id="cname"
             placeholder="Course Name"
             onChange={handleCourseNameChange}
             value={courseName}
-            className={`placeholder-gray-500 w-full h-14 md:h-16  border-[1px] border-black border-solid   text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon ${courseName1
+            className={`placeholder-gray-500 w-full h-14 md:h-16  border-[1px] border-black border-solid   text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon ${
+              courseName1
                 ? "border-red-500"
                 : "border-[1px] border-black border-solid "
-              }`}
+            }`}
           />
         </div>
         <div className="md:ml-3 ml-2 mt-5 md:mt-6 mb-10 ">
-
           <input
             type="number"
             id="credhrs"
             placeholder="Credit Hours"
             onChange={handleCredHoursChange}
             value={credhours}
-            className={`placeholder-gray-500 w-full h-14 md:h-16 border-[1px] border-black border-solid   text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon ${credhours1
+            className={`placeholder-gray-500 w-full h-14 md:h-16 border-[1px] border-black border-solid   text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon ${
+              credhours1
                 ? "border-red-500"
                 : "border-[1px] border-black border-solid "
-              }`}
+            }`}
           />
         </div>
 

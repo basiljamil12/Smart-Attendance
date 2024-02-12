@@ -24,6 +24,7 @@ import CreateParent from "../pages/admin_pages/create_parent";
 import FacultyAdboard from "../pages/admin_pages/faculty/admin_faculty_board";
 import CreateFaculty from "../pages/admin_pages/faculty/create_faculty";
 import EditFaculty from "../pages/admin_pages/faculty/editfaculty";
+import Sidebar from "../components/sidebar/sidebar";
 function Layout() {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
@@ -32,22 +33,41 @@ function Layout() {
     window.scrollTo(0, 0);
   }, [location]);
 
+  const showSidebar = [
+    "/adboard/dashboard",
+    "/adboard/faculty",
+    "/adboard/faculty/add",
+    "/adboard/faculty/edit",
+    "/adboard/dashboard/course/create",
+    "/adboard/dashboard/parent/create",
+  ].includes(location.pathname);
+
   return (
-    <div className={`App`}>
+    <div className={`App ${showSidebar ? "h-screen" : ""}`}>
+      {showSidebar && <Sidebar />}
       <div className="App-content">
         <Routes>
           <Route path="/" element={<RoleSelect />} />
           <Route path="/student/login" element={<StudentLogin />} />
           <Route path="/parent/login" element={<ParentLogin />} />
           <Route path="/faculty/login" element={<FacultyLogin />} />
-          <Route path="adboard/signin" element={<AdminLogin />} />
-          <Route path="adboard/dashboard/course/create" element={<CreateCourse />} />
-          <Route path="adboard/dashboard/parent/create" element={<CreateParent />} />
+          <Route path="/adboard/signin" element={<AdminLogin />} />
+          <Route
+            path="/adboard/dashboard/course/create"
+            element={<CreateCourse />}
+          />
+          <Route
+            path="/adboard/dashboard/parent/create"
+            element={<CreateParent />}
+          />
           <Route path="/student/dashboard" element={<StudentDashboard />} />
           <Route path="/parent/dashboard" element={<ParentDashboard />} />
           <Route path="/faculty/dashboard" element={<FacultyDashboard />} />
           <Route path="/student/leave" element={<ApplyLeave />} />
-          <Route path="/student/reset-password" element={<StudentResetPassword />} />
+          <Route
+            path="/student/reset-password"
+            element={<StudentResetPassword />}
+          />
           <Route path="/adboard/dashboard" element={<AdminDashboard />} />
           <Route path="/adboard/faculty" element={<FacultyAdboard />} />
           <Route path="/adboard/faculty/add" element={<CreateFaculty />} />
