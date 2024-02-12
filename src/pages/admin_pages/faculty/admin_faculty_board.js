@@ -29,17 +29,17 @@ function FacultyAdboard() {
       </div>
       <div className="w-full">
         <div className="md:mt-8 md:ml-8 mt-16 md:flex md:items-start md:justify-start">
-          <span className="text-sa-maroon  font-bold text-[32px] md:text-[36px]">
+          <span className="text-sa-maroon  font-bold text-xl md:text-3xl">
             Faculty Dashboard
           </span>
         </div>
         <div className="md:mt-14 mt-10">
           <div className="flex justify-between mx-10 md:mx-24">
-            <span className="text-sa-maroon font-bold text-xl md:text-[26px]">
+            <span className="text-sa-maroon font-bold text-xl md:text-2xl">
               Faculty List
             </span>
             <span
-              className="text-sa-maroon font-bold text-md  md:text-[20px] pt-0.5 underline hover:cursor-pointer"
+              className="text-sa-maroon font-bold text-lg pt-0.5 underline hover:cursor-pointer"
               onClick={goToAddFaculty}
             >
               Add Faculty

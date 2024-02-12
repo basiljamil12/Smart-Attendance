@@ -43,12 +43,12 @@ function ParentDashboard() {
             Dashboard
             </span>
             <span
-              className="text-sa-maroon font-bold text-[20px] md:text-[32px]  pt-0.5 "      
+              className="text-sa-maroon font-bold text-xl md:text-2xl pt-0.5 mt-3"      
             >
               Diyan Ali Shaikh
             </span>
           </div>
-          <div className="overflow-x-auto mt-10 mx-10 md:ml-20 md:w-[90%] md:shadow-xl rounded-2xl">
+          <div className="overflow-x-auto mt-10 mx-10 md:ml-[6%] md:w-[90%] md:shadow-xl rounded-2xl">
             <table className="table-fixed min-w-full bg-sa-pink w-[800px] md:w-[50vw] rounded-2xl">
               <thead>
                 <tr className="border-b border-sa-grey">
