@@ -27,6 +27,8 @@ import EditFaculty from "../pages/admin_pages/faculty/editfaculty";
 import Sidebar from "../components/sidebar/sidebar";
 import StudentAttendanceDetails from "../pages/student_pages/attendance_details";
 import RegisterCourse from "../pages/student_pages/register_course";
+import CourseApproval from "../pages/faculty_pages/course_approve";
+import FacultyAccountDetails from "../pages/faculty_pages/account_details";
 function Layout() {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
@@ -76,6 +78,8 @@ function Layout() {
           <Route path="/adboard/faculty" element={<FacultyAdboard />} />
           <Route path="/adboard/faculty/add" element={<CreateFaculty />} />
           <Route path="/adboard/faculty/edit" element={<EditFaculty />} />
+          <Route path="/faculty/course/register" element={<CourseApproval />} />
+          <Route path="/faculty/account" element={<FacultyAccountDetails />} />
         </Routes>
       </div>
     </div>

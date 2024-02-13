@@ -140,8 +140,7 @@ function CreateParent() {
       textAlign: "left",
     }),
   };
-  const passwordRef = useRef(null);
-  const selectRef = useRef(null);
+  
 
   return (
     <div className="flex">
@@ -188,7 +187,6 @@ function CreateParent() {
             type={showPassword ? "text" : "password"}
             //class="shadow-xl focus:outline-none focus:ring-0 focus:border-sa-maroon peer m-0 block h-[45px] md:h-[56px]   md:mr-44  md:w-[102%] w-[245px]  rounded-[20px] border-[1px] border-solid  border-black  bg-transparent bg-clip-padding px-3 py-4 text-base font-normal leading-tight text-black"
             className="placeholder-gray-500 w-full h-14 md:h-16 border-[1px] border-black border-solid bg-transparent  text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon"
-            ref={passwordRef}
             id="password"
             value={password}
             onChange={handlePasswordChange}

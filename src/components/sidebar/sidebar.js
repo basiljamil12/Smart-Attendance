@@ -71,35 +71,35 @@ function Sidebar() {
             <div className="border-b-2 border-white mx-4 mb-10 opacity-20"></div>
             
             <div
-              className="px-10 pt-5 border-b-10 hover:cursor-pointer"
+              className="transition-opacity hover:opacity-80 px-10 pt-5 border-b-10 hover:cursor-pointer"
               onClick={goToFaculty}
             >
               <span className="text-white font-bold text-xl">Faculty</span>
             </div>
             <div className="border-b-2 border-white mx-4 my-5 opacity-20"></div>
             <div
-              className="px-10 border-b-10 hover:cursor-pointer"
+              className="transition-opacity hover:opacity-80 px-10 border-b-10 hover:cursor-pointer"
               onClick={goToStudent}
             >
               <span className="text-white font-bold text-xl">Student</span>
             </div>
             <div className="border-b-2 border-white mx-4 my-5 opacity-20"></div>
             <div
-              className="px-10 border-b-10 hover:cursor-pointer"
+              className="transition-opacity hover:opacity-80 px-10 border-b-10 hover:cursor-pointer"
               onClick={goToParent}
             >
               <span className="text-white font-bold text-xl">Parent</span>
             </div>
             <div className="border-b-2 border-white mx-4 my-5 opacity-20"></div>
             <div
-              className="px-10 border-b-10 hover:cursor-pointer"
+              className="transition-opacity hover:opacity-80 px-10 border-b-10 hover:cursor-pointer"
               onClick={goToAdmin}
             >
               <span className="text-white font-bold text-xl">Admin</span>
             </div>
             <div className="border-b-2 border-white mx-4 my-5 opacity-20"></div>
             <div className="px-10 border-b-10 hover:cursor-pointer">
-              <span className="text-white font-bold text-xl">Sign Out</span>
+              <span className="transition-opacity hover:opacity-80 text-white font-bold text-xl">Sign Out</span>
             </div>
           </div>
         ) : (
