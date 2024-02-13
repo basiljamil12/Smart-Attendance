@@ -142,11 +142,7 @@ function CreateParent() {
   };
   const passwordRef = useRef(null);
   const selectRef = useRef(null);
-  useEffect(() => {
-    // When sidebar opens, unfocus password field and select field
-    if (passwordRef.current) passwordRef.current.blur();
-    if (selectRef.current) selectRef.current.blur();
-  }, [isMobile]);
+
   return (
     <div className="flex">
       {toastMessages.map((toast, index) => (

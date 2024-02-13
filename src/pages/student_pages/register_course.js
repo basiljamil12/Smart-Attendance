@@ -3,21 +3,15 @@ import React from "react";
 import StudentNavbar from "../../components/navbars/student_navbar";
 import { useNavigate } from "react-router";
 
-function StudentDashboard() {
+function RegisterCourse() {
   const AttendanceData = [
     {
       courseTitle: "SDD",
-      teacherName: "Ali",
-      presentHrs: "20",
-      absentHrs: "2",
-      totalHrs: "48",
+      creditHrs: "2",
     },
     {
       courseTitle: "DSA",
-      teacherName: "IBU",
-      presentHrs: "25",
-      absentHrs: "7",
-      totalHrs: "48",
+      creditHrs: "2",
     },
   ];
 
@@ -41,7 +35,7 @@ function StudentDashboard() {
         <div className="md:mt-14 mt-10">
           <div className="flex justify-between mx-10 md:mx-24">
             <span className="text-sa-maroon font-bold text-[28px] md:text-[36px]">
-            Dashboard
+            Offered Courses
             </span>
             
           </div>
@@ -56,19 +50,11 @@ function StudentDashboard() {
                     Course Title
                   </th>
                   <th className="p-0 py-5  border-r border-sa-grey">
-                    Teacher Name
+                    Credit Hours
                   </th>
-                  <th className="p-0 py-5  border-r border-sa-grey">
-                    Present Hours
-                  </th>
-                  <th className="p-0 py-5  border-r border-sa-grey">
-                    Absent Hours
-                  </th>
-                  <th className="p-0 py-5  border-r border-sa-grey">
-                    Total Hours
-                  </th>
+                 
                   <th className="p-0 py-5  border-sa-grey">
-                    Details
+                    Actions
                   </th>
                     </tr>
               </thead>
@@ -91,40 +77,16 @@ function StudentDashboard() {
                         className="block w-full h-full overflow-hidden overflow-ellipsis"
                         style={{ wordWrap: "break-word" }}
                       >
-                        {faculty.teacherName}
+                        {faculty.creditHrs}
                       </span>
                     </td>
-                    <td className="p-0 py-5  border-r border-sa-grey">
-                      <span
-                        className="block w-full h-full overflow-hidden overflow-ellipsis"
-                        style={{ wordWrap: "break-word" }}
-                      >
-                        {faculty.presentHrs}
-                      </span>
-                    </td>
-                    <td className="p-0 py-5  border-r border-sa-grey">
-                      <span
-                        className="block w-full h-full overflow-hidden overflow-ellipsis"
-                        style={{ wordWrap: "break-word" }}
-                      >
-                        {faculty.absentHrs}
-                      </span>
-                    </td>
-                    <td className="p-0 py-5  border-r  border-sa-grey">
-                      <span
-                        className="block w-full h-full overflow-hidden overflow-ellipsis"
-                        style={{ wordWrap: "break-word" }}
-                      >
-                        {faculty.totalHrs}
-                      </span>
-                    </td>
+                   
                     <td className="p-0 py-5  border-sa-grey">
                       <span
-                        className="block cursor-pointer transition-opacity hover:opacity-70 underline text-sa-table-blue w-full h-full overflow-hidden overflow-ellipsis"
+                        className="block cursor-pointer transition-opacity hover:opacity-70 text-sa-table-blue w-full h-full underline overflow-hidden overflow-ellipsis"
                         style={{ wordWrap: "break-word" }}
-                        onClick={handleDetails}
                       >
-                        Go to Details
+                      Register
                       </span>
                     </td>
                     {/* <td className="p-2 py-5  border-sa-grey">
@@ -142,9 +104,7 @@ function StudentDashboard() {
                   <td className="md:py-32 py-16 border-r border-sa-grey w-[100px]"></td>
                   <td className="md:py-32 py-16 border-r border-sa-grey"></td>
                   <td className="md:py-32 py-16 border-r border-sa-grey"></td>
-                  <td className="md:py-32 py-16 border-r border-sa-grey"></td>
-                  <td className="md:py-32 py-16 border-r border-sa-grey"></td>
-                  <td className="md:py-32 py-16 border-r border-sa-grey"></td>
+                 
                 </tr>
               </tbody>
             </table>
@@ -155,4 +115,4 @@ function StudentDashboard() {
   );
 }
 
-export default StudentDashboard;
+export default RegisterCourse;

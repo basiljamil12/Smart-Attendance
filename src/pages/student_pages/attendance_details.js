@@ -3,7 +3,7 @@ import React from "react";
 import StudentNavbar from "../../components/navbars/student_navbar";
 import { useNavigate } from "react-router";
 
-function StudentDashboard() {
+function StudentAttendanceDetails() {
   const AttendanceData = [
     {
       courseTitle: "SDD",
@@ -12,20 +12,13 @@ function StudentDashboard() {
       absentHrs: "2",
       totalHrs: "48",
     },
-    {
-      courseTitle: "DSA",
-      teacherName: "IBU",
-      presentHrs: "25",
-      absentHrs: "7",
-      totalHrs: "48",
-    },
   ];
 
   const navigate = useNavigate();
 
-  const handleDetails = () => {
-    navigate("/student/dashboard/details");
-  };
+  // const goToAddFaculty = () => {
+  //   navigate("/adboard/faculty/add");
+  // };
 
   return (
     <div className="flex-col">
@@ -43,8 +36,29 @@ function StudentDashboard() {
             <span className="text-sa-maroon font-bold text-[28px] md:text-[36px]">
             Dashboard
             </span>
-            
+          
           </div>
+          <div className="flex justify-start md:mt-10 mx-10 md:mx-24">
+            <span className="text-sa-maroon font-bold text-xl">
+            Course Title:
+            </span>
+            <span className="text-sa-black font-bold ml-2 text-xl">
+            {AttendanceData.map((data, index) => (
+                <span key={index}>{data.courseTitle}</span>
+              ))}
+            </span>
+          </div>
+          <div className="flex justify-start md:mt-4 mx-10 md:mx-24">
+            <span className="text-sa-maroon font-bold text-xl">
+            Teacher Name: 
+            </span>
+            <span className="text-sa-black font-bold ml-2 text-xl">
+            {AttendanceData.map((data, index) => (
+                <span key={index}>{data.teacherName}</span>
+              ))}
+            </span>
+          </div>
+          
           <div className="overflow-x-auto mt-10 mx-10 md:ml-[6%] md:w-[90%] md:shadow-xl rounded-2xl">
             <table className="table-fixed min-w-full bg-sa-pink w-[800px] md:w-[50vw] rounded-2xl">
               <thead>
@@ -67,9 +81,7 @@ function StudentDashboard() {
                   <th className="p-0 py-5  border-r border-sa-grey">
                     Total Hours
                   </th>
-                  <th className="p-0 py-5  border-sa-grey">
-                    Details
-                  </th>
+                
                     </tr>
               </thead>
               <tbody>
@@ -118,15 +130,7 @@ function StudentDashboard() {
                         {faculty.totalHrs}
                       </span>
                     </td>
-                    <td className="p-0 py-5  border-sa-grey">
-                      <span
-                        className="block cursor-pointer transition-opacity hover:opacity-70 underline text-sa-table-blue w-full h-full overflow-hidden overflow-ellipsis"
-                        style={{ wordWrap: "break-word" }}
-                        onClick={handleDetails}
-                      >
-                        Go to Details
-                      </span>
-                    </td>
+                  
                     {/* <td className="p-2 py-5  border-sa-grey">
                       <span className="text-sa-maroon text-md underline mx-2 hover:cursor-pointer">
                         Edit
@@ -144,7 +148,6 @@ function StudentDashboard() {
                   <td className="md:py-32 py-16 border-r border-sa-grey"></td>
                   <td className="md:py-32 py-16 border-r border-sa-grey"></td>
                   <td className="md:py-32 py-16 border-r border-sa-grey"></td>
-                  <td className="md:py-32 py-16 border-r border-sa-grey"></td>
                 </tr>
               </tbody>
             </table>
@@ -155,4 +158,4 @@ function StudentDashboard() {
   );
 }
 
-export default StudentDashboard;
+export default StudentAttendanceDetails;

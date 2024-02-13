@@ -9,6 +9,7 @@ module.exports = {
         "sa-grey": "#D9D9D9",
         "sa-blue": "#345CC3",
         "sa-black":"#404040",
+        "sa-table-blue":"#0047FF",
         "toast-invalid": "#B0233A",
         "toast-invalid-back": "#FAE5E9",
         "toast-invalid-brd" : "#F5CCD3",

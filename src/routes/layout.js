@@ -25,6 +25,8 @@ import FacultyAdboard from "../pages/admin_pages/faculty/admin_faculty_board";
 import CreateFaculty from "../pages/admin_pages/faculty/create_faculty";
 import EditFaculty from "../pages/admin_pages/faculty/editfaculty";
 import Sidebar from "../components/sidebar/sidebar";
+import StudentAttendanceDetails from "../pages/student_pages/attendance_details";
+import RegisterCourse from "../pages/student_pages/register_course";
 function Layout() {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
@@ -61,9 +63,11 @@ function Layout() {
             element={<CreateParent />}
           />
           <Route path="/student/dashboard" element={<StudentDashboard />} />
+          <Route path="/student/dashboard/details" element={<StudentAttendanceDetails />} />
           <Route path="/parent/dashboard" element={<ParentDashboard />} />
           <Route path="/faculty/dashboard" element={<FacultyDashboard />} />
           <Route path="/student/leave" element={<ApplyLeave />} />
+          <Route path="/student/course/register" element={<RegisterCourse />} />
           <Route
             path="/student/reset-password"
             element={<StudentResetPassword />}
