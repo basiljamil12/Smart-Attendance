@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Sidebar from "../../components/sidebar/sidebar";
+import Toast from "../../components/toast/toast";
 
 function CreateCourse() {
   const navigate = useNavigate();
@@ -8,6 +9,7 @@ function CreateCourse() {
   const [credhours, setCredHours] = useState("");
   const [credhours1, setCredHours1Empty] = useState("");
   const [courseName1, setCourseName1Empty] = useState(false);
+  const [toastMessages, setToastMessages] = useState([]);
 
   const handleCourseNameChange = (e) => {
     setCourseName(e.target.value);
@@ -20,12 +22,26 @@ function CreateCourse() {
   const handleCreate = () => {
     if (!courseName.trim()) {
       // If subject is empty or contains only whitespace
-      alert("Course Name cannot be empty");
+      setToastMessages([
+        ...toastMessages,
+        {
+          type: "invalid",
+          title: "Invalid Course Name",
+          body: "Course Hours cannot be empty",
+        },
+      ]);
       return; // Prevent form submission
     }
     if (!credhours.trim()) {
+      setToastMessages([
+        ...toastMessages,
+        {
+          type: "invalid",
+          title: "Invalid Credit Hours",
+          body: "Credit Hours cannot be empty",
+        },
+      ]);
       // If subject is empty or contains only whitespace
-      alert("Credit Hours cannot be empty");
       return; // Prevent form submission
     }
     navigate("/adboard/dashboard");
@@ -33,6 +49,19 @@ function CreateCourse() {
 
   return (
     <div className="flex">
+      {toastMessages.map((toast, index) => (
+        <Toast
+          className="mb-0"
+          key={index}
+          toasts={[toast]}
+          onClose={() => {
+            // Remove the toast message when it's closed
+            const updatedToasts = [...toastMessages];
+            updatedToasts.splice(index, 1);
+            setToastMessages(updatedToasts);
+          }}
+        />
+      ))}
       <div className="md:ml-14 ml-5  w-full mx-[6%] ">
         <p className="text-sa-maroon  text-[36px] mb-5 text-left md:mt-10 mt-20 font-bold">
           Create Course

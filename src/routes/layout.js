@@ -29,6 +29,7 @@ import StudentAttendanceDetails from "../pages/student_pages/attendance_details"
 import RegisterCourse from "../pages/student_pages/register_course";
 import CourseApproval from "../pages/faculty_pages/course_approve";
 import FacultyAccountDetails from "../pages/faculty_pages/account_details";
+import CreateStudent from "../pages/admin_pages/create_student";
 function Layout() {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
@@ -44,6 +45,7 @@ function Layout() {
     "/adboard/faculty/edit",
     "/adboard/dashboard/course/create",
     "/adboard/dashboard/parent/create",
+    "/adboard/dashboard/student/create",
   ].includes(location.pathname);
 
   return (
@@ -63,6 +65,10 @@ function Layout() {
           <Route
             path="/adboard/dashboard/parent/create"
             element={<CreateParent />}
+          />
+          <Route
+            path="/adboard/dashboard/student/create"
+            element={<CreateStudent />}
           />
           <Route path="/student/dashboard" element={<StudentDashboard />} />
           <Route path="/student/dashboard/details" element={<StudentAttendanceDetails />} />

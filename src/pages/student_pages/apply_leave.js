@@ -2,6 +2,7 @@ import StudentNavbar from "../../components/navbars/student_navbar";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FileUpload } from "primereact/fileupload";
+import Toast from "../../components/toast/toast";
 
 function ApplyLeave() {
 
@@ -36,44 +37,102 @@ function ApplyLeave() {
     setReason(e.target.value);
   };
 
-  const handleAttachmentChange = (event) => {
-    const file = event.target.files[0];
-    const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
-
-    // Check if the selected file is not one of the allowed types
-    if (file && !allowedTypes.includes(file.type)) {
-      alert("Only JPEG, JPG, and PNG files are allowed.");
-      event.target.value = ""; // Clear the input field
-      return;
-    }
-
-    // Handle file change...
-  };
+ 
 
   const handleSubmit = () => {
     if (!subject.trim()) {
       // If subject is empty or contains only whitespace
-      alert("Subject cannot be empty");
+      setToastMessages([
+        ...toastMessages,
+        {
+          type: "invalid",
+          title: "Invalid Subject",
+          body: "Subject cannot be empty",
+        },
+      ]);
       return; // Prevent form submission
     }
     if (!startDate1 || !endDate1) {
       // If either start or end date is empty
-      alert("Both start and end dates are required");
+      setToastMessages([
+        ...toastMessages,
+        {
+          type: "invalid",
+          title: "Invalid Date",
+          body: "Both start and end dates are required",
+        },
+      ]);
       return; // Prevent form submission
     }
     if (!reason.trim()) {
       // If subject is empty or contains only whitespace
-      alert("Reason cannot be empty");
+      setToastMessages([
+        ...toastMessages,
+        {
+          type: "invalid",
+          title: "Invalid Reason",
+          body: "Reason cannot be empty",
+        },
+      ]);
       return; // Prevent form submission
     }
     navigate("/student/dashboard");
   };
-
+  function updateFileName(event) {
+    const files = event.target.files;
+    let fileNames = "";
+  
+    if (files && files.length > 0) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const fileName = file.name;
+        const allowedExtensions = [".jpg", ".jpeg", ".png"];
+        const extension = fileName.substring(fileName.lastIndexOf('.'));
+        
+        if (allowedExtensions.includes(extension)) {
+          fileNames += fileName;
+          if (i !== files.length - 1) {
+            fileNames += ", ";
+          }
+        } else {
+          setToastMessages([
+            ...toastMessages,
+            {
+              type: "invalid",
+              title: "Invalid File",
+              body: "Only JPEG, JPG, and PNG files are allowed",
+            },
+          ]);
+          // Clear the input field
+          document.getElementById("fileInput").value = "";
+          return; // Exit the function if an invalid file is found
+        }
+      }
+      document.getElementById("attachements").value = fileNames;
+    } else {
+      // Clear the input field if no file is selected
+      document.getElementById("attachements").value = "";
+    }
+  }
+  
   return (
     <div>
       <div>
         <StudentNavbar />
       </div>
+      {toastMessages.map((toast, index) => (
+        <Toast
+          className="mb-0"
+          key={index}
+          toasts={[toast]}
+          onClose={() => {
+            // Remove the toast message when it's closed
+            const updatedToasts = [...toastMessages];
+            updatedToasts.splice(index, 1);
+            setToastMessages(updatedToasts);
+          }}
+        />
+      ))}
       <div className="md:ml-14 ml-5 mx-[6%] ">
         <p className="text-sa-maroon text-[36px] text-left md:mt-8 mt-6 font-bold">
           Apply Leave
@@ -147,17 +206,36 @@ function ApplyLeave() {
             className="text-sa-black block text-left  text-[20px] font-[600] mb-2 text-filter-heading"
             htmlFor="link"
           >
-            Attachement (Optional)
+            Attachements (Optional)
           </label>
        
 
-          <input
-            id="attachment"
-            placeholder="Optional..."
-            onChange={handleAttachmentChange}
-            type="file"
-            className={`placeholder-gray-500 h-14 md:h-16 py-4 w-full border-[1px] border-black border-solid text-black bg-clue-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon`}
-          />
+          <form>
+  <div className="relative md:mb-5 mb-6">
+    <input
+      type="search"
+      id="attachements"
+      className="placeholder-gray-500 focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon h-14 md:h-16 py-4 block w-full p-4 border border-black border-solid text-black rounded-xl bg-white focus:ring-blue-500"
+      placeholder="No File Choosen (PNG, JPG or JPEG)"
+      required
+      disabled 
+    />
+    <label
+      htmlFor="fileInput"
+      className="transition-opacity hover:opacity-90 md:mr-4 text-white absolute end-2.5 bottom-2.5 bg-sa-maroon focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 md:py-3 py-2  cursor-pointer"
+    >
+      Choose File
+      <input
+        type="file"
+        multiple
+        id="fileInput"
+        accept=".png, .jpg, .jpeg"   
+        className="hidden"
+        onChange={updateFileName}
+      />
+    </label>
+  </div>
+</form>
         </div>
         <div className="md:ml-3 ml-2 md:mb-6 mb-10 ">
           <label

@@ -2,6 +2,7 @@ import StudentNavbar from "../../components/navbars/student_navbar";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FileUpload } from "primereact/fileupload";
+import Toast from "../../components/toast/toast";
 
 function StudentResetPassword() {
   const location = useLocation();
@@ -47,7 +48,14 @@ function StudentResetPassword() {
    
     if (!password || !confirmPassword) {
       // If either start or end date is empty
-      alert("Both password are required");
+      setToastMessages([
+        ...toastMessages,
+        {
+          type: "invalid",
+          title: "Invalid Password",
+          body: "Both password are required",
+        },
+      ]);
       return; // Prevent form submission
     }
     navigate("/student/login");
@@ -55,7 +63,19 @@ function StudentResetPassword() {
 
   return (
     <div className="md:flex items-center justify-center">
-    
+    {toastMessages.map((toast, index) => (
+        <Toast
+          className="mb-0"
+          key={index}
+          toasts={[toast]}
+          onClose={() => {
+            // Remove the toast message when it's closed
+            const updatedToasts = [...toastMessages];
+            updatedToasts.splice(index, 1);
+            setToastMessages(updatedToasts);
+          }}
+        />
+      ))}
       <div className="md:ml-14 ml-5 md:w-[50%] md:mx-0 mx-[6%] ">
       
         <p className="text-sa-maroon text-[36px] text-left md:mt-14 mt-10 font-bold">
