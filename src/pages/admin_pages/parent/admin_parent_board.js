@@ -1,49 +1,46 @@
-
 import React from "react";
-import StudentNavbar from "../../components/navbars/student_navbar";
+import Sidebar from "../../../components/sidebar/sidebar";
 import { useNavigate } from "react-router";
-
-function StudentDashboard() {
-  const AttendanceData = [
+import { Button } from 'primereact/button';
+function ParentAdboard() {
+  const parentData = [
     {
-      courseTitle: "SDD",
-      teacherName: "Ali",
-      presentHrs: "20",
-      absentHrs: "2",
-      totalHrs: "48",
+      name: "Diyan Ali Shaikh",
+      email: "shaikhdiyanali2002@gmail.com",
+      contactNo: "03322829895",
     },
     {
-      courseTitle: "DSA",
-      teacherName: "IBU",
-      presentHrs: "25",
-      absentHrs: "7",
-      totalHrs: "48",
+      name: "Basil Jamil",
+      email: "basiljamil112@gmail.com",
+      contactNo: "69696969669",
     },
   ];
 
   const navigate = useNavigate();
 
-  const handleDetails = () => {
-    navigate("/student/dashboard/details");
+  const goToAddParent = () => {
+    navigate("/adboard/parent/add");
   };
 
   return (
-    <div className="flex-col">
-      <div>
-        <StudentNavbar />
-      </div>
+    <div className="flex">
       <div className="w-full">
-        {/* <div className="md:mt-10 md:ml-14 mt-16 md:flex md:items-start md:justify-start">
-          <span className="text-sa-maroon  font-bold text-[32px] md:text-[36px]">
-              Dashboard
+        <div className="md:mt-8 md:ml-8 mt-16 md:flex md:items-start md:justify-start">
+          <span className="text-sa-maroon  font-bold text-xl md:text-3xl">
+            Parent Dashboard
           </span>
-        </div> */}
+        </div>
         <div className="md:mt-14 mt-10">
           <div className="flex justify-between mx-10 md:mx-24">
-            <span className="text-sa-maroon font-bold text-[28px] md:text-[36px]">
-            Dashboard
+            <span className="text-sa-maroon font-bold text-xl md:text-2xl">
+            Parent List
             </span>
-            
+            <span
+              className="transition-opacity hover:opacity-85 text-sa-maroon font-bold text-lg pt-0.5 underline hover:cursor-pointer"
+              onClick={goToAddParent}
+            >
+              Add Parent
+            </span>
           </div>
           <div className="overflow-x-auto mt-10 mx-10 md:ml-[6%] md:w-[90%] md:shadow-xl rounded-2xl">
             <table className="table-fixed min-w-full bg-sa-pink w-[800px] md:w-[50vw] rounded-2xl">
@@ -53,27 +50,17 @@ function StudentDashboard() {
                     #
                   </th>
                   <th className="p-0 py-5  border-r border-sa-grey">
-                    Course Title
+                  Parent Name
                   </th>
+                  <th className="p-0 py-5  border-r border-sa-grey">Email</th>
                   <th className="p-0 py-5  border-r border-sa-grey">
-                    Teacher Name
+                    Contact No.
                   </th>
-                  <th className="p-0 py-5  border-r border-sa-grey">
-                    Present Hours
-                  </th>
-                  <th className="p-0 py-5  border-r border-sa-grey">
-                    Absent Hours
-                  </th>
-                  <th className="p-0 py-5  border-r border-sa-grey">
-                    Total Hours
-                  </th>
-                  <th className="p-0 py-5  border-sa-grey">
-                    Details
-                  </th>
-                    </tr>
+                  <th className="p-2 py-5  border-sa-grey">Actions</th>
+                </tr>
               </thead>
               <tbody>
-                {AttendanceData.map((faculty, index) => (
+                {parentData.map((student, index) => (
                   <tr key={index} className="border-b border-sa-grey">
                     <td className="p-0 py-5  border-r border-sa-grey w-[100px]">
                       {index + 1}
@@ -83,7 +70,7 @@ function StudentDashboard() {
                         className="block w-full h-full overflow-hidden overflow-ellipsis"
                         style={{ wordWrap: "break-word" }}
                       >
-                        {faculty.courseTitle}
+                        {student.name}
                       </span>
                     </td>
                     <td className="p-0 py-5  border-r border-sa-grey">
@@ -91,7 +78,7 @@ function StudentDashboard() {
                         className="block w-full h-full overflow-hidden overflow-ellipsis"
                         style={{ wordWrap: "break-word" }}
                       >
-                        {faculty.teacherName}
+                        {student.email}
                       </span>
                     </td>
                     <td className="p-0 py-5  border-r border-sa-grey">
@@ -99,49 +86,55 @@ function StudentDashboard() {
                         className="block w-full h-full overflow-hidden overflow-ellipsis"
                         style={{ wordWrap: "break-word" }}
                       >
-                        {faculty.presentHrs}
+                        {student.contactNo}
                       </span>
                     </td>
-                    <td className="p-0 py-5  border-r border-sa-grey">
-                      <span
-                        className="block w-full h-full overflow-hidden overflow-ellipsis"
-                        style={{ wordWrap: "break-word" }}
-                      >
-                        {faculty.absentHrs}
-                      </span>
-                    </td>
-                    <td className="p-0 py-5  border-r  border-sa-grey">
-                      <span
-                        className="block w-full h-full overflow-hidden overflow-ellipsis"
-                        style={{ wordWrap: "break-word" }}
-                      >
-                        {faculty.totalHrs}
-                      </span>
-                    </td>
-                    {/* <td className="p-0 py-5  border-sa-grey">
-                      <span
-                        className="block cursor-pointer transition-opacity hover:opacity-70 underline text-sa-table-blue w-full h-full overflow-hidden overflow-ellipsis"
-                        style={{ wordWrap: "break-word" }}
-                        onClick={handleDetails}
-                      >
-                        Go to Details
-                      </span>
-                    </td> */}
-                     <td className="p-2 py-5  border-sa-grey">
+                    <td className="p-2 py-5  border-sa-grey">
                     <div  class="lg:inline-flex rounded-lg border  bg-sa-pink p-1">
                    
   <button
     class="bg-sa-maroon md:mr-2 text-white inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm  transition-opacity hover:opacity-90 hover:text-gray-300  focus:relative"
-    onClick={handleDetails}
   >
-   
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      class="h-4 w-4"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+      />
+    </svg>
 
-   Go to Details
+    Edit
   </button>
 
 
 
-  
+  <button
+    class="inline-flex lg:mt-0 mt-2 items-center gap-2 rounded-md bg-[#d9534f] px-4 py-2 text-sm text-white transition-opacity hover:opacity-90  hover:text-gray-300 shadow-sm focus:relative"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      class="h-4 w-4"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+      />
+    </svg>
+
+    Delete
+  </button>
 </div>
                       {/* <span className="text-sa-maroon text-md underline mx-2 hover:cursor-pointer">
                         Edit
@@ -151,7 +144,6 @@ function StudentDashboard() {
                         Delete
                       </span> */}
                     </td>
-                  
                   </tr>
                 ))}
                 <tr className="border-b-0">
@@ -159,8 +151,7 @@ function StudentDashboard() {
                   <td className="md:py-32 py-16 border-r border-sa-grey"></td>
                   <td className="md:py-32 py-16 border-r border-sa-grey"></td>
                   <td className="md:py-32 py-16 border-r border-sa-grey"></td>
-                  <td className="md:py-32 py-16 border-r border-sa-grey"></td>
-                  <td className="md:py-32 py-16 border-r border-sa-grey"></td>
+                  <td className="md:py-32 py-16  border-sa-grey"></td>
                 </tr>
               </tbody>
             </table>
@@ -171,4 +162,4 @@ function StudentDashboard() {
   );
 }
 
-export default StudentDashboard;
+export default ParentAdboard;

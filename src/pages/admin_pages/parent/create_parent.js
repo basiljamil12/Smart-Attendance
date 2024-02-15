@@ -3,45 +3,46 @@ import { useNavigate, useLocation } from "react-router-dom";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import Select from "react-select";
-import Toast from "../../components/toast/toast";
-import Sidebar from "../../components/sidebar/sidebar";
+import Toast from "../../../components/toast/toast";
+import Sidebar from "../../../components/sidebar/sidebar";
 
-function CreateStudent() {
+function CreateParent() {
   const navigate = useNavigate();
 
   const [toastMessages, setToastMessages] = useState([]);
 
   const [showPassword, setShowPassword] = useState(false);
-  const [studentName, setStudentName] = useState(""); // 
-  const [contactNo, setContactNo] = useState(""); 
+  const [parentName, setParentName] = useState("");
+  const [parentName1, setParentName1] = useState("");
+  const [contactno, setContactno] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-//   const [selectedStudentEmail, setSelectedStudentEmail] = useState(null);
+  const [selectedStudentEmail, setSelectedStudentEmail] = useState(null);
 
-  const handleStudentNameChange = (e) => { 
-    setStudentName(e.target.value); 
+  const handleParentNameChange = (e) => {
+    setParentName(e.target.value);
   };
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
   const handleContactNoChange = (e) => {
-    setContactNo(e.target.value); 
+    setContactno(e.target.value);
   };
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
 
-//   const handleStudentEmailChange = (selectedOption) => {
-//     setSelectedStudentEmail(selectedOption);
-//   };
+  const handleStudentEmailChange = (selectedOption) => {
+    setSelectedStudentEmail(selectedOption);
+  };
   const isValidEmail = (email) => {
     // Regular expression for validating email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
   const handleCreate = () => {
-    if (!studentName.trim()) { // Changed parentName to studentName
+    if (!parentName.trim()) {
       setToastMessages([
         ...toastMessages,
         {
@@ -85,17 +86,17 @@ function CreateStudent() {
       ]);
       return;
     }
-    // if (!selectedStudentEmail) {
-    //   setToastMessages([
-    //     ...toastMessages,
-    //     {
-    //       type: "invalid",
-    //       title: "Error",
-    //       body: "Student Email must be selected",
-    //     },
-    //   ]);
-    //   return;
-    // }
+    if (!selectedStudentEmail) {
+      setToastMessages([
+        ...toastMessages,
+        {
+          type: "invalid",
+          title: "Error",
+          body: "Student Email must be selected",
+        },
+      ]);
+      return;
+    }
 
     // Perform create action, navigate, etc.
     navigate("/adboard/dashboard");
@@ -103,71 +104,43 @@ function CreateStudent() {
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
-  function updateFileName(event) {
-    const file = event.target.files[0];
-    
-    if (file) {
-      const fileName = file.name;
-      const allowedExtensions = [".jpg", ".jpeg", ".png"];
-      const extension = fileName.substring(fileName.lastIndexOf('.'));
-      
-      if (allowedExtensions.includes(extension)) {
-        document.getElementById("faceID").value = fileName;
-      } else {
-        setToastMessages([
-            ...toastMessages,
-            {
-              type: "invalid",
-              title: "Invalid File",
-              body: "Only JPEG, JPG, and PNG files are allowed",
-            },
-          ]);
-    
-       
-        document.getElementById("faceID").value = "";
-      }
-    } else {
-      document.getElementById("faceID").value = "";
-    }
-  }
-//   const studentEmailOptions = [
-//     { value: "student1@example.com", label: "Student 1" },
-//     { value: "student2@example.com", label: "Student 2" },
-//     { value: "student3@example.com", label: "Student 3" },
-//   ];
-//   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const studentEmailOptions = [
+    { value: "student1@example.com", label: "Student 1" },
+    { value: "student2@example.com", label: "Student 2" },
+    { value: "student3@example.com", label: "Student 3" },
+  ];
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-//   useEffect(() => {
-//     const handleResize = () => {
-//       setIsMobile(window.innerWidth < 768);
-//     };
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
 
-//     window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize);
 
-//     return () => {
-//       window.removeEventListener("resize", handleResize);
-//     };
-//   }, []);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
-//   const customStyles = {
-//     control: (provided, state) => ({
-//       ...provided,
-//       border: "1px solid black", // customize border color when focused
-//       borderRadius: "10px",
-//       boxShadow: "none",
-//       height: isMobile ? "56px" : "64px", // height for normal and md breakpoints
-//       // height for lg and xl breakpoints
-//       textAlign: "left",
-//       background: "transparent",
-//     }),
-//     option: (provided, state) => ({
-//       ...provided,
-//       color: "black", // text color
-//       textAlign: "left",
-//     }),
-//   };
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      border: "1px solid black", // customize border color when focused
+      borderRadius: "10px",
+      boxShadow: "none",
+      height: isMobile ? "56px" : "64px", // height for normal and md breakpoints
+      // height for lg and xl breakpoints
+      textAlign: "left",
+      background: "transparent",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: "black", // text color
+      textAlign: "left",
+    }),
+  };
   
-
 
   return (
     <div className="flex">
@@ -186,16 +159,16 @@ function CreateStudent() {
       ))}
       <div className="md:ml-14 ml-5 w-full mx-[6%] ">
         <p className="text-sa-maroon text-[36px]  mb-5 text-left md:mt-10 mt-20 font-bold">
-          Create Student 
+          Create Parent
         </p>
 
         <div className="md:ml-3 ml-2 mt-5 md:mt-6 mb-5 ">
           <input
             type="text"
-            id="studentName" 
-            placeholder="Name" 
-            onChange={handleStudentNameChange} 
-            value={studentName} 
+            id="parentName"
+            placeholder="Name"
+            onChange={handleParentNameChange}
+            value={parentName}
             className="placeholder-gray-500 w-full h-14 md:h-16  border-[1px] border-black border-solid   text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon"
           />
         </div>
@@ -212,6 +185,7 @@ function CreateStudent() {
         <div class="relative  md:ml-3 ml-2 mt-5 md:mt-6 mb-5  ">
           <input
             type={showPassword ? "text" : "password"}
+            //class="shadow-xl focus:outline-none focus:ring-0 focus:border-sa-maroon peer m-0 block h-[45px] md:h-[56px]   md:mr-44  md:w-[102%] w-[245px]  rounded-[20px] border-[1px] border-solid  border-black  bg-transparent bg-clip-padding px-3 py-4 text-base font-normal leading-tight text-black"
             className="placeholder-gray-500 w-full h-14 md:h-16 border-[1px] border-black border-solid bg-transparent  text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon"
             id="password"
             value={password}
@@ -237,55 +211,11 @@ function CreateStudent() {
             id="contactNo"
             placeholder="Contact No."
             onChange={handleContactNoChange}
-            value={contactNo} 
+            value={contactno}
             className="placeholder-gray-500 w-full h-14 md:h-16 border-[1px] border-black border-solid   text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon "
           />
         </div>
-        <div className="md:ml-3 ml-2 mt-5 md:mt-6 mb-5 ">
-        {/* <label
-            className="text-sa-black block text-left  text-md font-[600] mb-2 text-filter-heading"
-            htmlFor="link"
-          >
-            Face ID
-          </label>
-       
-
-          <input
-            id="attachment"
-            onChange={handleAttachmentChange}
-            type="file"
-            className={`placeholder-gray-500 h-14 md:h-16 py-4 w-full border-[1px] border-black border-solid text-black bg-clue-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon`}
-          />  
-          <p class="mt-1 text-xs text-black text-left " id="file_input_help"> (PNG, JPG or JPEG)</p>  
-            */}
-            <form>
-  <div className="relative mb-10">
-    <input
-      type="search"
-      id="faceID"
-      className="placeholder-gray-500 focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon h-14 md:h-16 py-4 block w-full p-4 border border-black border-solid text-black rounded-xl bg-white focus:ring-blue-500"
-      placeholder="Face ID (PNG, JPG or JPEG)"
-      required
-      disabled 
-    />
-    <label
-      htmlFor="fileInput"
-      className="transition-opacity hover:opacity-90 md:mr-4 text-white absolute end-2.5 bottom-2.5 bg-sa-maroon focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 md:py-3 py-2  cursor-pointer"
-    >
-      Choose an Image
-      <input
-        type="file"
-        id="fileInput"
-        accept=".png, .jpg, .jpeg"
-        className="hidden"
-        onChange={updateFileName}
-      />
-    </label>
-  </div>
-</form>
-
-           </div>
-        {/* <div className="md:ml-3 ml-2 mt-5 md:mt-6 mb-10 ">
+        <div className="md:ml-3 ml-2 mt-5 md:mt-6 mb-10 ">
           <Select
             id="studentEmail"
             placeholder="Select Student Email"
@@ -295,7 +225,7 @@ function CreateStudent() {
             options={studentEmailOptions}
             //className="text-left h-14 md:h-16 border-[1px] border-black border-solid text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon"
           />
-        </div> */}
+        </div>
 
         <div class="flex items-center justify-center mb-14   ">
           <button
@@ -310,4 +240,4 @@ function CreateStudent() {
   );
 }
 
-export default CreateStudent;
+export default CreateParent;

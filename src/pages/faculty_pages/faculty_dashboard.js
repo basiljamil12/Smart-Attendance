@@ -82,23 +82,39 @@ function FacultyDashboard() {
                       </span>
                     </td>
                    
-                    <td className="p-0 py-5  border-sa-grey">
+                    {/* <td className="p-0 py-5  border-sa-grey">
                       <span
                         className="block cursor-pointer transition-opacity hover:opacity-70 text-sa-table-blue w-full h-full underline overflow-hidden overflow-ellipsis"
                         style={{ wordWrap: "break-word" }}
                       >
                       Mark Attendance
                       </span>
-                    </td>
-                    {/* <td className="p-2 py-5  border-sa-grey">
-                      <span className="text-sa-maroon text-md underline mx-2 hover:cursor-pointer">
+                    </td> */}
+                    <td className="p-2 py-5  border-sa-grey">
+                    <div  class="lg:inline-flex rounded-lg border  bg-sa-pink p-1">
+                   
+  <button
+    class="bg-sa-maroon md:mr-2 text-white inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm  transition-opacity hover:opacity-90 hover:text-gray-300  focus:relative"
+    
+  >
+   
+
+   Mark Attendance
+  </button>
+
+
+
+  
+</div>
+                      {/* <span className="text-sa-maroon text-md underline mx-2 hover:cursor-pointer">
                         Edit
                       </span>
                       <span>|</span>
                       <span className="text-sa-maroon text-md underline mx-2 hover:cursor-pointer">
                         Delete
-                      </span>
-                    </td> */}
+                      </span> */}
+                    </td>
+                   
                   </tr>
                 ))}
                 <tr className="border-b-0">
