@@ -98,7 +98,7 @@ function CreateStudent() {
     // }
 
     // Perform create action, navigate, etc.
-    navigate("/adboard/dashboard");
+    navigate("/adboard/student");
   };
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);

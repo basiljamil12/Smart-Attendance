@@ -1,21 +1,28 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import Sidebar from "../../components/sidebar/sidebar";
-import Toast from "../../components/toast/toast";
+import Sidebar from "../../../components/sidebar/sidebar";
+import Toast from "../../../components/toast/toast";
 
 function CreateCourse() {
   const navigate = useNavigate();
   const [courseName, setCourseName] = useState("");
+  const [courseCode, setcourseCode] = useState("");
   const [credhours, setCredHours] = useState("");
   const [credhours1, setCredHours1Empty] = useState("");
   const [courseName1, setCourseName1Empty] = useState(false);
   const [toastMessages, setToastMessages] = useState([]);
-
+  
+  const handleCourseCodeChange = (e) => {
+  
+      setcourseCode(e.target.value);
+   
+  };
   const handleCourseNameChange = (e) => {
     setCourseName(e.target.value);
   };
 
   const handleCredHoursChange = (e) => {
+    
     setCredHours(e.target.value);
   };
 
@@ -27,10 +34,45 @@ function CreateCourse() {
         {
           type: "invalid",
           title: "Invalid Course Name",
-          body: "Course Hours cannot be empty",
+          body: "Course Name cannot be empty",
         },
       ]);
       return; // Prevent form submission
+    }
+    if (!courseCode.trim()) {
+      setToastMessages([
+        ...toastMessages,
+        {
+          type: "invalid",
+          title: "Invalid Credit Hours",
+          body: "Credit Hours cannot be empty",
+        },
+      ]);
+      // If subject is empty or contains only whitespace
+      return; // Prevent form submission
+    }
+    if (!courseCode.trim() || !/^([A-Za-z]{3})-([0-9]{3})$/.test(courseCode.trim())) {
+      setToastMessages([
+          ...toastMessages,
+          {
+              type: "invalid",
+              title: "Invalid Course Code",
+              body: "Course Code should be in the format: ABC-112 .",
+          },
+      ]);
+      return; // Prevent form submission
+  }
+    const codeValue = parseInt(credhours, 10);
+    if (isNaN(codeValue) || codeValue > 3) {
+        setToastMessages([
+            ...toastMessages,
+            {
+                type: "invalid",
+                title: "Invalid Credit Hours",
+                body: "Credit Hours cannot be greater than 3 hours",
+            },
+        ]);
+        return; // Prevent form submission
     }
     if (!credhours.trim()) {
       setToastMessages([
@@ -44,7 +86,7 @@ function CreateCourse() {
       // If subject is empty or contains only whitespace
       return; // Prevent form submission
     }
-    navigate("/adboard/dashboard");
+    navigate("/adboard/course");
   };
 
   return (
@@ -80,11 +122,22 @@ function CreateCourse() {
             }`}
           />
         </div>
+        <div className="md:ml-3 ml-2 mt-5  md:mt-6 mb-5 ">
+          <input
+            type="text"
+            id="ccode"
+            placeholder="Course Code (e.g: ABC-112)"
+            onChange={handleCourseCodeChange}
+            value={courseCode}
+            className="placeholder-gray-500 w-full h-14 md:h-16  border-[1px] border-black border-solid   text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon "
+        
+          />
+        </div>
         <div className="md:ml-3 ml-2 mt-5 md:mt-6 mb-10 ">
           <input
             type="number"
             id="credhrs"
-            placeholder="Credit Hours"
+            placeholder="Credit Hours (Max: 3 Hours)"
             onChange={handleCredHoursChange}
             value={credhours}
             className={`placeholder-gray-500 w-full h-14 md:h-16 border-[1px] border-black border-solid   text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon ${

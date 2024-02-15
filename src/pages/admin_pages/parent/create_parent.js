@@ -99,7 +99,7 @@ function CreateParent() {
     }
 
     // Perform create action, navigate, etc.
-    navigate("/adboard/dashboard");
+    navigate("/adboard/parent");
   };
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);

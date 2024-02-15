@@ -17,7 +17,7 @@ import ParentLogin from "../pages/parent_pages/parent_login";
 import FacultyLogin from "../pages/faculty_pages/faculty_login";
 import AdminLogin from "../pages/admin_pages/admin_login";
 import ApplyLeave from "../pages/student_pages/apply_leave";
-import CreateCourse from "../pages/admin_pages/create_course";
+import CreateCourse from "../pages/admin_pages/course/create_course";
 import StudentResetPassword from "../pages/student_pages/student_change_pw";
 import AdminDashboard from "../pages/admin_pages/admin_dashboard";
 import CreateParent from "../pages/admin_pages/parent/create_parent";
@@ -33,6 +33,7 @@ import CreateStudent from "../pages/admin_pages/student/create_student";
 import StudentAccountDetails from "../pages/student_pages/student_account_details";
 import StudentAdboard from "../pages/admin_pages/student/admin_student_board";
 import ParentAdboard from "../pages/admin_pages/parent/admin_parent_board";
+import CourseAdboard from "../pages/admin_pages/course/admin_course_board";
 function Layout() {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
@@ -52,8 +53,9 @@ function Layout() {
     "/adboard/parent",
     "/adboard/parent/add",
     "/adboard/parent/edit",
-    "/adboard/dashboard/course/create",
+    "/adboard/course/add",
     "/adboard/dashboard/parent/create",
+    "/adboard/course"
   ].includes(location.pathname);
 
   return (
@@ -67,7 +69,7 @@ function Layout() {
           <Route path="/faculty/login" element={<FacultyLogin />} />
           <Route path="/adboard/signin" element={<AdminLogin />} />
           <Route
-            path="/adboard/dashboard/course/create"
+            path="/adboard/course/add"
             element={<CreateCourse />}
           />
           <Route
@@ -92,6 +94,7 @@ function Layout() {
           <Route path="/adboard/faculty" element={<FacultyAdboard />} />
           <Route path="/adboard/student" element={<StudentAdboard />} />
           <Route path="/adboard/parent" element={<ParentAdboard />} />
+          <Route path="/adboard/course" element={<CourseAdboard />} />
           <Route path="/adboard/faculty/add" element={<CreateFaculty />} />
           <Route path="/adboard/faculty/edit" element={<EditFaculty />} />
           <Route path="/faculty/course/register" element={<CourseApproval />} />

@@ -35,10 +35,33 @@ function Sidebar() {
     navigate("/adboard/student");
   };
 
-  const goToAdmin = () => {
-    navigate("/adboard/dashboard");
+  const goToCourse = () => {
+    navigate("/adboard/course");
   };
-
+  const [isSignout, setIsSignout] = useState(false);
+  
+  const closeSignOut = () => {
+    
+   
+    setIsSignout(false);
+  };
+  const openSignOut = () => {
+    setIsSignout(true);
+  };
+  const handleSignout=()=>{
+    // signoutManager.signout().then((value) => {
+    //   if (!value.error) {
+    //     const baseResponse = value.success;
+    //     if (baseResponse == true) {
+          navigate('/adboard/signin');
+    //     } else {
+    //       console.error("Invalid token", baseResponse);
+    //     }
+    //   } else {
+    //     console.error("Error:", value.error);
+    //   }
+    // });
+  }
   return (
     <>
         {open && window.innerWidth < 768 && (
@@ -93,13 +116,15 @@ function Sidebar() {
             <div className="border-b-2 border-white mx-4 my-5 opacity-20"></div>
             <div
               className="transition-opacity hover:opacity-80 px-10 border-b-10 hover:cursor-pointer"
-              onClick={goToAdmin}
+              onClick={goToCourse}
             >
-              <span className="text-white font-bold text-xl">Admin</span>
+              <span className="text-white font-bold text-xl">Course</span>
             </div>
             <div className="border-b-2 border-white mx-4 my-5 opacity-20"></div>
             <div className="px-10 border-b-10 hover:cursor-pointer">
-              <span className="transition-opacity hover:opacity-80 text-white font-bold text-xl">Sign Out</span>
+              <span className="transition-opacity hover:opacity-80 text-white font-bold text-xl"
+              onClick={openSignOut} >
+                Sign Out</span>
             </div>
           </div>
         ) : (
@@ -109,7 +134,68 @@ function Sidebar() {
             </button>
           </div>
         )}
+        
       </div>
+      {/* {isSignout && (
+  <div className="fixed inset-0 flex items-center justify-center z-50">
+    <div className="bg-black opacity-50 absolute inset-0"></div>
+    <div
+      className="bg-white rounded-lg w-80 p-8 px-12 relative z-10"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <h3 className="text-black text-center mb-4">Confirm</h3>
+      <p className="text-black text-center">
+        Are you sure you want to sign out of your account?
+      </p>
+      <div className="flex justify-center mt-6">
+        <button
+          onClick={closeSignOut}
+          className="text-black transition-opacity hover:opacity-70 mr-4 border-2 rounded-lg border-gray-400 py-1 px-4"
+        >
+          Cancel
+        </button>
+        <button
+          className="bg-sa-maroon transition-opacity hover:opacity-70 text-white px-7 rounded-lg py-1"
+          onClick={handleSignout}
+        >
+          Sign Out
+        </button>
+      </div>
+    </div>
+  </div>
+)} */}
+{isSignout && (
+          <div
+            className=" fixed inset-0 flex items-center justify-center z-50"
+            onClick={closeSignOut}
+          >
+            <div className=" bg-black opacity-50 absolute inset-0"></div>
+            <div
+              className=" bg-white rounded-3xl md:w-auto w-80  p-8 px-12 relative z-10"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h2 className="text-black font-semibold md:w-auto w-60 text-left mb-4">
+                Confirm
+              </h2>
+              <p className="text-black text-filter-heading md:w-auto w-60 text-left">
+                Are you sure you want to sign out of your account?
+              </p>
+              <div className="flex justify-end mt-6">
+                <button
+                  onClick={closeSignOut}
+                  className="text-filter-heading transition-opacity hover:opacity-70 mr-4 border-2 border-gray-400 rounded-[9px] border-filter-heading py-1 px-6"
+                >
+                  Cancel
+                </button>
+                <button className="bg-sa-maroon transition-opacity hover:opacity-70 text-white md:px-7 px-5 rounded-[9px] py-1 "
+                onClick={handleSignout}>
+                
+                Sign Out
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
     </>
   );
 }
