@@ -21,7 +21,6 @@ function FacultyAdboard() {
   const goToAddFaculty = () => {
     navigate("/adboard/faculty/add");
   };
-
   return (
     <div className="flex">
       <div className="w-full">

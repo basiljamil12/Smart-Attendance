@@ -1,10 +1,10 @@
-import ApiConstants from "../../../../constants/adminconstants.js";
+import parentApiConstants from "../../../../constants/parentconstants.js";
 import { BaseResponse } from "../authmodels/signinmodel.js";
 
-class SignoutManager {
+class ParentSignoutManager {
   async signout() {
-    const url = ApiConstants.SIGN_OUT;
-    const token = localStorage.getItem("adminToken");
+    const url = parentApiConstants.SIGN_OUT;
+    const token = localStorage.getItem("parentToken");
     try {
       const response = await fetch(url, {
         method: "DELETE",
@@ -17,18 +17,18 @@ class SignoutManager {
 
       if (response.status === 401) {
         
-        window.location.href = "/adboard/signin";
-        localStorage.removeItem("adminToken");
-        localStorage.removeItem("adminEmail");
-        localStorage.removeItem("adminName");
+        window.location.href = "/parent/login";
+        localStorage.removeItem("parentToken");
+        localStorage.removeItem("parentEmail");
+        localStorage.removeItem("parentName");
         return;
       }
 
       if (response.ok) {
         const responseBody = await response.json();
-        localStorage.removeItem("adminToken");
-        localStorage.removeItem("adminEmail");
-        localStorage.removeItem("adminName");
+        localStorage.removeItem("parentToken");
+        localStorage.removeItem("parentEmail");
+        localStorage.removeItem("parentName");
         return new BaseResponse(responseBody);
       } else {
         const errorBody = await response.text();
@@ -40,4 +40,4 @@ class SignoutManager {
   }
 }
 
-export default SignoutManager;
+export default ParentSignoutManager;

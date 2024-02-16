@@ -5,12 +5,16 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import { useNavigate } from "react-router-dom";
 import Toast from "../../components/toast/toast";
+import StudentHttpManager from "../../models/student/auth/http/signinhttp";
+import Spinner from "../../components/spinner/spinner";
 function StudentLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
   const [toastMessages, setToastMessages] = useState([]);
+  const studenthttpManager = new StudentHttpManager();
+
   const isValidEmail = (email) => {
     // Regular expression for validating email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -28,7 +32,9 @@ function StudentLogin() {
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
-  const handleSignIn = () => {
+  const handleSignIn =async () => {
+    try {
+      setShowLoading(true);
     if(!email.trim()) {
       // If subject is empty or contains only whitespace
       setToastMessages([
@@ -65,8 +71,58 @@ function StudentLogin() {
       ]);
       return; // Prevent form submission
     }
-    navigate("/student/dashboard");
+    const response = await studenthttpManager.login(email, password);
+      if(response.success){
+      handleSignInResponse(response);}
+      else{
+        handleSignInError(response.message);
+      }
+    } catch (error) {
+      
+      handleSignInError("Enter valid email and password");
+    }
+    finally {
+      setShowLoading(false); // Stop loading
+    }
   };
+  const handleSignInResponse = (response) => {
+    setShowLoading(false);
+
+   if (!response.error) {
+     const baseResponse = response.success;
+
+     if (baseResponse === true) {
+       const userToken = response.data.token;
+       const email = response.data.email;
+       const name = response.data.name;
+       //const isEmailSubscribed = response.data.is_email_subscribed;
+
+       if (userToken != null) {
+         
+           localStorage.setItem('studentToken', `${userToken}`);
+           localStorage.setItem('studentemail', email);
+           localStorage.setItem('studentname', name);
+           navigate("/student/dashboard");
+
+         } 
+       } else {
+         handleSignInError(response.message);
+       }
+     } else {
+       handleSignInError(response.message);
+     }
+   };
+ const handleSignInError = (errorMessage) => {
+   setShowLoading(false);
+   setToastMessages([
+     ...toastMessages,
+     {
+       type: "invalid",
+       title: "Error",
+       body: errorMessage,
+     },
+   ]);
+ };
   const handleForgotPassword = (e) => {
   //  /http://localhost:3000/api/v1/student/forgot-password
   };
@@ -130,7 +186,7 @@ function StudentLogin() {
             class="transition-opacity hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-clue-purchase peer m-0 block h-[45px] md:h-[56px]   md:mr-72  md:w-[101.5%] w-[245px]  rounded-[20px]   bg-clip-padding px-3 py-2 text-base  leading-tight text-white text-[24px] md:text-[28px]"
             onClick={handleSignIn}
           >
-            Sign In
+            {showLoading ? <Spinner /> : 'Sign In'}
           </button>
         </div>
         <div>

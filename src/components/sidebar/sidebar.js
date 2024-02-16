@@ -2,10 +2,11 @@ import CloseIcon from "@mui/icons-material/Close";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-
+import SignoutManager from "../../models/admin/auth/https/signouthttp"; 
 function Sidebar() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(window.innerWidth >= 768);
+  const signoutManager = new SignoutManager();
 
   useEffect(() => {
     const handleResize = () => {
@@ -48,19 +49,15 @@ function Sidebar() {
   const openSignOut = () => {
     setIsSignout(true);
   };
-  const handleSignout=()=>{
-    // signoutManager.signout().then((value) => {
-    //   if (!value.error) {
-    //     const baseResponse = value.success;
-    //     if (baseResponse == true) {
+  const handleSignout=async()=>{
+
+      const response = await signoutManager.signout();
+        if (response.success) {
           navigate('/adboard/signin');
-    //     } else {
-    //       console.error("Invalid token", baseResponse);
-    //     }
-    //   } else {
-    //     console.error("Error:", value.error);
-    //   }
-    // });
+        } else {
+          console.error("Invalid token", response);
+        }
+
   }
   return (
     <>

@@ -5,9 +5,9 @@
 // const BASE_URL = "https://api.cluebycandlelight.com/api/v1/";
 const BASE_URL = "http://localhost:3000/api/v1/";
 
-const ApiConstants = {
-  SIGN_IN: `${BASE_URL}admin/sign-in`,
-  SIGN_OUT: `${BASE_URL}admin/sign-out`,
+const StudentApiConstants = {
+  SIGN_IN: `${BASE_URL}student/sign-in`,
+  SIGN_OUT: `${BASE_URL}student/sign-out`,
   ADD_ADMIN: `${BASE_URL}admin/add-admin`,
   CHANGE_USERNAME: `${BASE_URL}admin/change-username`,
   RESET_PASS_1: `${BASE_URL}admin/reset-password-step-1`,
@@ -59,4 +59,4 @@ const ApiConstants = {
   DISABLE_USER: `${BASE_URL}admin/disable-user?email=`,
 };
 
-export default ApiConstants;
+export default StudentApiConstants;

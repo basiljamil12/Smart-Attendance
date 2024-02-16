@@ -1,9 +1,9 @@
-import ApiConstants from "../../../../constants/adminconstants.js";
+import parentApiConstants from "../../../../constants/parentconstants.js";
 import {BaseResponse} from '../authmodels/signinmodel.js';
 
-class HttpManager {
+class ParentHttpManager {
     async login(email, password) {
-      const url = ApiConstants.SIGN_IN;
+      const url = parentApiConstants.SIGN_IN;
       const params = {
         email: email,
         password: password,
@@ -19,10 +19,10 @@ class HttpManager {
         });
 
         if (response.status === 401) {
-          localStorage.removeItem("adminToken");
-          localStorage.removeItem("adminEmail");
-          localStorage.removeItem("adminName");
-          window.location.href = "/adboard/signin";
+          localStorage.removeItem("parentToken");
+          localStorage.removeItem("parentEmail");
+          localStorage.removeItem("parentName");
+          window.location.href = "/parent/login";
           return;
         }
   
@@ -39,4 +39,4 @@ class HttpManager {
     }
   }
 
-export default HttpManager;
+export default ParentHttpManager;

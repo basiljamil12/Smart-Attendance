@@ -1,10 +1,10 @@
-import ApiConstants from "../../../../constants/adminconstants.js";
+import StudentApiConstants from "../../../../constants/studentconstants.js";
 import { BaseResponse } from "../authmodels/signinmodel.js";
 
-class SignoutManager {
+class StudentSignoutManager {
   async signout() {
-    const url = ApiConstants.SIGN_OUT;
-    const token = localStorage.getItem("adminToken");
+    const url = StudentApiConstants.SIGN_OUT;
+    const token = localStorage.getItem("studentToken");
     try {
       const response = await fetch(url, {
         method: "DELETE",
@@ -18,17 +18,17 @@ class SignoutManager {
       if (response.status === 401) {
         
         window.location.href = "/adboard/signin";
-        localStorage.removeItem("adminToken");
-        localStorage.removeItem("adminEmail");
-        localStorage.removeItem("adminName");
+        localStorage.removeItem("studentToken");
+        localStorage.removeItem("studentEmail");
+        localStorage.removeItem("studentName");
         return;
       }
 
       if (response.ok) {
         const responseBody = await response.json();
-        localStorage.removeItem("adminToken");
-        localStorage.removeItem("adminEmail");
-        localStorage.removeItem("adminName");
+        localStorage.removeItem("studentToken");
+        localStorage.removeItem("studentEmail");
+        localStorage.removeItem("studentName");
         return new BaseResponse(responseBody);
       } else {
         const errorBody = await response.text();
@@ -40,4 +40,4 @@ class SignoutManager {
   }
 }
 
-export default SignoutManager;
+export default StudentSignoutManager;
