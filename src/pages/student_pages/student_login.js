@@ -100,8 +100,8 @@ function StudentLogin() {
        if (userToken != null) {
          
            localStorage.setItem('studentToken', `${userToken}`);
-           localStorage.setItem('studentemail', email);
-           localStorage.setItem('studentname', name);
+           localStorage.setItem('studentEmail', email);
+           localStorage.setItem('studentName', name);
            navigate("/student/dashboard");
 
          } 
