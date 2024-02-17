@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import Toast from "../../components/toast/toast";
 import StudentHttpManager from "../../models/student/auth/http/signinhttp";
 import Spinner from "../../components/spinner/spinner";
+import Reset_mail from "../../components/resetpass/reset_mail";
 function StudentLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -126,6 +127,25 @@ function StudentLogin() {
   const handleForgotPassword = (e) => {
   //  /http://localhost:3000/api/v1/student/forgot-password
   };
+
+  const [isForgot, setIsForgot] = useState(false);
+  
+  const closeIsForgot = () => {
+    setIsForgot(false);
+  };
+  const openIsForgot = () => {
+    setIsForgot(true);
+  };
+  const handleForgotPasswordLinkSend=async()=>{
+
+      const response = await studenthttpManager.forgotpass(email);
+        if (response.success) {
+          navigate('/adboard/signin');
+        } else {
+          console.error("Invalid token", response);
+        }
+
+  }
   return (
     <div className="flex flex-col min-h-[100vh]">
       {toastMessages.map((toast, index) => (
@@ -183,7 +203,7 @@ function StudentLogin() {
         <div class="relative mb-4 ">
           <button
             //className="mb-4 h-[45px] md:h-[56px] bg-sa-maroon rounded-[20px] md:w-[102%] w-[245px] md:mr-3  shadow-md mx-5 text-white font-bold text-[26px]"
-            class="transition-opacity hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-clue-purchase peer m-0 block h-[45px] md:h-[56px]   md:mr-72  md:w-[101.5%] w-[245px]  rounded-[20px]   bg-clip-padding px-3 py-2 text-base  leading-tight text-white text-[24px] md:text-[28px]"
+            class="transition-opacity hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-clue-purchase peer m-0 block h-[45px] md:h-[56px]   md:mr-80 md:ml-2  md:w-[98%] w-[245px]  rounded-[20px]   bg-clip-padding px-3 py-2 text-base  leading-tight text-white text-[24px] md:text-[28px]"
             onClick={handleSignIn}
           >
             {showLoading ? <Spinner /> : 'Sign In'}
@@ -191,8 +211,8 @@ function StudentLogin() {
         </div>
         <div>
           <p className="text-[14px] font-bold mb-20 text-sa-blue md:text-[14px] md:ml-[47%] w-60 md:w-72 ml-[98px]  text-clue-yellow  cursor-pointer">
-            <a href="/account/reset-password" className="underline"
-            onClick={handleForgotPassword}
+            <a className="underline"
+            onClick={openIsForgot}
             >
               Forgot Password?
             </a>
@@ -212,6 +232,40 @@ function StudentLogin() {
           </div>
                      </div> */}
       </div>
+      {isForgot && (
+          <div
+            className=" fixed inset-0 flex items-center justify-center z-50"
+            onClick={closeIsForgot}
+          >
+            <div className=" bg-black opacity-50 absolute inset-0"></div>
+            {/* <div
+              className=" bg-white rounded-3xl md:w-auto w-80  p-8 px-12 relative z-10"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h2 className="text-black font-semibold md:w-auto w-60 text-left mb-4">
+                Confirm
+              </h2>
+              <p className="text-black text-filter-heading md:w-auto w-60 text-left">
+               A link will be sent to your email to reset your password.<br></br>
+               Are you sure you want to send?
+              </p>
+              <div className="flex justify-end mt-6">
+                <button
+                  onClick={closeIsForgot}
+                  className="text-filter-heading transition-opacity hover:opacity-70 mr-4 border-2 border-gray-400 rounded-[9px] border-filter-heading py-1 px-6"
+                >
+                  Cancel
+                </button>
+                <button className="bg-sa-maroon transition-opacity hover:opacity-70 text-white md:px-7 px-5 rounded-[9px] py-1 "
+                onClick={handleForgotPasswordLinkSend}>
+                
+                Send
+                </button>
+              </div>
+            </div> */}
+            <Reset_mail closePopup={closeIsForgot}/>
+          </div>
+        )}
       <div className="mt-10">
         <Footer />
       </div>
