@@ -8,7 +8,7 @@ const BASE_URL = "http://localhost:3000/api/v1/";
 const StudentApiConstants = {
   SIGN_IN: `${BASE_URL}student/sign-in`,
   SIGN_OUT: `${BASE_URL}student/sign-out`,
-  ADD_ADMIN: `${BASE_URL}admin/add-admin`,
+  FORGOT_PASS: `${BASE_URL}student/forgot-password`,
   CHANGE_USERNAME: `${BASE_URL}admin/change-username`,
   RESET_PASS_1: `${BASE_URL}admin/reset-password-step-1`,
   RESET_PASS_2: `${BASE_URL}admin/reset-password-step-2?email=`,
