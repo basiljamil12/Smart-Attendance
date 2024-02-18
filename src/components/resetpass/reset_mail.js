@@ -1,28 +1,33 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import '@fontsource/inter';
- // Import the Verify_Code component
+// Import the Verify_Code component
 import { useNavigate, useLocation } from "react-router-dom";
 import Toast from '../toast/toast';
 import StudentHttpManager from "../../models/student/auth/http/signinhttp";
 import WestIcon from "@mui/icons-material/West";
-
-function Reset_mail({closePopup }) {
-  const studenthttpManager = new StudentHttpManager();
+import ParentHttpManager from '../../models/parent/auth/http/signinhttp';
+import FacultyHttpManager from '../../models/faculty/auth/http/signinhttp';
+import Spinner from '../spinner/spinner';
+function Reset_mail({ studentState, parentState, facultyState, closePopup,updateToastMessages }) {
+    const studenthttpManager = new StudentHttpManager();
+    const parenthttpManager = new ParentHttpManager();
+    const facultyhttpManager = new FacultyHttpManager();
+    const [showLoading, setShowLoading] = useState(false);
 
     const navigate = useNavigate();
-    useEffect(() => {
-     
-        const studentToken = localStorage.getItem('studentToken');
-    
-        if (studentToken) {
-          // Use React Router's useHistory hook to navigate
-          navigate('/student/dashboard');
-        } 
-       
-       
-      }, );
+    // useEffect(() => {
+
+    //     const studentToken = localStorage.getItem('studentToken');
+
+    //     if (studentToken) {
+    //         // Use React Router's useHistory hook to navigate
+    //         navigate('/student/dashboard');
+    //     }
+
+
+    // },);
     const [email, setEmail] = useState('');
-    
+
     const location = useLocation();
     const handleEmailChange = (e) => {
         setEmail(e.target.value);
@@ -31,53 +36,82 @@ function Reset_mail({closePopup }) {
     const handleBackClick = () => {
         // Call closePopup function to close the popup
         closePopup();
-      };
-      const handleSendLink = async () => {
+    };
+    const handleSendLink = async () => {
         // Perform any email verification logic here
         // If the email is valid, proceed to the verification step
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
         if (!emailRegex.test(email)) {
             // Invalid email format, show an error message or take appropriate action
-            
-                setToastMessages([
-                    ...toastMessages,
-                    {
-                        type: "invalid",
-                        title: "Email",
-                        body: "The Email is incorrect",
-                    },
-                ]);
-            
+
+            setToastMessages([
+                ...toastMessages,
+                {
+                    type: "invalid",
+                    title: "Email",
+                    body: "The Email is incorrect",
+                },
+            ]);
+
             return; // Do not proceed to the verification page
         }
         try {
             // Call the reset1 method from ResetPass class
-        
-            const baseResponse = await studenthttpManager.forgotpass(email);
-            if(baseResponse.success){
+            setShowLoading(true);
+            let baseResponse;
+            if (studentState) {
+                baseResponse = await studenthttpManager.forgotpass(email);
+            }
+            else if (parentState) {
+                baseResponse = await parenthttpManager.forgotpass(email);
+            }
+            else if (facultyState) {
+                baseResponse = await facultyhttpManager.forgotpass(email);
+            }
+
+            if (baseResponse.success) {
+                const newToastMessage = {
+                    type: "success",
+                    title: "Success",
+                    body: baseResponse.message,
+                  };
+                  // Update the toast messages state by appending the new message
+                  updateToastMessages(prevMessages => [...prevMessages, newToastMessage]);
+                handleBackClick();
+            }
+            else{
                 setToastMessages([
                     ...toastMessages,
                     {
-                        type: "success",
-                        title: "Success",
+                        type: "invalid",
+                        title: "Error",
                         body: baseResponse.message,
                     },
                 ]);
-                handleBackClick();
             }
-        
-        } catch (error) {
-            // Handle error if the reset1 method fails
-            console.error(error);
+
+        } catch (baseResponse) {
+            setToastMessages([
+                ...toastMessages,
+                {
+                    type: "invalid",
+                    title: "Error",
+                    body: baseResponse.message,
+                },
+            ]);
+            
         }
+        finally {
+            setShowLoading(false); // Stop loading
+          }
     };
-  
-   
+
+
 
     return (
-        <div  onClick={(e) => e.stopPropagation()} 
-        className=" bg-white z-10 rounded-[30px]  text-black flex flex-col justify-between">
+        <div onClick={(e) => e.stopPropagation()}
+            className=" bg-white z-10 rounded-[30px]  text-black flex flex-col justify-between">
             {toastMessages.map((toast, index) => (
                 <Toast
                     key={index}
@@ -90,12 +124,12 @@ function Reset_mail({closePopup }) {
                     }}
                 />
             ))}
-        <div  className="flex z-50  justify-center items-center ">    
+            <div className="flex z-50  justify-center items-center ">
                 <div className="mx-2  md:w-[460px] w-[320px] md:h-[200px] h-[250px] md:mb-[14vh] md:mt-[5vh] mt-5 block bg-clue-black">
-                <p className="md:mr-[117px] md:text-[24px] text-[22px] mr-[250px] md:w-[320px] w-[280px] md:mt-0 mt-10 md:mb-5 mb-5 font-[700] leading-tight text-sa-black">
+                    <p className="md:mr-[117px] md:text-[24px] text-[22px] mr-[250px] md:w-[320px] w-[280px] md:mt-0 mt-10 md:mb-5 mb-5 font-[700] leading-tight text-sa-black">
                         <WestIcon className="text-clue-yellow mr-3 mb-1 cursor-pointer transition-opacity hover:opacity-70"
-                         onClick={handleBackClick} 
-                         />Forgot Password
+                            onClick={handleBackClick}
+                        />Forgot Password
                     </p>
 
                     <div>
@@ -112,21 +146,22 @@ function Reset_mail({closePopup }) {
                                 placeholder="Email"
                             />
                         </div>
-                    
+
                         <button
                             type="button"
                             className="mb-2 block md:mx-14 md:w-[370px] md:mt-9 mt-8 mx-10 md:h-[56px] h-[50px] w-[245px] bg-sa-maroon rounded-[10px]  text-center text-[19px] md:text-2xl font-[700] leading-normal text-white transition-opacity hover:opacity-85"
                             onClick={handleSendLink}
                         >
-                            Send Link
+            {showLoading ? <Spinner /> : 'Send Link'}
+                           
                         </button>
 
-                       
+
                     </div>
-                </div>          
+                </div>
+            </div>
+
         </div>
-        
-    </div>
     );
 }
 

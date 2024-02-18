@@ -38,7 +38,7 @@ class StudentHttpManager {
       }
     }
     async forgotpass(email) {
-    const token = localStorage.getItem("studentToken");
+    // const token = localStorage.getItem("studentToken");
       const url = StudentApiConstants.FORGOT_PASS;
       const params = {
         email: email,
@@ -49,7 +49,7 @@ class StudentHttpManager {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-              "Authorization": `Bearer ${token}`,        
+              // "Authorization": `Bearer ${token}`,        
           },
           body: JSON.stringify(params),
         });

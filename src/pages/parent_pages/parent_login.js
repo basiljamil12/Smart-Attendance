@@ -7,6 +7,7 @@ import Spinner from "../../components/spinner/spinner";
 import ParentHttpManager from "../../models/parent/auth/http/signinhttp";
 import Toast from "../../components/toast/toast";
 import { useNavigate } from "react-router-dom";
+import Reset_mail from "../../components/resetpass/reset_mail";
 
 function ParentLogin() {
   const parenthttpManager = new ParentHttpManager();
@@ -16,6 +17,8 @@ function ParentLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
   const [toastMessages, setToastMessages] = useState([]);
+  const [isForgot, setIsForgot] = useState(false);
+
   const navigate = useNavigate();
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -31,6 +34,13 @@ function ParentLogin() {
     // Regular expression for validating email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
+  };
+  
+  const closeIsForgot = () => {
+    setIsForgot(false);
+  };
+  const openIsForgot = () => {
+    setIsForgot(true);
   };
   const handleSignIn =async () => {
     try {
@@ -85,6 +95,7 @@ function ParentLogin() {
       setShowLoading(false); // Stop loading
     }
   };
+  
   const handleSignInResponse = (response) => {
     setShowLoading(false);
 
@@ -123,6 +134,9 @@ function ParentLogin() {
      },
    ]);
  };
+ const updateToastMessages = (newMessages) => {
+  setToastMessages(newMessages);
+};
   return (
     <div className="flex flex-col min-h-[100vh]">
     <div>
@@ -190,12 +204,23 @@ function ParentLogin() {
       </div>
       <div>
         <p className="text-[14px] font-bold mb-20 text-sa-blue md:text-[14px] md:ml-[47%] w-60 md:w-72 ml-[98px]  text-clue-yellow  cursor-pointer">
-          <a href="/account/reset-password" className="underline">
-            Forgot Password?
-          </a>
+        <a className="underline"
+            onClick={openIsForgot}
+            >
+              Forgot Password?
+            </a>
         </p>
       </div>
-
+      {isForgot && (
+          <div
+            className=" fixed inset-0 flex items-center justify-center z-50"
+            onClick={closeIsForgot}
+          >
+            <div className=" bg-black opacity-50 absolute inset-0"></div>
+           
+            <Reset_mail parentState={true} closePopup={closeIsForgot} updateToastMessages={updateToastMessages}/>
+          </div>
+        )}
       {/* <div className="w-72 shadow-xl h-96 rounded-3xl mx-10 md:my-0 my-10">
         <div>
           <img src={Teacher} />

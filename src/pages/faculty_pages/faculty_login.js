@@ -7,7 +7,7 @@ import Spinner from "../../components/spinner/spinner";
 import FacultyHttpManager from "../../models/faculty/auth/http/signinhttp";
 import Toast from "../../components/toast/toast";
 import { useNavigate } from "react-router-dom";
-
+import Reset_mail from "../../components/resetpass/reset_mail";
 function FacultyLogin() {
   const navigate = useNavigate();
 
@@ -17,6 +17,8 @@ function FacultyLogin() {
   const [showLoading, setShowLoading] = useState(false);
   const facultyhttpManager = new FacultyHttpManager();
   const [toastMessages, setToastMessages] = useState([]);
+  const [isForgot, setIsForgot] = useState(false);
+
   const isValidEmail = (email) => {
     // Regular expression for validating email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -31,6 +33,14 @@ function FacultyLogin() {
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
+  };
+
+   
+  const closeIsForgot = () => {
+    setIsForgot(false);
+  };
+  const openIsForgot = () => {
+    setIsForgot(true);
   };
   const handleSignIn =async () => {
     try {
@@ -123,6 +133,9 @@ function FacultyLogin() {
      },
    ]);
  };
+ const updateToastMessages = (newMessages) => {
+  setToastMessages(newMessages);
+};
   return (
     <div className="flex flex-col min-h-[100vh]">
       <div>
@@ -190,12 +203,23 @@ function FacultyLogin() {
         </div>
         <div>
           <p className="text-[14px] font-bold mb-20 text-sa-blue md:text-[14px] md:ml-[47%] w-60 md:w-72 ml-[98px]  text-clue-yellow  cursor-pointer">
-            <a href="/account/reset-password" className="underline">
+          <a className="underline"
+            onClick={openIsForgot}
+            >
               Forgot Password?
             </a>
           </p>
         </div>
-
+        {isForgot && (
+          <div
+            className=" fixed inset-0 flex items-center justify-center z-50"
+            onClick={closeIsForgot}
+          >
+            <div className=" bg-black opacity-50 absolute inset-0"></div>
+           
+            <Reset_mail facultyState={true} closePopup={closeIsForgot} updateToastMessages={updateToastMessages}/>
+          </div>
+        )}
         {/* <div className="w-72 shadow-xl h-96 rounded-3xl mx-10 md:my-0 my-10">
           <div>
             <img src={Teacher} />

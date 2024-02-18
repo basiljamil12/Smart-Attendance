@@ -8,7 +8,7 @@ const BASE_URL = "http://localhost:3000/api/v1/";
 const parentApiConstants = {
   SIGN_IN: `${BASE_URL}parent/sign-in`,
   SIGN_OUT: `${BASE_URL}parent/sign-out`,
-  ADD_ADMIN: `${BASE_URL}admin/add-admin`,
+  FORGOT_PASS: `${BASE_URL}parent/forgot-password`,
   CHANGE_USERNAME: `${BASE_URL}admin/change-username`,
   RESET_PASS_1: `${BASE_URL}admin/reset-password-step-1`,
   RESET_PASS_2: `${BASE_URL}admin/reset-password-step-2?email=`,

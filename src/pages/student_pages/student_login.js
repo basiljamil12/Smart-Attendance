@@ -15,7 +15,7 @@ function StudentLogin() {
   const [showLoading, setShowLoading] = useState(false);
   const [toastMessages, setToastMessages] = useState([]);
   const studenthttpManager = new StudentHttpManager();
-
+  // localStorage.setItem('studentToken',"");
   const isValidEmail = (email) => {
     // Regular expression for validating email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -146,6 +146,10 @@ function StudentLogin() {
         }
 
   }
+  const updateToastMessages = (newMessages) => {
+    setToastMessages(newMessages);
+  };
+
   return (
     <div className="flex flex-col min-h-[100vh]">
       {toastMessages.map((toast, index) => (
@@ -217,55 +221,21 @@ function StudentLogin() {
               Forgot Password?
             </a>
           </p>
-        </div>
-
-        {/* <div className="w-72 shadow-xl h-96 rounded-3xl mx-10 md:my-0 my-10">
-          <div>
-            <img src={Teacher} />
-          </div>
-          <div className="pt-3">
-            <button className="bg-sa-maroon rounded-xl w-48 h-12 shadow-md mx-5">
-              <span className="text-white font-bold text-xl">
-                Go To Faculty
-              </span>
-            </button>
-          </div>
-                     </div> */}
-      </div>
-      {isForgot && (
+          {isForgot && (
           <div
             className=" fixed inset-0 flex items-center justify-center z-50"
             onClick={closeIsForgot}
           >
             <div className=" bg-black opacity-50 absolute inset-0"></div>
-            {/* <div
-              className=" bg-white rounded-3xl md:w-auto w-80  p-8 px-12 relative z-10"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <h2 className="text-black font-semibold md:w-auto w-60 text-left mb-4">
-                Confirm
-              </h2>
-              <p className="text-black text-filter-heading md:w-auto w-60 text-left">
-               A link will be sent to your email to reset your password.<br></br>
-               Are you sure you want to send?
-              </p>
-              <div className="flex justify-end mt-6">
-                <button
-                  onClick={closeIsForgot}
-                  className="text-filter-heading transition-opacity hover:opacity-70 mr-4 border-2 border-gray-400 rounded-[9px] border-filter-heading py-1 px-6"
-                >
-                  Cancel
-                </button>
-                <button className="bg-sa-maroon transition-opacity hover:opacity-70 text-white md:px-7 px-5 rounded-[9px] py-1 "
-                onClick={handleForgotPasswordLinkSend}>
-                
-                Send
-                </button>
-              </div>
-            </div> */}
-            <Reset_mail closePopup={closeIsForgot}/>
+           
+            <Reset_mail studentState={true} closePopup={closeIsForgot}  updateToastMessages={updateToastMessages}/>
           </div>
         )}
+        </div>
+
+                     
+      </div>
+     
       <div className="mt-10">
         <Footer />
       </div>
