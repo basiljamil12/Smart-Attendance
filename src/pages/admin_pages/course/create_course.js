@@ -2,8 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Sidebar from "../../../components/sidebar/sidebar";
 import Toast from "../../../components/toast/toast";
-
+import CourseCreateManager from "../../../models/admin/course/http/create_course";
+import Spinner from "../../../components/spinner/spinner";
 function CreateCourse() {
+  const courseCreateManager= new CourseCreateManager();
   const navigate = useNavigate();
   const [courseName, setCourseName] = useState("");
   const [courseCode, setcourseCode] = useState("");
@@ -25,8 +27,9 @@ function CreateCourse() {
     
     setCredHours(e.target.value);
   };
+  const [showLoading, setShowLoading] = useState(false);
 
-  const handleCreate = () => {
+  const handleCreate = async() => {
     if (!courseName.trim()) {
       // If subject is empty or contains only whitespace
       setToastMessages([
@@ -86,7 +89,45 @@ function CreateCourse() {
       // If subject is empty or contains only whitespace
       return; // Prevent form submission
     }
+    try{
+      setShowLoading(true);
+    const response = await courseCreateManager.create(courseName, courseCode,credhours);
+    
+      if(response.success){
+        setToastMessages([
+          ...toastMessages,
+          {
+            type: "success",
+            title: "Success",
+            body: response.message,
+          },
+        ]);
     navigate("/adboard/course");
+
+    }
+      else{
+        setToastMessages([
+          ...toastMessages,
+          {
+            type: "invalid",
+            title: "Error",
+            body: response.message,
+          },
+        ]);
+      }}
+      catch (response) {
+        setToastMessages([
+          ...toastMessages,
+          {
+            type: "invalid",
+            title: "Error",
+            body: response.message,
+          },
+        ]);
+      }
+      finally {
+        setShowLoading(false); // Stop loading
+      }
   };
 
   return (
@@ -154,7 +195,8 @@ function CreateCourse() {
             class=" transition-opacity hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px]  md:w-[250px] w-[220px]  rounded-[20px]   bg-clip-padding px-3 md:py-2   leading-tight text-white text-[20px] md:text-[24px]"
             onClick={handleCreate}
           >
-            Create
+       {showLoading ? <Spinner /> : 'Create'}
+            
           </button>
         </div>
       </div>

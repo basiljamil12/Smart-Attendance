@@ -7,6 +7,8 @@ const ApiConstants = {
   GET_ALL_PARENT: `${BASE_URL}parent/alldetails`,
   GET_ALL_STUDENT: `${BASE_URL}student/alldetails`,
   GET_ALL_COURSE: `${BASE_URL}course/alldetails`,
+  CREATE_COURSE: `${BASE_URL}course/create`,
+  CREATE_FACULTY: `${BASE_URL}faculty/create`,
 };
 
 export default ApiConstants;

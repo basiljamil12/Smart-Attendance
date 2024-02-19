@@ -1,7 +1,8 @@
 export class FacultyData {
-    constructor({ name, email, contactno, isStudentAdvisor }) {
+    constructor({ name, email, contactno,password, isStudentAdvisor }) {
       this.name = name;
       this.email = email;
+      this.password = password;
       this.contactno = contactno;
       this.isStudentAdvisor = isStudentAdvisor;
     
@@ -11,6 +12,7 @@ export class FacultyData {
       return new FacultyData({
         name: json.name,
         email: json.email,
+        password: json.password,
         contactno: json.contactno,
         isStudentAdvisor: json.isStudentAdvisor,
       });
@@ -20,6 +22,7 @@ export class FacultyData {
       return {
         name: this.name,
         email: this.email,
+        password: this.password,
         contactno: this.contactno,
         isStudentAdvisor: this.isStudentAdvisor,
       };

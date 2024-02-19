@@ -22,6 +22,7 @@ function ParentAdboard() {
         const baseResponse = value.success;
         if (baseResponse == true) {
           setParentData(value.data);
+          console.log(baseResponse);
           setShowLoading(false);
         } else {
           setToastMessages([
@@ -49,7 +50,17 @@ function ParentAdboard() {
   const goToAddParent = () => {
     navigate("/adboard/parent/add");
   };
+  const [isForget, setIsForget] = useState(false);
 
+  const closeIsForget = () => {
+    setIsForget(false);
+  };
+  const openIsForget = () => {
+    setIsForget(true);
+  };
+  const handleDelete = () => {
+    
+  };
   return (
     <div className="flex">
       {toastMessages.map((toast, index) => (
@@ -87,7 +98,7 @@ function ParentAdboard() {
                 Add Parent
               </span>
             </div>
-            <div className="overflow-x-auto mt-10 mx-10 md:ml-[6%] md:w-[90%] md:shadow-xl rounded-2xl">
+            <div className="mb-20 overflow-x-auto mt-10 mx-10 md:ml-[6%] md:w-[90%] md:shadow-xl rounded-2xl">
               <table className="table-fixed min-w-full bg-sa-pink w-[800px] md:w-[50vw] rounded-2xl">
                 <thead>
                   <tr className="border-b border-sa-grey">
@@ -110,7 +121,7 @@ function ParentAdboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {parentData.map((student, index) => (
+                  {parentData.map((parent, index) => (
                     <tr key={index} className="border-b border-sa-grey">
                       <td className="p-0 py-5  border-r border-sa-grey w-[100px]">
                         {index + 1}
@@ -120,7 +131,7 @@ function ParentAdboard() {
                           className="block w-full h-full overflow-hidden overflow-ellipsis"
                           style={{ wordWrap: "break-word" }}
                         >
-                          {student.name}
+                          {parent.name}
                         </span>
                       </td>
                       <td className="p-0 py-5  border-r border-sa-grey">
@@ -128,7 +139,7 @@ function ParentAdboard() {
                           className="block w-full h-full overflow-hidden overflow-ellipsis"
                           style={{ wordWrap: "break-word" }}
                         >
-                          {student.email}
+                          {parent.email}
                         </span>
                       </td>
                       <td className="p-0 py-5  border-r border-sa-grey">
@@ -136,17 +147,19 @@ function ParentAdboard() {
                           className="block w-full h-full overflow-hidden overflow-ellipsis"
                           style={{ wordWrap: "break-word" }}
                         >
-                          {student.contactno}
+                          {parent.contactno}
                         </span>
                       </td>
-                      <td className="p-0 py-5  border-r border-sa-grey">
-                        <span
-                          className="block w-full h-full overflow-hidden overflow-ellipsis"
-                          style={{ wordWrap: "break-word" }}
-                        >
-                          {student.studentID.name}
-                        </span>
-                      </td>
+                      <td className="p-0 py-5 border-r border-sa-grey">
+  {parent.studentID && (
+    <span
+      className="block w-full h-full overflow-hidden overflow-ellipsis"
+      style={{ wordWrap: "break-word" }}
+    >
+      {parent.studentID.name}
+    </span>
+  )}
+</td>
                       <td className="p-2 py-5  border-sa-grey">
                         <div class="lg:inline-flex rounded-lg border  bg-sa-pink p-1">
                           <button class="bg-sa-maroon md:mr-2 text-white inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm  transition-opacity hover:opacity-90 hover:text-gray-300  focus:relative">
@@ -167,7 +180,8 @@ function ParentAdboard() {
                             Edit
                           </button>
 
-                          <button class="inline-flex lg:mt-0 mt-2 items-center gap-2 rounded-md bg-[#d9534f] px-4 py-2 text-sm text-white transition-opacity hover:opacity-90  hover:text-gray-300 shadow-sm focus:relative">
+                          <button class="inline-flex lg:mt-0 mt-2 items-center gap-2 rounded-md bg-[#d9534f] px-4 py-2 text-sm text-white transition-opacity hover:opacity-90  hover:text-gray-300 shadow-sm focus:relative"
+                          onClick={openIsForget}>
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"
@@ -195,13 +209,45 @@ function ParentAdboard() {
                       </td>
                     </tr>
                   ))}
+                    {isForget && (
+          <div
+            className=" fixed inset-0 flex items-center justify-center z-50"
+            onClick={closeIsForget}
+          >
+            <div className=" bg-black opacity-50 absolute inset-0"></div>
+            <div
+              className=" bg-white rounded-3xl md:w-auto w-80  p-8 px-12 relative z-10"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h2 className="text-black font-semibold md:w-auto w-60 text-left mb-4">
+                Confirm
+              </h2>
+              <p className="text-black text-filter-heading md:w-auto w-60 text-left">
+                Are you sure you want to sign out of your account?
+              </p>
+              <div className="flex justify-end mt-6">
+                <button
+                  onClick={closeIsForget}
+                  className="text-filter-heading transition-opacity hover:opacity-70 mr-4 border-2 border-gray-400 rounded-[9px] border-filter-heading py-1 px-6"
+                >
+                  Cancel
+                </button>
+                <button className="bg-sa-maroon transition-opacity hover:opacity-70 text-white md:px-7 px-5 rounded-[9px] py-1 "
+                onClick={handleDelete}>
+                
+                Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
                   <tr className="border-b-0">
-                    <td className="md:py-32 py-16 border-r border-sa-grey w-[100px]"></td>
-                    <td className="md:py-32 py-16 border-r border-sa-grey"></td>
-                    <td className="md:py-32 py-16 border-r border-sa-grey"></td>
-                    <td className="md:py-32 py-16 border-r border-sa-grey"></td>
-                    <td className="md:py-32 py-16 border-r border-sa-grey"></td>
-                    <td className="md:py-32 py-16  border-sa-grey"></td>
+                    <td className="md:py-28 py-16 border-r border-sa-grey w-[100px]"></td>
+                    <td className="md:py-28 py-16 border-r border-sa-grey"></td>
+                    <td className="md:py-28 py-16 border-r border-sa-grey"></td>
+                    <td className="md:py-28 py-16 border-r border-sa-grey"></td>
+                    <td className="md:py-28 py-16 border-r border-sa-grey"></td>
+                    <td className="md:py-28 py-16  border-sa-grey"></td>
                   </tr>
                 </tbody>
               </table>

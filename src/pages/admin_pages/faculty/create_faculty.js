@@ -6,9 +6,10 @@ import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined
 //import Select from "react-select";
 import Toast from "../../../components/toast/toast";
 import Sidebar from "../../../components/sidebar/sidebar";
-
+import Spinner from "../../../components/spinner/spinner";
+import CreateFacultyManager from "../../../models/admin/faculty/http/create_faculty";
 function CreateFaculty() {
-
+const createFacultyManager = new CreateFacultyManager();
   const navigate = useNavigate();
 
   const [toastMessages, setToastMessages] = useState([]);
@@ -45,7 +46,9 @@ function CreateFaculty() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
-  const handleCreate = () => {
+  const [showLoading, setShowLoading] = useState(false);
+
+  const handleCreate =async () => {
     if (!facultyName.trim()) {
       setToastMessages([
         ...toastMessages,
@@ -90,6 +93,17 @@ function CreateFaculty() {
       ]);
       return;
     }
+    if (!contactno) {
+      setToastMessages([
+        ...toastMessages,
+        {
+          type: "invalid",
+          title: "Error",
+          body: "Contact No. must be selected",
+        },
+      ]);
+      return;
+    }
     if (!isAdvisor) {
       setToastMessages([
         ...toastMessages,
@@ -101,9 +115,47 @@ function CreateFaculty() {
       ]);
       return;
     }
-
-    // Perform create action, navigate, etc.
+    try{
+      setShowLoading(true);
+    const response = await createFacultyManager.create(facultyName, email,password,contactno,isAdvisor);
+    
+      if(response.success){
+        setToastMessages([
+          ...toastMessages,
+          {
+            type: "success",
+            title: "Success",
+            body: response.message,
+          },
+        ]);
     navigate("/adboard/faculty");
+
+    }
+      else{
+        setToastMessages([
+          ...toastMessages,
+          {
+            type: "invalid",
+            title: "Error",
+            body: response.message,
+          },
+        ]);
+      }}
+      catch (response) {
+        setToastMessages([
+          ...toastMessages,
+          {
+            type: "invalid",
+            title: "Error",
+            body: response.message,
+          },
+        ]);
+      }
+      finally {
+        setShowLoading(false); // Stop loading
+      }
+    // Perform create action, navigate, etc.
+   
   };
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -226,7 +278,7 @@ function CreateFaculty() {
             class=" transition-opacity hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px]  md:w-[250px] w-[220px]  rounded-[20px]   bg-clip-padding px-3 md:py-2   leading-tight text-white text-[20px] md:text-[24px]"
             onClick={handleCreate}
           >
-            Create
+       {showLoading ? <Spinner /> : 'Create'}
           </button>
         </div>
       </div>
