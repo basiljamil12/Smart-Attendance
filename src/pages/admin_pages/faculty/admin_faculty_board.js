@@ -3,18 +3,27 @@ import Sidebar from "../../../components/sidebar/sidebar";
 import { useNavigate } from "react-router";
 import { Button } from "primereact/button";
 import FacultyManager from "../../../models/admin/faculty/http/get_all_faculty";
+import DeleteFacultyManager from "../../../models/admin/faculty/http/delete_faculty";
 import Toast from "../../../components/toast/toast";
 import Spinner from "../../../components/spinner/spinner";
 
 function FacultyAdboard() {
   const facultyManager = new FacultyManager();
+  const deleteManager = new DeleteFacultyManager();
+
   const [facultyData, setFacultyData] = useState([]);
   const [showLoading, setShowLoading] = useState(false);
+  const [deleteShowLoading, setDeleteShowLoading] = useState(false);
+  const [deleteIdx, setDeleteIdx] = useState(0);
   const [toastMessages, setToastMessages] = useState([]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
+    getAllFaculty();
+  }, []);
+
+  const getAllFaculty = () => {
     setShowLoading(true);
     facultyManager.getAll().then((value) => {
       if (value == null) {
@@ -44,22 +53,70 @@ function FacultyAdboard() {
         ]);
       }
     });
-  }, []);
+  };
 
   const goToAddFaculty = () => {
     navigate("/adboard/faculty/add");
   };
-  const [isForget, setIsForget] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
 
-  const closeIsForget = () => {
-    setIsForget(false);
+  const closeIsDelete = () => {
+    setIsDelete(false);
   };
-  const openIsForget = () => {
-    setIsForget(true);
+  const openIsDelete = (id) => {
+    setDeleteIdx(id);
+    setIsDelete(true);
   };
+
   const handleDelete = () => {
-    
+    setDeleteShowLoading(true);
+    const id = facultyData[deleteIdx]._id;
+    deleteManager.delete(id).then((value) => {
+      if (value == null) {
+      } else if (!value.error) {
+        const baseResponse = value.success;
+        if (baseResponse == true) {
+          getAllFaculty();
+          closeIsDelete();
+          setToastMessages([
+            ...toastMessages,
+            {
+              type: "success",
+              title: "Faculty Deleted",
+              body: value.message,
+            },
+          ]);
+          setDeleteShowLoading(false);
+        } else {
+          setDeleteShowLoading(false);
+          setToastMessages([
+            ...toastMessages,
+            {
+              type: "invalid",
+              title: "Error",
+              body: value.message,
+            },
+          ]);
+        }
+      } else {
+        setDeleteShowLoading(false);
+        setToastMessages([
+          ...toastMessages,
+          {
+            type: "error",
+            title: "Error",
+            body: value.error,
+          },
+        ]);
+      }
+    });
   };
+
+  const handleNavigate = (idx) => {
+    const id = facultyData[idx]._id;
+    navigate("/adboard/faculty/edit?id=" + id);
+  };
+
   return (
     <div className="flex">
       {toastMessages.map((toast, index) => (
@@ -153,12 +210,15 @@ function FacultyAdboard() {
                           className="block w-full h-full overflow-hidden overflow-ellipsis"
                           style={{ wordWrap: "break-word" }}
                         >
-                          {faculty.isStudentAdvisor}
+                          {faculty.isStudentAdvisor == "true" ? "Yes" : "No"}
                         </span>
                       </td>
                       <td className="p-2 py-5  border-sa-grey">
                         <div class="lg:inline-flex rounded-lg border  bg-sa-pink p-1">
-                          <button class="bg-sa-maroon md:mr-2 text-white inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm  transition-opacity hover:opacity-90 hover:text-gray-300  focus:relative">
+                          <button
+                            class="bg-sa-maroon md:mr-2 text-white inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm  transition-opacity hover:opacity-90 hover:text-gray-300  focus:relative"
+                            onClick={() => handleNavigate(index)}
+                          >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"
@@ -176,8 +236,10 @@ function FacultyAdboard() {
                             Edit
                           </button>
 
-                          <button class="inline-flex lg:mt-0 mt-2 items-center gap-2 rounded-md bg-[#d9534f] px-4 py-2 text-sm text-white transition-opacity hover:opacity-90  hover:text-gray-300 shadow-sm focus:relative"
-                          onClick={openIsForget}>
+                          <button
+                            class="inline-flex lg:mt-0 mt-2 items-center gap-2 rounded-md bg-[#d9534f] px-4 py-2 text-sm text-white transition-opacity hover:opacity-90  hover:text-gray-300 shadow-sm focus:relative"
+                            onClick={() => openIsDelete(index)}
+                          >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"
@@ -205,38 +267,6 @@ function FacultyAdboard() {
                       </td>
                     </tr>
                   ))}
-                   {isForget && (
-          <div
-            className=" fixed inset-0 flex items-center justify-center z-50"
-            onClick={closeIsForget}
-          >
-            <div className=" bg-black opacity-50 absolute inset-0"></div>
-            <div
-              className=" bg-white rounded-3xl md:w-auto w-80  p-8 px-12 relative z-10"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <h2 className="text-black font-semibold md:w-auto w-60 text-left mb-4">
-                Confirm
-              </h2>
-              <p className="text-black text-filter-heading md:w-auto w-60 text-left">
-                Are you sure you want to sign out of your account?
-              </p>
-              <div className="flex justify-end mt-6">
-                <button
-                  onClick={closeIsForget}
-                  className="text-filter-heading transition-opacity hover:opacity-70 mr-4 border-2 border-gray-400 rounded-[9px] border-filter-heading py-1 px-6"
-                >
-                  Cancel
-                </button>
-                <button className="bg-sa-maroon transition-opacity hover:opacity-70 text-white md:px-7 px-5 rounded-[9px] py-1 "
-                onClick={handleDelete}>
-                
-                Delete
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
                   <tr className="border-b-0 ">
                     <td className="md:py-28 py-16 border-r border-sa-grey w-[100px]"></td>
                     <td className="md:py-28 py-16 border-r border-sa-grey"></td>
@@ -247,6 +277,39 @@ function FacultyAdboard() {
                   </tr>
                 </tbody>
               </table>
+            </div>
+          </div>
+        </div>
+      )}
+      {isDelete && (
+        <div
+          className=" fixed inset-0 flex items-center justify-center z-50"
+          onClick={closeIsDelete}
+        >
+          <div className=" bg-black opacity-50 absolute inset-0"></div>
+          <div
+            className=" bg-white rounded-3xl md:w-auto w-80  p-8 px-12 relative z-10"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 className="text-black font-semibold md:w-auto w-60 text-left mb-4">
+              Confirm
+            </h2>
+            <p className="text-black text-filter-heading md:w-auto w-60 text-left">
+              Are you sure you want to delete this faculty?
+            </p>
+            <div className="flex justify-end mt-6">
+              <button
+                onClick={closeIsDelete}
+                className="text-filter-heading transition-opacity hover:opacity-70 mr-4 border-2 border-gray-400 rounded-[9px] border-filter-heading py-1 px-6"
+              >
+                Cancel
+              </button>
+              <button
+                className="bg-sa-maroon transition-opacity hover:opacity-70 text-white md:px-7 px-5 rounded-[9px] py-1 "
+                onClick={handleDelete}
+              >
+                {deleteShowLoading ? <Spinner /> : <span>Delete</span>}
+              </button>
             </div>
           </div>
         </div>

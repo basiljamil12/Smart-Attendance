@@ -1,5 +1,6 @@
 export class CourseData {
-    constructor({ courseCode, courseName, courseCredHrs, studentsEnrolled, courseTeacher }) {
+    constructor({ _id, courseCode, courseName, courseCredHrs, studentsEnrolled, courseTeacher }) {
+      this._id = _id;
       this.courseCode = courseCode;
       this.courseName = courseName;
       this.courseCredHrs = courseCredHrs;
@@ -9,6 +10,7 @@ export class CourseData {
   
     static fromJson(json) {
       return new CourseData({
+        _id: json._id,
         courseCode: json.courseCode,
         courseName: json.courseName,
         courseCredHrs: json.courseCredHrs,
@@ -19,6 +21,7 @@ export class CourseData {
   
     toJson() {
       return {
+        _id: this._id,
         courseCode: this.courseCode,
         courseName: this.courseName,
         courseCredHrs: this.courseCredHrs,
