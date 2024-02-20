@@ -9,6 +9,7 @@ const StudentApiConstants = {
   SIGN_IN: `${BASE_URL}student/sign-in`,
   SIGN_OUT: `${BASE_URL}student/sign-out`,
   FORGOT_PASS: `${BASE_URL}student/forgot-password`,
+  VALIDATE_TOKEN:`${BASE_URL}student/validate-reset-pass-token`,
   CHANGE_USERNAME: `${BASE_URL}admin/change-username`,
   RESET_PASS_1: `${BASE_URL}admin/reset-password-step-1`,
   RESET_PASS_2: `${BASE_URL}admin/reset-password-step-2?email=`,
