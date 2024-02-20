@@ -1,21 +1,79 @@
-import StudentNavbar from "../../components/navbars/student_navbar";
+import StudentNavbar from "../components/navbars/student_navbar";
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation,useParams } from "react-router-dom";
 import { FileUpload } from "primereact/fileupload";
-import Toast from "../../components/toast/toast";
+import Toast from "../components/toast/toast";
 
-function StudentResetPassword() {
+function ResetPassword() {
   const location = useLocation();
+  const urlParams = new URLSearchParams(window.location.search);
   const searchParams = new URLSearchParams(location.search);
-  const token = searchParams.get("token");
-  console.log(token);
+  const studentToken = searchParams.get("studentToken");
+  const student= searchParams.get("student");
+  const parentToken = searchParams.get("parentToken");
+  const parent = searchParams.get("parent");
+  const facultyToken = searchParams.get("facultyToken");
+  const faculty = searchParams.get("faculty");
+  // const  pathname  = useLocation();
+  const pathname = window.location.pathname;
+
   const navigate = useNavigate();
   useEffect(() => {
-    if (!token) {
+
+   
+  
+    if (pathname.includes('/student/') && !studentToken) {
       navigate("/student/login");
     }
-  }, [token, navigate]);
 
+  else if  (pathname.includes('/parent/') && !parentToken) {
+    navigate("/parent/login");
+  }
+  
+  else if  (pathname.includes('/faculty/') && !facultyToken) {
+    navigate("/faculty/login");
+  }
+  }, [ navigate]);
+  // const location = useLocation();
+  // const [studentToken, setStudentToken] = useState(null);
+  // const [parentToken, setParentToken] = useState(null);
+  // const [facultyToken, setFacultyToken] = useState(null);
+
+  // // Parse URL parameters
+  // const searchParams = new URLSearchParams(location.search);
+  // const studentTokenParam = searchParams.get("studentToken");
+  // const parentTokenParam = searchParams.get("parentToken");
+  // const facultyTokenParam = searchParams.get("facultyToken");
+
+  // useEffect(() => {
+  //   if (studentTokenParam) {
+  //     setStudentToken(studentTokenParam);
+  //   }
+  //   if (parentTokenParam) {
+  //     setParentToken(parentTokenParam);
+  //   }
+  //   if (facultyTokenParam) {
+  //     setFacultyToken(facultyTokenParam);
+  //   }
+  // }, [studentTokenParam, parentTokenParam, facultyTokenParam]);
+
+  // useEffect(() => {
+  //   if (!studentToken && !parentToken && !facultyToken) {
+  //     // Redirect to the appropriate login page based on URL parameters
+  //     if (location.pathname === "/parent/reset-password") {
+  //       navigate("/parent/login");
+  //       return ;
+  //     } else if (location.pathname === "/student/reset-password") {
+  //       // If it's a student reset password link and no student token, redirect to student login
+  //       navigate("/student/login");
+  //       return ;
+  //     } else if (location.pathname === "/faculty/reset-password") {
+  //       // If it's a faculty reset password link and no faculty token, redirect to faculty login
+  //       navigate("/faculty/login");
+  //       return ;
+  //     }
+  //   }
+  // }, [studentToken, parentToken, facultyToken, location]);
 //http://localhost:3000/api/v1/student/validate-reset-pass-token
 
   const [startDate1, setStartDate] = useState();
@@ -124,4 +182,4 @@ function StudentResetPassword() {
   );
 }
 
-export default StudentResetPassword;
+export default ResetPassword;
