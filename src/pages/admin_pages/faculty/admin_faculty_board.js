@@ -112,6 +112,11 @@ function FacultyAdboard() {
     });
   };
 
+  const handleNavigate = (idx) => {
+    const id = facultyData[idx]._id;
+    navigate("/adboard/faculty/edit?id=" + id);
+  };
+
   return (
     <div className="flex">
       {toastMessages.map((toast, index) => (
@@ -205,12 +210,15 @@ function FacultyAdboard() {
                           className="block w-full h-full overflow-hidden overflow-ellipsis"
                           style={{ wordWrap: "break-word" }}
                         >
-                          {faculty.isStudentAdvisor ? "Yes" : "No"}
+                          {faculty.isStudentAdvisor == "true" ? "Yes" : "No"}
                         </span>
                       </td>
                       <td className="p-2 py-5  border-sa-grey">
                         <div class="lg:inline-flex rounded-lg border  bg-sa-pink p-1">
-                          <button class="bg-sa-maroon md:mr-2 text-white inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm  transition-opacity hover:opacity-90 hover:text-gray-300  focus:relative">
+                          <button
+                            class="bg-sa-maroon md:mr-2 text-white inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm  transition-opacity hover:opacity-90 hover:text-gray-300  focus:relative"
+                            onClick={() => handleNavigate(index)}
+                          >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"

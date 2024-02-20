@@ -23,7 +23,7 @@ import AdminDashboard from "../pages/admin_pages/admin_dashboard";
 import CreateParent from "../pages/admin_pages/parent/create_parent";
 import FacultyAdboard from "../pages/admin_pages/faculty/admin_faculty_board";
 import CreateFaculty from "../pages/admin_pages/faculty/create_faculty";
-import EditFaculty from "../pages/admin_pages/faculty/editfaculty";
+import EditFaculty from "../pages/admin_pages/faculty/edit_faculty";
 import Sidebar from "../components/sidebar/sidebar";
 import StudentAttendanceDetails from "../pages/student_pages/attendance_details";
 import RegisterCourse from "../pages/student_pages/register_course";

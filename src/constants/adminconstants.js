@@ -13,6 +13,8 @@ const ApiConstants = {
   DELETE_PARENT: `${BASE_URL}parent/delete?_id=`,
   DELETE_STUDENT: `${BASE_URL}student/delete?_id=`,
   DELETE_COURSE: `${BASE_URL}course/delete?_id=`,
+  EDIT_FACULTY: `${BASE_URL}faculty/edit/details?_id=`,
+  GET_FACULTY: `${BASE_URL}faculty/detailsbyid?_id=`,
 };
 
 export default ApiConstants;
