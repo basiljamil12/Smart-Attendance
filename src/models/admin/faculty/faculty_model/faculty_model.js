@@ -1,5 +1,6 @@
 export class FacultyData {
-    constructor({ name, email, contactno,password, isStudentAdvisor }) {
+    constructor({ _id, name, email, contactno,password, isStudentAdvisor }) {
+      this._id = _id;
       this.name = name;
       this.email = email;
       this.password = password;
@@ -10,6 +11,7 @@ export class FacultyData {
   
     static fromJson(json) {
       return new FacultyData({
+        id: json._id,
         name: json.name,
         email: json.email,
         password: json.password,
@@ -20,6 +22,7 @@ export class FacultyData {
   
     toJson() {
       return {
+        id: this._id,
         name: this.name,
         email: this.email,
         password: this.password,
