@@ -17,6 +17,7 @@ const ApiConstants = {
   DELETE_COURSE: `${BASE_URL}course/delete?_id=`,
   EDIT_FACULTY: `${BASE_URL}faculty/edit/details?_id=`,
   GET_FACULTY: `${BASE_URL}faculty/detailsbyid?_id=`,
+  EDIT_FACULTY_PASSWORD: `${BASE_URL}faculty/updatebyid/password?_id=`,
 };
 
 export default ApiConstants;
