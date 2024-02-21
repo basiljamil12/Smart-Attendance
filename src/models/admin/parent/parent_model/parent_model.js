@@ -40,7 +40,6 @@ export class StudentData {
       name: json.name,
       email: json.email,
       contactno: json.contactno,
-      studentID: json.studentID,
     });
   }
 

@@ -6,6 +6,8 @@ import CourseManager from "../../../models/admin/course/http/get_all_course";
 import Toast from "../../../components/toast/toast";
 import Spinner from "../../../components/spinner/spinner";
 import DeleteCourseManager from "../../../models/admin/course/http/delete_course";
+import { useLocation } from 'react-router-dom';
+
 function CourseAdboard() {
   const courseManager = new CourseManager();
   const deleteManager = new DeleteCourseManager();
@@ -13,8 +15,10 @@ function CourseAdboard() {
   const [courseData, setCourseData] = useState([]);
   const [showLoading, setShowLoading] = useState(false);
   const [deleteShowLoading, setDeleteShowLoading] = useState(false);
-  const [deleteIdx, setDeleteIdx] = useState(0);
-  const [toastMessages, setToastMessages] = useState([]);
+  const [deleteIdx, setDeleteIdx] = useState(0); 
+  const location = useLocation();  
+  const [toastMessages, setToastMessages] = useState(location.state?.toastMessages || []); // Set initial toastMessages from location state
+
 
   const navigate = useNavigate();
   const [isDelete, setIsDelete] = useState(false);

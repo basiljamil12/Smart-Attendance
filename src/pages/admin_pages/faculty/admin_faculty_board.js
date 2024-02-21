@@ -6,6 +6,7 @@ import FacultyManager from "../../../models/admin/faculty/http/get_all_faculty";
 import DeleteFacultyManager from "../../../models/admin/faculty/http/delete_faculty";
 import Toast from "../../../components/toast/toast";
 import Spinner from "../../../components/spinner/spinner";
+import { useLocation } from 'react-router-dom';
 
 function FacultyAdboard() {
   const facultyManager = new FacultyManager();
@@ -15,8 +16,8 @@ function FacultyAdboard() {
   const [showLoading, setShowLoading] = useState(false);
   const [deleteShowLoading, setDeleteShowLoading] = useState(false);
   const [deleteIdx, setDeleteIdx] = useState(0);
-  const [toastMessages, setToastMessages] = useState([]);
-
+  const location = useLocation(); 
+  const [toastMessages, setToastMessages] = useState(location.state?.toastMessages || []); // Set initial toastMessages from location state
   const navigate = useNavigate();
 
   useEffect(() => {

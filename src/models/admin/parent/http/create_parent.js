@@ -1,17 +1,17 @@
 
 import ApiConstants from "../../../../constants/adminconstants.js";
-import { ListResponse, BaseResponse } from "../faculty_model/faculty_model.js";
-
-class CreateFacultyManager {
-    async create(name,email,password,contactno,isStudentAdvisor) {
-        const url = ApiConstants.CREATE_FACULTY;
+import { BaseResponse } from "../parent_model/parent_model.js";
+class CreateParentManager {
+    async create(name,email,password,contactno,studentID) {
+        const url = ApiConstants.CREATE_PARENT;
         const params = {
             name: name,
             email: email,
             password: password,
             contactno: contactno,
-            isStudentAdvisor: isStudentAdvisor,
+            studentID: studentID,
         };
+        console.log(params);
         const token = localStorage.getItem("adminToken");
         try {
       
@@ -33,7 +33,6 @@ class CreateFacultyManager {
           }
           if (response.ok) {
             const responseBody = await response.json();
-            console.log(responseBody);
             return new BaseResponse(responseBody);
           } else {
             const errorBody = await response.text();
@@ -46,5 +45,5 @@ class CreateFacultyManager {
  
 }
 
-export default CreateFacultyManager;
+export default CreateParentManager;
 

@@ -6,6 +6,7 @@ import StudentManager from "../../../models/admin/student/http/get_all_student";
 import Spinner from "../../../components/spinner/spinner";
 import Toast from "../../../components/toast/toast";
 import DeleteStudentManager from "../../../models/admin/student/http/delete_student";
+import { useLocation } from 'react-router-dom';
 
 function StudentAdboard() {
   const studentManager = new StudentManager();
@@ -15,7 +16,9 @@ function StudentAdboard() {
   const [showLoading, setShowLoading] = useState(false);
   const [deleteShowLoading, setDeleteShowLoading] = useState(false);
   const [deleteIdx, setDeleteIdx] = useState(0);
-  const [toastMessages, setToastMessages] = useState([]);
+  const location = useLocation(); 
+  const [toastMessages, setToastMessages] = useState(location.state?.toastMessages || []); // Set initial toastMessages from location state
+
 
   const navigate = useNavigate();
 

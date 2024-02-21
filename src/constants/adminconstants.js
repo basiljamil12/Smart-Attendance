@@ -9,6 +9,8 @@ const ApiConstants = {
   GET_ALL_COURSE: `${BASE_URL}course/alldetails`,
   CREATE_COURSE: `${BASE_URL}course/create`,
   CREATE_FACULTY: `${BASE_URL}faculty/create`,
+  CREATE_STUDENT: `${BASE_URL}student/create`,
+  CREATE_PARENT: `${BASE_URL}parent/create`,
   DELETE_FACULTY: `${BASE_URL}faculty/delete?_id=`,
   DELETE_PARENT: `${BASE_URL}parent/delete?_id=`,
   DELETE_STUDENT: `${BASE_URL}student/delete?_id=`,

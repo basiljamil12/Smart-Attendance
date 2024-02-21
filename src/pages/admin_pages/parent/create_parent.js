@@ -5,8 +5,14 @@ import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined
 import Select from "react-select";
 import Toast from "../../../components/toast/toast";
 import Sidebar from "../../../components/sidebar/sidebar";
-
+import Spinner from "../../../components/spinner/spinner";
+import CreateParentManager from "../../../models/admin/parent/http/create_parent";
+import StudentManager from "../../../models/admin/student/http/get_all_student";
 function CreateParent() {
+  const createParentManager = new CreateParentManager();
+  const studentManager = new StudentManager();
+const [showLoading, setShowLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const [toastMessages, setToastMessages] = useState([]);
@@ -17,8 +23,44 @@ function CreateParent() {
   const [contactno, setContactno] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [selectedStudentEmail, setSelectedStudentEmail] = useState(null);
+  const [studentData, setStudentData] = useState([]);
 
+  const [selectedStudentEmail, setSelectedStudentEmail] = useState(null);
+  useEffect(() => {
+    getAllStudent();
+  }, []);
+
+  const getAllStudent = () => {
+    setShowLoading(true);
+    studentManager.getAll().then((value) => {
+      if (value == null) {
+      } else if (!value.error) {
+        const baseResponse = value.success;
+        if (baseResponse == true) {
+          setStudentData(value.data);
+          setShowLoading(false);
+        } else {
+          setToastMessages([
+            ...toastMessages,
+            {
+              type: "invalid",
+              title: "Error",
+              body: value.message,
+            },
+          ]);
+        }
+      } else {
+        setToastMessages([
+          ...toastMessages,
+          {
+            type: "error",
+            title: "Error",
+            body: value.error,
+          },
+        ]);
+      }
+    });
+  }
   const handleParentNameChange = (e) => {
     setParentName(e.target.value);
   };
@@ -41,7 +83,7 @@ function CreateParent() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
-  const handleCreate = () => {
+  const handleCreate = async() => {
     if (!parentName.trim()) {
       setToastMessages([
         ...toastMessages,
@@ -86,6 +128,17 @@ function CreateParent() {
       ]);
       return;
     }
+    if (!contactno) {
+      setToastMessages([
+        ...toastMessages,
+        {
+          type: "invalid",
+          title: "Error",
+          body: "Contact No. must be selected",
+        },
+      ]);
+      return;
+    }
     if (!selectedStudentEmail) {
       setToastMessages([
         ...toastMessages,
@@ -97,18 +150,57 @@ function CreateParent() {
       ]);
       return;
     }
+    try{
+      setShowLoading(true);
+    const response = await createParentManager.create(parentName, email,password,contactno,selectedStudentEmail.value);
+    
+      if(response.success){
+        const updatedToastMessages = [
+          ...toastMessages,
+          {
+              type: "success",
+              title: "Success",
+              body: response.message,
+          },
+      ];
+      setToastMessages(updatedToastMessages);
+        navigate("/adboard/parent", { state: { toastMessages: updatedToastMessages } });
+        
+    }
+      else{
+        setToastMessages([
+          ...toastMessages,
+          {
+            type: "invalid",
+            title: "Error",
+            body: response.message,
+          },
+        ]);
+      }}
+      catch (response) {
+        setToastMessages([
+          ...toastMessages,
+          {
+            type: "invalid",
+            title: "Error",
+            body: response.message,
+          },
+        ]);
+      }
+      finally {
+        setShowLoading(false); // Stop loading
+      }
 
     // Perform create action, navigate, etc.
-    navigate("/adboard/parent");
   };
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
-  const studentEmailOptions = [
-    { value: "student1@example.com", label: "Student 1" },
-    { value: "student2@example.com", label: "Student 2" },
-    { value: "student3@example.com", label: "Student 3" },
-  ];
+
+  const studentEmailOptions = studentData.map(student => ({
+    value: student._id,
+    label: `${student.email}`, // Assuming student object has 'name' property
+  }));
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
@@ -232,7 +324,8 @@ function CreateParent() {
             class=" transition-opacity hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px]  md:w-[250px] w-[220px]  rounded-[20px]   bg-clip-padding px-3 md:py-2   leading-tight text-white text-[20px] md:text-[24px]"
             onClick={handleCreate}
           >
-            Create
+                  {showLoading ? <Spinner /> : 'Create'}
+
           </button>
         </div>
       </div>
