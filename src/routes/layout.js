@@ -6,6 +6,7 @@ import {
   Routes,
   Route,
   Navigate,
+  useParams
 } from "react-router-dom";
 
 import RoleSelect from "../pages/role_selection";
@@ -18,7 +19,7 @@ import FacultyLogin from "../pages/faculty_pages/faculty_login";
 import AdminLogin from "../pages/admin_pages/admin_login";
 import ApplyLeave from "../pages/student_pages/apply_leave";
 import CreateCourse from "../pages/admin_pages/course/create_course";
-import StudentResetPassword from "../pages/student_pages/student_change_pw";
+import ResetPassword from "../pages/reset_pw";
 import AdminDashboard from "../pages/admin_pages/admin_dashboard";
 import CreateParent from "../pages/admin_pages/parent/create_parent";
 import FacultyAdboard from "../pages/admin_pages/faculty/admin_faculty_board";
@@ -34,10 +35,14 @@ import StudentAccountDetails from "../pages/student_pages/student_account_detail
 import StudentAdboard from "../pages/admin_pages/student/admin_student_board";
 import ParentAdboard from "../pages/admin_pages/parent/admin_parent_board";
 import CourseAdboard from "../pages/admin_pages/course/admin_course_board";
+function ResetPasswordRoute() {
+  return <ResetPassword />;
+}
 function Layout() {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
 
+  
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location]);
@@ -88,8 +93,10 @@ function Layout() {
           <Route path="/student/course/register" element={<RegisterCourse />} />
           <Route
             path="/student/reset-password"
-            element={<StudentResetPassword />}
+            element={<ResetPasswordRoute />}
           />
+          <Route path="/faculty/reset-password" element={<ResetPasswordRoute />} />
+          <Route path="/parent/reset-password" element={<ResetPasswordRoute />} />
           <Route path="/adboard/dashboard" element={<AdminDashboard />} />
           <Route path="/adboard/faculty" element={<FacultyAdboard />} />
           <Route path="/adboard/student" element={<StudentAdboard />} />
