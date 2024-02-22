@@ -6,7 +6,7 @@ import StudentManager from "../../../models/admin/student/http/get_all_student";
 import Spinner from "../../../components/spinner/spinner";
 import Toast from "../../../components/toast/toast";
 import DeleteStudentManager from "../../../models/admin/student/http/delete_student";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 
 function StudentAdboard() {
   const studentManager = new StudentManager();
@@ -16,9 +16,10 @@ function StudentAdboard() {
   const [showLoading, setShowLoading] = useState(false);
   const [deleteShowLoading, setDeleteShowLoading] = useState(false);
   const [deleteIdx, setDeleteIdx] = useState(0);
-  const location = useLocation(); 
-  const [toastMessages, setToastMessages] = useState(location.state?.toastMessages || []); // Set initial toastMessages from location state
-
+  const location = useLocation();
+  const [toastMessages, setToastMessages] = useState(
+    location.state?.toastMessages || []
+  ); // Set initial toastMessages from location state
 
   const navigate = useNavigate();
 
@@ -56,7 +57,7 @@ function StudentAdboard() {
         ]);
       }
     });
-  }
+  };
 
   const goToAddStudent = () => {
     navigate("/adboard/student/add");
@@ -112,6 +113,11 @@ function StudentAdboard() {
         ]);
       }
     });
+  };
+
+  const handleNavigate = (idx) => {
+    const id = studentData[idx]._id;
+    navigate("/adboard/student/edit?id=" + id);
   };
 
   return (
@@ -201,7 +207,10 @@ function StudentAdboard() {
                       </td>
                       <td className="p-2 py-5  border-sa-grey">
                         <div class="lg:inline-flex rounded-lg border  bg-sa-pink p-1">
-                          <button class="bg-sa-maroon md:mr-2 text-white inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm  transition-opacity hover:opacity-90 hover:text-gray-300  focus:relative">
+                          <button
+                            class="bg-sa-maroon md:mr-2 text-white inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm  transition-opacity hover:opacity-90 hover:text-gray-300  focus:relative"
+                            onClick={() => handleNavigate(index)}
+                          >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"

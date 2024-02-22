@@ -17,7 +17,13 @@ const ApiConstants = {
   DELETE_COURSE: `${BASE_URL}course/delete?_id=`,
   EDIT_FACULTY: `${BASE_URL}faculty/edit/details?_id=`,
   GET_FACULTY: `${BASE_URL}faculty/detailsbyid?_id=`,
+  EDIT_PARENT: `${BASE_URL}parent/edit/details?_id=`,
+  GET_PARENT: `${BASE_URL}parent/detailsbyid?_id=`,
+  EDIT_STUDENT: `${BASE_URL}student/edit/details?_id=`,
+  GET_STUDENT: `${BASE_URL}student/detailsbyid?_id=`,
   EDIT_FACULTY_PASSWORD: `${BASE_URL}faculty/updatebyid/password?_id=`,
+  EDIT_PARENT_PASSWORD: `${BASE_URL}parent/updatebyid/password?_id=`,
+  EDIT_STUDENT_PASSWORD: `${BASE_URL}student/updatebyid/password?_id=`,
 };
 
 export default ApiConstants;

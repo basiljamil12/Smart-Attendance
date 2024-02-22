@@ -25,6 +25,8 @@ import CreateParent from "../pages/admin_pages/parent/create_parent";
 import FacultyAdboard from "../pages/admin_pages/faculty/admin_faculty_board";
 import CreateFaculty from "../pages/admin_pages/faculty/create_faculty";
 import EditFaculty from "../pages/admin_pages/faculty/edit_faculty";
+import EditParent from "../pages/admin_pages/parent/edit_parent";
+import EditStudent from "../pages/admin_pages/student/edit_student";
 import Sidebar from "../components/sidebar/sidebar";
 import StudentAttendanceDetails from "../pages/student_pages/attendance_details";
 import RegisterCourse from "../pages/student_pages/register_course";
@@ -107,6 +109,8 @@ function Layout() {
           <Route path="/faculty/course/register" element={<CourseApproval />} />
           <Route path="/faculty/account/information" element={<FacultyAccountDetails />} />
           <Route path="/student/account/information" element={<StudentAccountDetails />} />
+          <Route path="/adboard/parent/edit" element={<EditParent />} />
+          <Route path="/adboard/student/edit" element={<EditStudent />} />
         </Routes>
       </div>
     </div>
