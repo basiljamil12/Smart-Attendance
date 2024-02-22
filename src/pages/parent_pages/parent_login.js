@@ -8,15 +8,18 @@ import ParentHttpManager from "../../models/parent/auth/http/signinhttp";
 import Toast from "../../components/toast/toast";
 import { useNavigate } from "react-router-dom";
 import Reset_mail from "../../components/resetpass/reset_mail";
+import { useLocation } from 'react-router-dom';
 
 function ParentLogin() {
   const parenthttpManager = new ParentHttpManager();
+  const location = useLocation(); 
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
-  const [toastMessages, setToastMessages] = useState([]);
+  const [toastMessages, setToastMessages] = useState(location.state?.toastMessages || []); // Set initial toastMessages from location state
+
   const [isForgot, setIsForgot] = useState(false);
 
   const navigate = useNavigate();

@@ -8,11 +8,17 @@ import StudentValidateTokenManager from "../models/student/auth/http/get_student
 import ParentValidateTokenManager from "../models/parent/auth/http/validate_parent_token";
 import ResetFacultyPassManager from "../models/faculty/auth/http/resetpasshttp";
 import Spinner from "../components/spinner/spinner";
+import ResetParentPassManager from "../models/parent/auth/http/resetpasshttp";
+import ResetStudentPassManager from "../models/student/auth/http/resetpasshttp";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 function ResetPassword() {
   const facValidToken = new FacultyValidateTokenManager();
   const studentValidToken = new StudentValidateTokenManager();
   const parentValidToken = new ParentValidateTokenManager();
   const resetFacultyPassManager = new ResetFacultyPassManager();
+  const resetParentPassManager = new ResetParentPassManager();
+  const resetStudentPassManager = new ResetStudentPassManager();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const studentToken = searchParams.get("studentToken");
@@ -25,7 +31,14 @@ function ResetPassword() {
   const [showPage, setShowPage] = useState(false);
 
   const pathname = window.location.pathname;
-
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword2, setShowPassword2] = useState(false);
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+  const toggleShowPassword2 = () => {
+    setShowPassword2(!showPassword2);
+  };
   const navigate = useNavigate();
   useEffect(() => {
     if (pathname.includes('/student/') && !studentToken) {
@@ -141,10 +154,11 @@ function ResetPassword() {
   const handleConfirmPasswordChange = (e) => {
     setConfirmPassword(e.target.value);
   };
+  
 
 
 
-  const handleReset =async () => {
+  const handleReset = async () => {
 
     if (!password || !confirmPassword) {
       // If either start or end date is empty
@@ -158,52 +172,144 @@ function ResetPassword() {
       ]);
       return; // Prevent form submission
     }
-   
-      if (pathname.includes('/student/') && studentToken) {
-        try{
 
-          navigate("/student/login");
-        }
-        catch{
-
-        }
-      }
-      if (pathname.includes('/parent/') && parentToken) {
-        try{
-          navigate("/parent/login");
-        }
-        catch{
-          
-        }
-      }
-      if (pathname.includes('/faculty/') && facultyToken) {
-        setShowLoading(true);
-        try{
-          const response = await resetFacultyPassManager.reset(facultyToken,confirmPassword);
-          if(response.success){
-            const updatedToastMessages = [
-              ...toastMessages,
-              {
-                  type: "success",
-                  title: "Success",
-                  body: response.message,
-              },
+    if (pathname.includes('/student/') && studentToken) {
+      setShowLoading(true);
+      try {
+        const response = await resetStudentPassManager.reset(studentToken, confirmPassword);
+        if (response.success) {
+          const updatedToastMessages = [
+            ...toastMessages,
+            {
+              type: "success",
+              title: "Success",
+              body: response.message,
+            },
           ];
-            setToastMessages(updatedToastMessages);
-        navigate("/faculty/login", { state: { toastMessages: updatedToastMessages } });
-          }
+          setToastMessages(updatedToastMessages);
 
+          navigate("/student/login", { state: { toastMessages: updatedToastMessages } });
         }
-        catch{
-          
+        else {
+          setToastMessages([
+            ...toastMessages,
+            {
+              type: "invalid",
+              title: "Error",
+              body: response.message,
+            },
+          ]);
         }
-        finally{
-          setShowLoading(false);
-        }
-        
+
       }
-      
-   
+      catch (response) {
+        setToastMessages([
+          ...toastMessages,
+          {
+            type: "invalid",
+            title: "Error",
+            body: response.message,
+          },
+        ]);
+      }
+      finally {
+        setShowLoading(false);
+      }
+
+
+
+    }
+    else if (pathname.includes('/parent/') && parentToken) {
+      setShowLoading(true);
+      try {
+        const response = await resetParentPassManager.reset(parentToken, confirmPassword);
+        if (response.success) {
+          const updatedToastMessages = [
+            ...toastMessages,
+            {
+              type: "success",
+              title: "Success",
+              body: response.message,
+            },
+          ];
+          setToastMessages(updatedToastMessages);
+          navigate("/parent/login", { state: { toastMessages: updatedToastMessages } });
+        }
+        else {
+          setToastMessages([
+            ...toastMessages,
+            {
+              type: "invalid",
+              title: "Error",
+              body: response.message,
+            },
+          ]);
+        }
+
+      }
+      catch (response) {
+        setToastMessages([
+          ...toastMessages,
+          {
+            type: "invalid",
+            title: "Error",
+            body: response.message,
+          },
+        ]);
+      }
+      finally {
+        setShowLoading(false);
+      }
+
+
+
+    }
+    else if (pathname.includes('/faculty/') && facultyToken) {
+      setShowLoading(true);
+      try {
+        const response = await resetFacultyPassManager.reset(facultyToken, confirmPassword);
+        if (response.success) {
+          const updatedToastMessages = [
+            ...toastMessages,
+            {
+              type: "success",
+              title: "Success",
+              body: response.message,
+            },
+          ];
+          setToastMessages(updatedToastMessages);
+          navigate("/faculty/login", { state: { toastMessages: updatedToastMessages } });
+        }
+
+        else {
+          setToastMessages([
+            ...toastMessages,
+            {
+              type: "invalid",
+              title: "Error",
+              body: response.message,
+            },
+          ]);
+        }
+
+      }
+      catch (response) {
+        setToastMessages([
+          ...toastMessages,
+          {
+            type: "invalid",
+            title: "Error",
+            body: response.message,
+          },
+        ]);
+      }
+      finally {
+        setShowLoading(false);
+      }
+
+    }
+
+
   };
 
   return (
@@ -233,7 +339,53 @@ function ResetPassword() {
             <p className="text-sa-maroon text-[36px] text-left md:mt-14 mt-10 font-bold">
               Reset Password
             </p>
-            <div className="md:ml-3 ml-2 mt-12 md:mt-8 mb-5 ">
+            <div class="relative md:ml-3 ml-2 mt-12 md:mt-8 ">
+        <input
+          type={showPassword ? "text" : "password"}
+          //class="shadow-xl focus:outline-none focus:ring-0 focus:border-clue-purchase peer m-0 block h-[45px] md:h-[56px]   md:mr-44  md:w-[102%] w-[245px]  rounded-[20px] border-[1px] border-solid  border-black  bg-transparent bg-clip-padding px-3 py-4 text-base font-normal leading-tight text-black"
+          className="placeholder-gray-500 w-full flex items-start justify-start  h-14 md:h-16 py-4  border-[1px] border-black border-solid   text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon "
+          
+          id="password1"
+          value={password}
+          onChange={handlePasswordChange}
+          placeholder="New Password"
+        />
+        {showPassword ? (
+          <VisibilityOutlinedIcon
+            className="absolute text-sa-black md:top-[20px] top-[10px] right-[16px] md:right-[14px] cursor-pointer "
+            onClick={toggleShowPassword}
+          />
+        ) : (
+          <VisibilityOffOutlinedIcon
+            className="absolute text-sa-black md:top-[20px] top-[10px] right-[16px] md:right-[14px] cursor-pointer "
+            onClick={toggleShowPassword}
+          />
+        )}
+      </div>
+      <div class="relative md:ml-3 ml-2 mt-12 md:mt-6 mb-10 ">
+        <input
+          type={showPassword2 ? "text" : "password"}
+          //class="shadow-xl focus:outline-none focus:ring-0 focus:border-clue-purchase peer m-0 block h-[45px] md:h-[56px]   md:mr-44  md:w-[102%] w-[245px]  rounded-[20px] border-[1px] border-solid  border-black  bg-transparent bg-clip-padding px-3 py-4 text-base font-normal leading-tight text-black"
+          className="placeholder-gray-500 w-full flex items-start justify-start  h-14 md:h-16 py-4  border-[1px] border-black border-solid   text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon "
+          
+          id="password2"
+          value={confirmPassword}
+          onChange={handleConfirmPasswordChange}
+          placeholder="Confirm Password"
+        />
+        {showPassword2 ? (
+          <VisibilityOutlinedIcon
+            className="absolute text-sa-black md:top-[20px] top-[10px] right-[16px] md:right-[14px] cursor-pointer "
+            onClick={toggleShowPassword2}
+          />
+        ) : (
+          <VisibilityOffOutlinedIcon
+            className="absolute text-sa-black md:top-[20px] top-[10px] right-[16px] md:right-[14px] cursor-pointer "
+            onClick={toggleShowPassword2}
+          />
+        )}
+      </div>
+             {/* <div className="md:ml-3 ml-2 mt-12 md:mt-8 mb-5 ">
 
               <input
                 type="text"
@@ -241,9 +393,7 @@ function ResetPassword() {
                 placeholder="New Password"
                 onChange={handlePasswordChange}
                 value={password}
-                className="placeholder-gray-500 w-full flex items-start justify-start  h-14 md:h-16 py-4  border-[1px] border-black border-solid   text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon
-              
-            "
+                className="placeholder-gray-500 w-full flex items-start justify-start  h-14 md:h-16 py-4  border-[1px] border-black border-solid   text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon "
               />
             </div>
             <div className="md:ml-3 ml-2 mt-5 md:mt-4 mb-10 ">
@@ -254,13 +404,9 @@ function ResetPassword() {
                 placeholder="Confirm Password"
                 onChange={handleConfirmPasswordChange}
                 value={confirmPassword}
-                className="placeholder-gray-500 w-full flex items-start justify-start  h-14 md:h-16 py-4  border-[1px] border-black border-solid   text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon 
-           "
-
+                className="placeholder-gray-500 w-full flex items-start justify-start  h-14 md:h-16 py-4  border-[1px] border-black border-solid   text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon "
               />
-            </div>
-
-
+            </div>  */}
 
             <div class="flex items-center justify-center  mb-14   ">
               <button
@@ -268,7 +414,7 @@ function ResetPassword() {
                 class=" transition-opacity hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px]  md:w-[280px] w-[220px]  rounded-[20px]   bg-clip-padding px-3 py-2  leading-tight text-white text-[20px] md:text-[24px]"
                 onClick={handleReset}
               >
-            {showLoading ? <Spinner /> : 'Reset'}
+                {showLoading ? <Spinner /> : 'Reset'}
               </button>
             </div>
           </div>

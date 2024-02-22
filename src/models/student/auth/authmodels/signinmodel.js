@@ -46,7 +46,24 @@ export class AddAdmin {
     };
   }
 }
+export class ResetPass {
+  constructor({ new_password }) {
+    this.new_password = new_password;
+  
+  }
 
+  static fromJson(json) {
+    return new ResetPass({
+      new_password: json.new_password,
+    });
+  }
+
+  toJson() {
+    return {
+      new_password: this.new_password,
+    };
+  }
+}
 export class ChangeUsernameData {
   constructor({name}) {
     this.name = name;
@@ -64,7 +81,29 @@ export class ChangeUsernameData {
     };
   }
 }
+export class BaseResponseforReset {
+  constructor({ success, data, message }) {
+    this.success = success;
+    this.data = data ? new ResetPass(data) : null;
+    this.message = message;
+  }
 
+  static fromJson(json) {
+    return new BaseResponse({
+      success: json.success,
+      data: json.data ? ResetPass.fromJson(json.data) : null,
+      message: json.message,
+    });
+  }
+
+  toJson() {
+    return {
+      success: this.success,
+      data: this.data ? this.data.toJson() : null,
+      message: this.message,
+    };
+  }
+}
 export class BaseResponse {
   constructor({ success, data, message }) {
     this.success = success;

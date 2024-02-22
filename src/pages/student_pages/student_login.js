@@ -8,12 +8,16 @@ import Toast from "../../components/toast/toast";
 import StudentHttpManager from "../../models/student/auth/http/signinhttp";
 import Spinner from "../../components/spinner/spinner";
 import Reset_mail from "../../components/resetpass/reset_mail";
+import { useLocation } from 'react-router-dom';
+
 function StudentLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
-  const [toastMessages, setToastMessages] = useState([]);
+  const location = useLocation(); 
+  const [toastMessages, setToastMessages] = useState(location.state?.toastMessages || []); // Set initial toastMessages from location state
+
   const studenthttpManager = new StudentHttpManager();
   // localStorage.setItem('studentToken',"");
   const isValidEmail = (email) => {
