@@ -120,16 +120,17 @@ const createFacultyManager = new CreateFacultyManager();
     const response = await createFacultyManager.create(facultyName, email,password,contactno,isAdvisor);
     
       if(response.success){
-        setToastMessages([
-          ...toastMessages,
-          {
-            type: "success",
-            title: "Success",
-            body: response.message,
-          },
-        ]);
-    navigate("/adboard/faculty");
-
+    const updatedToastMessages = [
+      ...toastMessages,
+      {
+          type: "success",
+          title: "Success",
+          body: response.message,
+      },
+  ];
+    setToastMessages(updatedToastMessages);
+    navigate("/adboard/faculty", { state: { toastMessages: updatedToastMessages } });
+    
     }
       else{
         setToastMessages([

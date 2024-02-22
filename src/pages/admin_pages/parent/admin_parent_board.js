@@ -6,16 +6,16 @@ import ParentManager from "../../../models/admin/parent/http/get_all_parent";
 import Toast from "../../../components/toast/toast";
 import Spinner from "../../../components/spinner/spinner";
 import DeleteParentManager from "../../../models/admin/parent/http/delete_parent";
-
+import { useLocation } from 'react-router-dom';
 function ParentAdboard() {
   const parentManager = new ParentManager();
   const deleteManager = new DeleteParentManager();
-
+  const location = useLocation(); 
   const [parentData, setParentData] = useState([]);
   const [showLoading, setShowLoading] = useState(false);
   const [deleteShowLoading, setDeleteShowLoading] = useState(false);
   const [deleteIdx, setDeleteIdx] = useState(0);
-  const [toastMessages, setToastMessages] = useState([]);
+  const [toastMessages, setToastMessages] = useState(location.state?.toastMessages || []); // Set initial toastMessages from location state
 
   const navigate = useNavigate();
 

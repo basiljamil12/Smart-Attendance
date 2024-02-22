@@ -5,11 +5,15 @@ import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined
 import Select from "react-select";
 import Toast from "../../../components/toast/toast";
 import Sidebar from "../../../components/sidebar/sidebar";
-
+import Spinner from "../../../components/spinner/spinner";
+import CreateStudentManager from "../../../models/admin/student/http/create_student";
 function CreateStudent() {
+const createStudentManager = new CreateStudentManager();
+
   const navigate = useNavigate();
 
   const [toastMessages, setToastMessages] = useState([]);
+  const [showLoading, setShowLoading] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
   const [studentName, setStudentName] = useState(""); // 
@@ -40,7 +44,7 @@ function CreateStudent() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
-  const handleCreate = () => {
+  const handleCreate =async () => {
     if (!studentName.trim()) { // Changed parentName to studentName
       setToastMessages([
         ...toastMessages,
@@ -85,20 +89,58 @@ function CreateStudent() {
       ]);
       return;
     }
-    // if (!selectedStudentEmail) {
-    //   setToastMessages([
-    //     ...toastMessages,
-    //     {
-    //       type: "invalid",
-    //       title: "Error",
-    //       body: "Student Email must be selected",
-    //     },
-    //   ]);
-    //   return;
-    // }
+    if (!contactNo) {
+      setToastMessages([
+        ...toastMessages,
+        {
+          type: "invalid",
+          title: "Error",
+          body: "Contact No. must be selected",
+        },
+      ]);
+      return;
+    }
+    try{
+      setShowLoading(true);
+    const response = await createStudentManager.create(studentName, email,password,contactNo);
+    
+      if(response.success){
+        const updatedToastMessages = [
+          ...toastMessages,
+          {
+              type: "success",
+              title: "Success",
+              body: response.message,
+          },
+      ];
+        setToastMessages(updatedToastMessages);
+        navigate("/adboard/student", { state: { toastMessages: updatedToastMessages } });
 
-    // Perform create action, navigate, etc.
-    navigate("/adboard/student");
+    }
+      else{
+        setToastMessages([
+          ...toastMessages,
+          {
+            type: "invalid",
+            title: "Error",
+            body: response.message,
+          },
+        ]);
+      }}
+      catch (response) {
+        setToastMessages([
+          ...toastMessages,
+          {
+            type: "invalid",
+            title: "Error",
+            body: response.message,
+          },
+        ]);
+      }
+      finally {
+        setShowLoading(false); // Stop loading
+      }
+    // if (!selectedStudentEmail)
   };
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -242,23 +284,8 @@ function CreateStudent() {
           />
         </div>
         <div className="md:ml-3 ml-2 mt-5 md:mt-6 mb-5 ">
-        {/* <label
-            className="text-sa-black block text-left  text-md font-[600] mb-2 text-filter-heading"
-            htmlFor="link"
-          >
-            Face ID
-          </label>
        
-
-          <input
-            id="attachment"
-            onChange={handleAttachmentChange}
-            type="file"
-            className={`placeholder-gray-500 h-14 md:h-16 py-4 w-full border-[1px] border-black border-solid text-black bg-clue-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon`}
-          />  
-          <p class="mt-1 text-xs text-black text-left " id="file_input_help"> (PNG, JPG or JPEG)</p>  
-            */}
-            <form>
+            {/* <form>
   <div className="relative mb-10">
     <input
       type="search"
@@ -282,7 +309,7 @@ function CreateStudent() {
       />
     </label>
   </div>
-</form>
+</form> */}
 
            </div>
         {/* <div className="md:ml-3 ml-2 mt-5 md:mt-6 mb-10 ">
@@ -302,7 +329,7 @@ function CreateStudent() {
             class=" transition-opacity hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px]  md:w-[250px] w-[220px]  rounded-[20px]   bg-clip-padding px-3 md:py-2   leading-tight text-white text-[20px] md:text-[24px]"
             onClick={handleCreate}
           >
-            Create
+                  {showLoading ? <Spinner /> : 'Create'}
           </button>
         </div>
       </div>

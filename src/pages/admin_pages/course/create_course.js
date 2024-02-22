@@ -4,6 +4,7 @@ import Sidebar from "../../../components/sidebar/sidebar";
 import Toast from "../../../components/toast/toast";
 import CourseCreateManager from "../../../models/admin/course/http/create_course";
 import Spinner from "../../../components/spinner/spinner";
+
 function CreateCourse() {
   const courseCreateManager= new CourseCreateManager();
   const navigate = useNavigate();
@@ -12,6 +13,8 @@ function CreateCourse() {
   const [credhours, setCredHours] = useState("");
   const [credhours1, setCredHours1Empty] = useState("");
   const [courseName1, setCourseName1Empty] = useState(false);
+
+
   const [toastMessages, setToastMessages] = useState([]);
   
   const handleCourseCodeChange = (e) => {
@@ -94,15 +97,17 @@ function CreateCourse() {
     const response = await courseCreateManager.create(courseName, courseCode,credhours);
     
       if(response.success){
-        setToastMessages([
+        
+        const updatedToastMessages = [
           ...toastMessages,
           {
-            type: "success",
-            title: "Success",
-            body: response.message,
+              type: "success",
+              title: "Success",
+              body: response.message,
           },
-        ]);
-    navigate("/adboard/course");
+      ];
+        setToastMessages(updatedToastMessages);
+        navigate("/adboard/course", { state: { toastMessages: updatedToastMessages } });
 
     }
       else{
