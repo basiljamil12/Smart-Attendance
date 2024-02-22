@@ -1,8 +1,11 @@
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 
 function FacultyNavbar() {
+  const navigate = useNavigate();
+
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -18,6 +21,10 @@ function FacultyNavbar() {
     };
   }, [open]);
 
+  const handleLeaveClick = () => {
+    navigate('/faculty/leave');
+    setOpen(false);
+  };
   return (
     <div className="bg-sa-maroon w-full h-24 flex items-center px-10 relative">
       <div className="flex justify-start w-full">
@@ -44,7 +51,7 @@ function FacultyNavbar() {
             <span className="transition-opacity hover:opacity-60 block text-xl text-white font-bold mb-2 py-2 hover:cursor-pointer">
               Course
             </span>
-            <span className="transition-opacity hover:opacity-60 block text-xl text-white font-bold mb-2 py-2 hover:cursor-pointer">
+            <span onClick={handleLeaveClick} className="transition-opacity hover:opacity-60 block text-xl text-white font-bold mb-2 py-2 hover:cursor-pointer">
               Leave
             </span>
             <span className="transition-opacity hover:opacity-60 block text-xl text-white font-bold mb-2 py-2 hover:cursor-pointer">
@@ -59,7 +66,7 @@ function FacultyNavbar() {
           <span className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer">
             Course
           </span>
-          <span className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer">
+          <span onClick={handleLeaveClick} className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer">
             Leave
           </span>
           <span className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer">

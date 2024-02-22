@@ -38,6 +38,7 @@ import StudentAdboard from "../pages/admin_pages/student/admin_student_board";
 import ParentAdboard from "../pages/admin_pages/parent/admin_parent_board";
 import CourseAdboard from "../pages/admin_pages/course/admin_course_board";
 import EditCourse from "../pages/admin_pages/course/edit_course";
+import LeaveDashboard from "../pages/faculty_pages/leave_dashboard";
 function ResetPasswordRoute() {
   return <ResetPassword />;
 }
@@ -87,6 +88,7 @@ function Layout() {
           <Route path="/parent/dashboard" element={<ParentDashboard />} />
           <Route path="/faculty/dashboard" element={<FacultyDashboard />} />
           <Route path="/student/leave" element={<ApplyLeave />} />
+          <Route path="/faculty/leave" element={<LeaveDashboard />} />
           <Route path="/student/course/register" element={<RegisterCourse />} />
           <Route
             path="/student/reset-password"
