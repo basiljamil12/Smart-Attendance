@@ -2,41 +2,50 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
-//import Select from "react-select";
+import Select from "react-select";
 import Toast from "../../../components/toast/toast";
+import Sidebar from "../../../components/sidebar/sidebar";
 import Spinner from "../../../components/spinner/spinner";
-import EditFacultyManager from "../../../models/admin/faculty/http/edit_faculty";
-import FacultyManager from "../../../models/admin/faculty/http/get_all_faculty";
+import StudentManager from "../../../models/admin/student/http/get_all_student";
+import EditParentManager from "../../../models/admin/parent/http/edit_parent";
+import ParentManager from "../../../models/admin/parent/http/get_all_parent";
+function EditParent() {
+  const editParentManager = new EditParentManager();
+  const studentManager = new StudentManager();
+  const parentManager = new ParentManager();
+  const [showLoading, setShowLoading] = useState(false);
 
-function EditFaculty() {
-  const facultyManager = new FacultyManager();
-  const editFacultyManager = new EditFacultyManager();
   const navigate = useNavigate();
   const location = useLocation();
 
   const [toastMessages, setToastMessages] = useState([]);
+
   const [showPassword, setShowPassword] = useState(false);
-  const [facultyName, setfacultyName] = useState("");
+  const [parentName, setParentName] = useState("");
   const [contactno, setContactno] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [selectedStudentEmail, setSelectedStudentEmail] = useState(null);
-  const [isAdvisor, setIsAdvisor] = useState(""); // Default value set to empty string
+  const [studentData, setStudentData] = useState([]);
+  const [selectedStudentEmail, setSelectedStudentEmail] = useState(null);
 
   const searchParams = new URLSearchParams(location.search);
   const id = searchParams.get("id");
 
   useEffect(() => {
+    getAllStudent();
+  }, []);
+
+  useEffect(() => {
     setShowLoading(true);
-    facultyManager.get(id).then((value) => {
+    parentManager.get(id).then((value) => {
       if (value == null) {
       } else if (!value.error) {
         const baseResponse = value.success;
         if (baseResponse == true) {
-          setfacultyName(value.data.name);
+          setParentName(value.data.name);
           setContactno(value.data.contactno);
           setEmail(value.data.email);
-          setIsAdvisor(value.data.isStudentAdvisor.toString());
+          setSelectedStudentEmail(value.data.studentID);
           setShowLoading(false);
         } else {
           setToastMessages([
@@ -61,8 +70,39 @@ function EditFaculty() {
     });
   }, []);
 
-  const handleFacultyNameChange = (e) => {
-    setfacultyName(e.target.value);
+  const getAllStudent = () => {
+    setShowLoading(true);
+    studentManager.getAll().then((value) => {
+      if (value == null) {
+      } else if (!value.error) {
+        const baseResponse = value.success;
+        if (baseResponse == true) {
+          setStudentData(value.data);
+          setShowLoading(false);
+        } else {
+          setToastMessages([
+            ...toastMessages,
+            {
+              type: "invalid",
+              title: "Error",
+              body: value.message,
+            },
+          ]);
+        }
+      } else {
+        setToastMessages([
+          ...toastMessages,
+          {
+            type: "error",
+            title: "Error",
+            body: value.error,
+          },
+        ]);
+      }
+    });
+  };
+  const handleParentNameChange = (e) => {
+    setParentName(e.target.value);
   };
 
   const handleEmailChange = (e) => {
@@ -74,21 +114,18 @@ function EditFaculty() {
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
-  const handleIsAdvisorChange = (e) => {
-    setIsAdvisor(e.target.value);
+
+  const handleStudentEmailChange = (selectedOption) => {
+    setSelectedStudentEmail(selectedOption);
   };
-  // const handleStudentEmailChange = (selectedOption) => {
-  //     setSelectedStudentEmail(selectedOption);
-  //   };
   const isValidEmail = (email) => {
     // Regular expression for validating email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
-  const [showLoading, setShowLoading] = useState(false);
 
   const handleEdit = async () => {
-    if (!facultyName.trim()) {
+    if (!parentName.trim()) {
       setToastMessages([
         ...toastMessages,
         {
@@ -121,17 +158,6 @@ function EditFaculty() {
       ]);
       return;
     }
-    // if (!password.trim()) {
-    //   setToastMessages([
-    //     ...toastMessages,
-    //     {
-    //       type: "invalid",
-    //       title: "Invalid Password",
-    //       body: "Password cannot be empty",
-    //     },
-    //   ]);
-    //   return;
-    // }
     if (!contactno) {
       setToastMessages([
         ...toastMessages,
@@ -143,7 +169,7 @@ function EditFaculty() {
       ]);
       return;
     }
-    if (!isAdvisor) {
+    if (!selectedStudentEmail) {
       setToastMessages([
         ...toastMessages,
         {
@@ -156,24 +182,27 @@ function EditFaculty() {
     }
     try {
       setShowLoading(true);
-      const response = await editFacultyManager.edit(
+      const response = await editParentManager.edit(
         id,
-        facultyName,
+        parentName,
         email,
         contactno,
-        isAdvisor
+        selectedStudentEmail.value
       );
 
       if (response.success) {
-        setToastMessages([
+        const updatedToastMessages = [
           ...toastMessages,
           {
             type: "success",
             title: "Success",
             body: response.message,
           },
-        ]);
-        navigate("/adboard/faculty");
+        ];
+        setToastMessages(updatedToastMessages);
+        navigate("/adboard/parent", {
+          state: { toastMessages: updatedToastMessages },
+        });
       } else {
         setToastMessages([
           ...toastMessages,
@@ -196,13 +225,17 @@ function EditFaculty() {
     } finally {
       setShowLoading(false); // Stop loading
     }
+
     // Perform create action, navigate, etc.
   };
-
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
+  const studentEmailOptions = studentData.map((student) => ({
+    value: student._id,
+    label: `${student.email}`, // Assuming student object has 'name' property
+  }));
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
@@ -216,6 +249,24 @@ function EditFaculty() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      border: "1px solid black", // customize border color when focused
+      borderRadius: "10px",
+      boxShadow: "none",
+      height: isMobile ? "56px" : "64px", // height for normal and md breakpoints
+      // height for lg and xl breakpoints
+      textAlign: "left",
+      background: "transparent",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: "black", // text color
+      textAlign: "left",
+    }),
+  };
 
   const [passwordShowLoading, setPasswordShowLoading] = useState(false);
   const [passwordIdx, setPasswordIdx] = useState(0);
@@ -243,7 +294,8 @@ function EditFaculty() {
     }
     try {
       setPasswordShowLoading(true);
-      const response = await editFacultyManager.editPassword(id, password);
+      const response = await editParentManager.editPassword(id, password);
+
       if (response.success) {
         setToastMessages([
           ...toastMessages,
@@ -253,7 +305,6 @@ function EditFaculty() {
             body: response.message,
           },
         ]);
-        closeIsPassword();
       } else {
         setToastMessages([
           ...toastMessages,
@@ -275,6 +326,7 @@ function EditFaculty() {
       ]);
     } finally {
       setPasswordShowLoading(false);
+      closeIsPassword();
     }
   };
 
@@ -293,22 +345,22 @@ function EditFaculty() {
           }}
         />
       ))}
-      <div className="w-full mx-[6%]">
-        <p className="text-sa-maroon text-[32px] md:text-[36px]  mb-5 text-left md:mt-14 mt-20 font-bold">
-          Edit Faculty
+      <div className="md:ml-14 ml-5 w-full mx-[6%] ">
+        <p className="text-sa-maroon text-[36px]  mb-5 text-left md:mt-10 mt-20 font-bold">
+          Edit Parent
         </p>
 
-        <div className="mt-5 md:mt-6 mb-5 ">
+        <div className="md:ml-3 ml-2 mt-5 md:mt-6 mb-5 ">
           <input
             type="text"
-            id="facultyName"
+            id="parentName"
             placeholder="Name"
-            onChange={handleFacultyNameChange}
-            value={facultyName}
+            onChange={handleParentNameChange}
+            value={parentName}
             className="placeholder-gray-500 w-full h-14 md:h-16  border-[1px] border-black border-solid   text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon"
           />
         </div>
-        <div className="mt-5 md:mt-6 mb-5 ">
+        <div className="md:ml-3 ml-2 mt-5 md:mt-6 mb-5 ">
           <input
             type="email"
             id="email"
@@ -341,7 +393,7 @@ function EditFaculty() {
           )}
         </div> */}
 
-        <div className="mt-5 md:mt-6 mb-5 ">
+        <div className="md:ml-3 ml-2 mt-5 md:mt-6 mb-5 ">
           <input
             type="number"
             id="contactNo"
@@ -351,37 +403,34 @@ function EditFaculty() {
             className="placeholder-gray-500 w-full h-14 md:h-16 border-[1px] border-black border-solid   text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon "
           />
         </div>
-
-        <div className="mt-5 md:mt-6 mb-10 ">
-          <select
-            id="isAdvisor"
-            onChange={handleIsAdvisorChange}
-            value={isAdvisor}
-            className="placeholder-gray-500 w-full h-14 md:h-16 border-[1px] border-black border-solid   text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon"
-          >
-            <option value="" disabled>
-              Is student advisor?
-            </option>
-            <option value="false">No</option>
-            <option value="true">Yes</option>
-          </select>
+        <div className="md:ml-3 ml-2 mt-5 md:mt-6 mb-10 ">
+          <Select
+            id="studentEmail"
+            placeholder="Select Student Email"
+            onChange={handleStudentEmailChange}
+            value={selectedStudentEmail}
+            styles={customStyles}
+            options={studentEmailOptions}
+            //className="text-left h-14 md:h-16 border-[1px] border-black border-solid text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon"
+          />
         </div>
 
         <div class="flex items-center justify-center mb-14   ">
           <button
-            class=" transition-opacity hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-sa-maroon peer m-0 block h-[40px] md:h-[56px]  md:w-[250px] w-[200px]  rounded-[20px]   bg-clip-padding px-3 md:py-2   leading-tight text-white text-[14px] md:text-[24px]"
+            class=" transition-opacity hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px]  md:w-[250px] w-[200px]  rounded-[20px]   bg-clip-padding px-3 md:py-2   leading-tight text-white text-[14px] md:text-[24px]"
             onClick={handleEdit}
           >
             {showLoading ? <Spinner /> : "Save"}
           </button>
           <button
-            class="md:ml-5 transition-opacity hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-sa-maroon peer m-0 block h-[40px] md:h-[56px]  md:w-[250px] w-[200px]  rounded-[20px]   bg-clip-padding px-3 md:py-2   leading-tight text-white text-[14px] md:text-[24px]"
+            class="ml-5 transition-opacity hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px]  md:w-[250px] w-[200px]  rounded-[20px]   bg-clip-padding px-3 md:py-2   leading-tight text-white text-[14px] md:text-[24px]"
             onClick={openIsPassword}
           >
-            Change Password
+            {showLoading ? <Spinner /> : "Change Password"}
           </button>
         </div>
-        {isPassword && (
+      </div>
+      {isPassword && (
           <div
             className=" fixed inset-0 flex items-center justify-center z-50"
             onClick={closeIsPassword}
@@ -424,9 +473,8 @@ function EditFaculty() {
             </div>
           </div>
         )}
-      </div>
     </div>
   );
 }
 
-export default EditFaculty;
+export default EditParent;

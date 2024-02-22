@@ -1,14 +1,13 @@
 import ApiConstants from "../../../../constants/adminconstants.js";
-import { ListResponse, BaseResponse } from "../faculty_model/faculty_model.js";
+import { ListResponse, BaseResponse } from "../student_model/student_model.js";
 
-class EditFacultyManager {
-  async edit(id, name, email, contactno, isStudentAdvisor) {
-    const url = ApiConstants.EDIT_FACULTY + id;
+class EditStudentManager {
+  async edit(id, name, email, contactno) {
+    const url = ApiConstants.EDIT_STUDENT + id;
     const params = {
       name: name,
       email: email,
       contactno: contactno,
-      isStudentAdvisor: isStudentAdvisor,
     };
     const token = localStorage.getItem("adminToken");
     try {
@@ -42,7 +41,7 @@ class EditFacultyManager {
   }
 
   async editPassword(id, password) {
-    const url = ApiConstants.EDIT_FACULTY_PASSWORD + id;
+    const url = ApiConstants.EDIT_STUDENT_PASSWORD + id;
     const params = {
       new_password: password,
     };
@@ -78,4 +77,4 @@ class EditFacultyManager {
   }
 }
 
-export default EditFacultyManager;
+export default EditStudentManager;
