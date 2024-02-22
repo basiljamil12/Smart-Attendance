@@ -4,13 +4,15 @@ import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { FileUpload } from "primereact/fileupload";
 import Toast from "../components/toast/toast";
 import FacultyValidateTokenManager from "../models/faculty/auth/http/validate_token_http";
-import Spinner from "../components/spinner/spinner";
 import StudentValidateTokenManager from "../models/student/auth/http/get_student_token_validation";
 import ParentValidateTokenManager from "../models/parent/auth/http/validate_parent_token";
+import ResetFacultyPassManager from "../models/faculty/auth/http/resetpasshttp";
+import Spinner from "../components/spinner/spinner";
 function ResetPassword() {
   const facValidToken = new FacultyValidateTokenManager();
   const studentValidToken = new StudentValidateTokenManager();
   const parentValidToken = new ParentValidateTokenManager();
+  const resetFacultyPassManager = new ResetFacultyPassManager();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const studentToken = searchParams.get("studentToken");
@@ -142,7 +144,7 @@ function ResetPassword() {
 
 
 
-  const handleReset = () => {
+  const handleReset =async () => {
 
     if (!password || !confirmPassword) {
       // If either start or end date is empty
@@ -156,7 +158,52 @@ function ResetPassword() {
       ]);
       return; // Prevent form submission
     }
-    navigate("/student/login");
+   
+      if (pathname.includes('/student/') && studentToken) {
+        try{
+
+          navigate("/student/login");
+        }
+        catch{
+
+        }
+      }
+      if (pathname.includes('/parent/') && parentToken) {
+        try{
+          navigate("/parent/login");
+        }
+        catch{
+          
+        }
+      }
+      if (pathname.includes('/faculty/') && facultyToken) {
+        setShowLoading(true);
+        try{
+          const response = await resetFacultyPassManager.reset(facultyToken,confirmPassword);
+          if(response.success){
+            const updatedToastMessages = [
+              ...toastMessages,
+              {
+                  type: "success",
+                  title: "Success",
+                  body: response.message,
+              },
+          ];
+            setToastMessages(updatedToastMessages);
+        navigate("/faculty/login", { state: { toastMessages: updatedToastMessages } });
+          }
+
+        }
+        catch{
+          
+        }
+        finally{
+          setShowLoading(false);
+        }
+        
+      }
+      
+   
   };
 
   return (
@@ -221,7 +268,7 @@ function ResetPassword() {
                 class=" transition-opacity hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px]  md:w-[280px] w-[220px]  rounded-[20px]   bg-clip-padding px-3 py-2  leading-tight text-white text-[20px] md:text-[24px]"
                 onClick={handleReset}
               >
-                Reset
+            {showLoading ? <Spinner /> : 'Reset'}
               </button>
             </div>
           </div>

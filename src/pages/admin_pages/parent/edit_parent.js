@@ -45,7 +45,7 @@ function EditParent() {
           setParentName(value.data.name);
           setContactno(value.data.contactno);
           setEmail(value.data.email);
-          setSelectedStudentEmail(value.data.studentID);
+          setSelectedStudentEmail(value.data.studentID.email);
           setShowLoading(false);
         } else {
           setToastMessages([
@@ -68,7 +68,7 @@ function EditParent() {
         ]);
       }
     });
-  }, []);
+  }, [id]);
 
   const getAllStudent = () => {
     setShowLoading(true);
@@ -403,17 +403,18 @@ function EditParent() {
             className="placeholder-gray-500 w-full h-14 md:h-16 border-[1px] border-black border-solid   text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon "
           />
         </div>
+        {selectedStudentEmail && (
         <div className="md:ml-3 ml-2 mt-5 md:mt-6 mb-10 ">
           <Select
             id="studentEmail"
-            placeholder="Select Student Email"
+            // placeholder={selectedStudentEmail}
             onChange={handleStudentEmailChange}
-            value={selectedStudentEmail}
+            defaultValue={{ label: selectedStudentEmail, value: 0 }}
             styles={customStyles}
             options={studentEmailOptions}
-            //className="text-left h-14 md:h-16 border-[1px] border-black border-solid text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon"
+            //className="focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon"
           />
-        </div>
+        </div>)}
 
         <div class="flex items-center justify-center mb-14   ">
           <button

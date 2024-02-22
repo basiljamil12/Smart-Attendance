@@ -356,7 +356,7 @@ function EditFaculty() {
           <select
             id="isAdvisor"
             onChange={handleIsAdvisorChange}
-            value={isAdvisor}
+            defaultValue={{ label: isAdvisor, value: 0 }}
             className="placeholder-gray-500 w-full h-14 md:h-16 border-[1px] border-black border-solid   text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon"
           >
             <option value="" disabled>
