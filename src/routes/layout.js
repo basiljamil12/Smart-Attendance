@@ -6,7 +6,7 @@ import {
   Routes,
   Route,
   Navigate,
-  useParams
+  useParams,
 } from "react-router-dom";
 
 import RoleSelect from "../pages/role_selection";
@@ -37,6 +37,7 @@ import StudentAccountDetails from "../pages/student_pages/student_account_detail
 import StudentAdboard from "../pages/admin_pages/student/admin_student_board";
 import ParentAdboard from "../pages/admin_pages/parent/admin_parent_board";
 import CourseAdboard from "../pages/admin_pages/course/admin_course_board";
+import EditCourse from "../pages/admin_pages/course/edit_course";
 function ResetPasswordRoute() {
   return <ResetPassword />;
 }
@@ -44,7 +45,6 @@ function Layout() {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
 
-  
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location]);
@@ -62,7 +62,8 @@ function Layout() {
     "/adboard/parent/edit",
     "/adboard/course/add",
     "/adboard/dashboard/parent/create",
-    "/adboard/course"
+    "/adboard/course",
+    "/adboard/course/edit",
   ].includes(location.pathname);
 
   return (
@@ -75,20 +76,14 @@ function Layout() {
           <Route path="/parent/login" element={<ParentLogin />} />
           <Route path="/faculty/login" element={<FacultyLogin />} />
           <Route path="/adboard/signin" element={<AdminLogin />} />
-          <Route
-            path="/adboard/course/add"
-            element={<CreateCourse />}
-          />
-          <Route
-            path="/adboard/parent/add"
-            element={<CreateParent />}
-          />
-          <Route
-            path="/adboard/student/add"
-            element={<CreateStudent />}
-          />
+          <Route path="/adboard/course/add" element={<CreateCourse />} />
+          <Route path="/adboard/parent/add" element={<CreateParent />} />
+          <Route path="/adboard/student/add" element={<CreateStudent />} />
           <Route path="/student/dashboard" element={<StudentDashboard />} />
-          <Route path="/student/dashboard/details" element={<StudentAttendanceDetails />} />
+          <Route
+            path="/student/dashboard/details"
+            element={<StudentAttendanceDetails />}
+          />
           <Route path="/parent/dashboard" element={<ParentDashboard />} />
           <Route path="/faculty/dashboard" element={<FacultyDashboard />} />
           <Route path="/student/leave" element={<ApplyLeave />} />
@@ -97,8 +92,14 @@ function Layout() {
             path="/student/reset-password"
             element={<ResetPasswordRoute />}
           />
-          <Route path="/faculty/reset-password" element={<ResetPasswordRoute />} />
-          <Route path="/parent/reset-password" element={<ResetPasswordRoute />} />
+          <Route
+            path="/faculty/reset-password"
+            element={<ResetPasswordRoute />}
+          />
+          <Route
+            path="/parent/reset-password"
+            element={<ResetPasswordRoute />}
+          />
           <Route path="/adboard/dashboard" element={<AdminDashboard />} />
           <Route path="/adboard/faculty" element={<FacultyAdboard />} />
           <Route path="/adboard/student" element={<StudentAdboard />} />
@@ -107,10 +108,17 @@ function Layout() {
           <Route path="/adboard/faculty/add" element={<CreateFaculty />} />
           <Route path="/adboard/faculty/edit" element={<EditFaculty />} />
           <Route path="/faculty/course/register" element={<CourseApproval />} />
-          <Route path="/faculty/account/information" element={<FacultyAccountDetails />} />
-          <Route path="/student/account/information" element={<StudentAccountDetails />} />
+          <Route
+            path="/faculty/account/information"
+            element={<FacultyAccountDetails />}
+          />
+          <Route
+            path="/student/account/information"
+            element={<StudentAccountDetails />}
+          />
           <Route path="/adboard/parent/edit" element={<EditParent />} />
           <Route path="/adboard/student/edit" element={<EditStudent />} />
+          <Route path="/adboard/course/edit" element={<EditCourse />} />
         </Routes>
       </div>
     </div>
