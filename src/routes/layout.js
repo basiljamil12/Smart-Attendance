@@ -29,7 +29,7 @@ import EditParent from "../pages/admin_pages/parent/edit_parent";
 import EditStudent from "../pages/admin_pages/student/edit_student";
 import Sidebar from "../components/sidebar/sidebar";
 import StudentAttendanceDetails from "../pages/student_pages/attendance_details";
-import RegisterCourse from "../pages/student_pages/register_course";
+import OfferedCourses from "../pages/student_pages/offered_courses";
 import CourseApproval from "../pages/faculty_pages/course_approve";
 import FacultyAccountDetails from "../pages/faculty_pages/account_details";
 import CreateStudent from "../pages/admin_pages/student/create_student";
@@ -39,6 +39,7 @@ import ParentAdboard from "../pages/admin_pages/parent/admin_parent_board";
 import CourseAdboard from "../pages/admin_pages/course/admin_course_board";
 import EditCourse from "../pages/admin_pages/course/edit_course";
 import LeaveDashboard from "../pages/faculty_pages/leave_dashboard";
+import RegisteredCourses from "../pages/student_pages/registered_courses";
 function ResetPasswordRoute() {
   return <ResetPassword />;
 }
@@ -89,7 +90,8 @@ function Layout() {
           <Route path="/faculty/dashboard" element={<FacultyDashboard />} />
           <Route path="/student/leave" element={<ApplyLeave />} />
           <Route path="/faculty/leave" element={<LeaveDashboard />} />
-          <Route path="/student/course/register" element={<RegisterCourse />} />
+          <Route path="/student/course/register" element={<OfferedCourses />} />
+          <Route path="/student/course/view" element={<RegisteredCourses />} />
           <Route
             path="/student/reset-password"
             element={<ResetPasswordRoute />}

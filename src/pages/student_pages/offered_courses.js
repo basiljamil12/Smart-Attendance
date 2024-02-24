@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 import StudentCourseManager from "../../models/student/auth/http/course_req";
 import Spinner from "../../components/spinner/spinner";
 import Toast from "../../components/toast/toast";
-function RegisterCourse() {
+function OfferedCourses() {
   const courseManager = new CourseManager();
   const studentCourseManager = new StudentCourseManager();
   const [showLoading, setShowLoading] = useState(false);
@@ -33,6 +33,9 @@ function RegisterCourse() {
             }
            else if (course.status === 'accepted') {
             initialRegistrationStatus[course.courseId._id] = 'accepted';
+          }
+          else if (course.status === 'rejected') {
+            initialRegistrationStatus[course.courseId._id] = 'rejected';
           }
           });
           setRegistrationStatus(initialRegistrationStatus);
@@ -268,7 +271,9 @@ function RegisterCourse() {
       <span className="text-sa-blue font-semibold px-8 py-2">Pending</span>
     ) : registrationStatus[course.courseID] === 'accepted' ? (
       <span className="text-green-600 font-semibold px-8 py-2">Registered</span>
-    ) : (
+    ) : registrationStatus[course.courseID] === 'rejected' ? (
+      <span className="text-red-600 font-semibold px-8 py-2">Rejected</span>
+    ) :(
       <button
         className="bg-sa-maroon cursor-pointer md:mr-2 text-white inline-flex items-center gap-2 rounded-md px-6 py-2 text-md transition-opacity hover:opacity-90 hover:text-gray-300 focus:relative"
         onClick={() => handleRegister(course.courseID)}
@@ -302,4 +307,4 @@ function RegisterCourse() {
   );
 }
 
-export default RegisterCourse;
+export default OfferedCourses;

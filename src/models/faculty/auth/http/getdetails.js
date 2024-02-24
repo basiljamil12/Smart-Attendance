@@ -1,13 +1,13 @@
 import facultyApiConstants from "../../../../constants/facultyconstants.js";
-import { BaseResponse } from "../authmodels/signinmodel.js";
+import { BaseResponse } from "../authmodels/facultymodel.js";
 
-class FacultySignoutManager {
-  async signout() {
-    const url = facultyApiConstants.SIGN_OUT;
+class FacultyDetailsManager {
+  async get() {
+    const url = facultyApiConstants.GET_DETAILS;
     const token = localStorage.getItem("facultyToken");
     try {
       const response = await fetch(url, {
-        method: "DELETE",
+        method: "GET",
         headers: {
           
           'Content-Type': 'application/json',
@@ -28,9 +28,6 @@ class FacultySignoutManager {
 
       if (response.ok) {
         const responseBody = await response.json();
-        localStorage.removeItem("facultyToken");
-        localStorage.removeItem("facultyEmail");
-        localStorage.removeItem("facultyName");
         return new BaseResponse(responseBody);
       } else {
         const errorBody = await response.text();
@@ -42,4 +39,4 @@ class FacultySignoutManager {
   }
 }
 
-export default FacultySignoutManager;
+export default FacultyDetailsManager;

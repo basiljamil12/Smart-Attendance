@@ -64,6 +64,17 @@ function ApplyLeave() {
       ]);
       return; // Prevent form submission
     }
+    if (new Date(startDate1) > new Date(endDate1)) {
+      setToastMessages([
+        ...toastMessages,
+        {
+          type: "invalid",
+          title: "Invalid Date Range",
+          body: "End date cannot be earlier than start date",
+        },
+      ]);
+      return; // Prevent form submission
+    }
     if (!reason.trim()) {
       // If subject is empty or contains only whitespace
       setToastMessages([
@@ -222,7 +233,7 @@ function ApplyLeave() {
     />
     <label
       htmlFor="fileInput"
-      className="transition-opacity hover:opacity-90 md:mr-4 text-white absolute end-2.5 bottom-2.5 bg-sa-maroon focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 md:py-3 py-2  cursor-pointer"
+      className="transition-opacity hover:opacity-90 md:mr-3 text-white absolute end-2.5 bottom-2.5 bg-sa-maroon focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md px-5 md:py-2.5 py-2  cursor-pointer"
     >
       Choose File
       <input
