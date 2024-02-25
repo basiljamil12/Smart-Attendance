@@ -149,7 +149,7 @@ function Reset_mail({ studentState, parentState, facultyState, closePopup,update
 
                         <button
                             type="button"
-                            className="mb-2 block md:mx-14 md:w-[370px] md:mt-9 mt-8 mx-10 md:h-[56px] h-[50px] w-[245px] bg-sa-maroon rounded-[10px]  text-center text-[19px] md:text-2xl font-[700] leading-normal text-white transition-opacity hover:opacity-85"
+                            className="mb-2 block md:mx-14 md:w-[370px] md:mt-9 mt-8 mx-10 md:h-[56px] h-[50px] w-[245px] bg-sa-maroon rounded-[10px]  text-center text-[19px] md:text-2xl font-[700] leading-normal text-white hover:scale-105 transition-all duration-300 ease-in-out hover:text-gray-300 hover:opacity-85"
                             onClick={handleSendLink}
                         >
             {showLoading ? <Spinner /> : 'Send Link'}

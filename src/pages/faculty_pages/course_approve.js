@@ -227,37 +227,48 @@ function CourseApproval() {
                       </span>
                     </td>
                     <td className="p-0 py-5 border-r border-sa-grey">
-                      <div className="xl:inline-flex items-center justify-center w-full h-full  overflow-hidden overflow-ellipsis  rounded-lg border bg-sa-pink p-1" style={{ wordWrap: "break-word" }} >
-                        {faculty && faculty.status === 'registered' ? (
-                          <button
-                            className="  lg:w-[55%] w-[88px] h-full xl:mt-0 items-center rounded-md bg-[#d9534f]   py-2.5 text-sm lg:text-base text-white transition-opacity hover:opacity-90 hover:text-gray-300 shadow-sm focus:relative"
-                            onClick={() => handleStatusUpdate(faculty.courseReqId, 'removed')}
-
-                          >
-                            Remove
-                          </button>
-                        ) : (
-                          <>
-                            <button
-                              className=" xl:w-[6rem] lg:w-[6rem]    h-full bg-[#198754] xl:ml-2 text-white inline-flex items-center gap-2 rounded-md px-4 py-2 lg:text-base text-sm transition-opacity hover:opacity-90 hover:text-gray-300 focus:relative"
-                              onClick={() => handleStatusUpdate(faculty.courseReqId, 'accepted')}
-                            >
+  <div className="xl:inline-flex items-center justify-center w-full h-full  overflow-hidden overflow-ellipsis  rounded-lg border bg-sa-pink p-1" style={{ wordWrap: "break-word" }}>
+    {faculty && faculty.status === 'rejected' ? (
+      <button
+        className=" lg:w-[55%] w-[88px]    h-full bg-[#198754] xl:ml-2 text-white  items-center gap-2 rounded-md py-2 lg:text-base text-sm hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300 focus:relative"
+        onClick={() => handleStatusUpdate(faculty.courseReqId, 'accepted')}
+      >
         {showLoading ? <Spinner /> : 'Approve'}
-                            </button>
-                            <div className="xl:border-l xl:border-solid xl:mx-3 xl:border-sa-grey hidden xl:block"></div>
-                            <div className="border-b mx-5 mt-5 border-sa-grey block xl:hidden"></div>
-                            <button
-                              className="xl:w-[5rem] lg:w-[5rem]  h-full inline-flex xl:mt-0 mt-5 items-center  rounded-md bg-[#d9534f] px-4 py-2 lg:text-base text-sm text-white transition-opacity hover:opacity-90 hover:text-gray-300 shadow-sm focus:relative"
-                              onClick={() => handleStatusUpdate(faculty.courseReqId, 'rejected')}
-                              style={{ wordWrap: "break-word" }}
-                            >
-        {showLoading ? <Spinner /> : 'Reject'}
-                          
-                            </button>
-                          </>
-                        )}
-                      </div>
-                    </td>
+      </button>
+    ) : (
+      <>
+        {faculty && faculty.status === 'registered' ? (
+          <button
+            className="  lg:w-[55%] w-[88px] h-full xl:mt-0 items-center rounded-md bg-[#d9534f] hover:scale-105 transition-all duration-300 ease-in-out  py-2.5 text-sm lg:text-base text-white hover:opacity-90 hover:text-gray-300 shadow-sm focus:relative"
+            onClick={() => handleStatusUpdate(faculty.courseReqId, 'removed')}
+          >
+            {showLoading ? <Spinner /> : 'Remove'}
+          </button>
+        ) : (
+          <>
+            <button
+              className=" xl:w-[6rem] lg:w-[6rem]    h-full bg-[#198754] xl:ml-2 hover:scale-105 transition-all duration-300 ease-in-out text-white inline-flex items-center gap-2 rounded-md px-4 py-2 lg:text-base text-sm  hover:opacity-90 hover:text-gray-300 focus:relative"
+              onClick={() => handleStatusUpdate(faculty.courseReqId, 'accepted')}
+            >
+              {showLoading ? <Spinner /> : 'Approve'}
+            </button>
+            <div className="xl:border-l border-[1px] h-[30px] xl:border-solid xl:mx-3 xl:border-gray-300 hidden xl:block"></div>
+            {/* <div className="xl:border-l xl:border-solid xl:mx-3 xl:border-sa-grey hidden xl:block"></div> */}
+            <div className="border-b border-[1px] mx-5 mt-5 border-sa-grey block xl:hidden"></div>
+            <button
+              className="xl:w-[5rem] lg:w-[5rem] hover:scale-105 transition-all duration-300 ease-in-out  h-full inline-flex xl:mt-0 mt-5 items-center  rounded-md bg-[#d9534f] px-4 py-2 lg:text-base text-sm text-white  hover:opacity-90 hover:text-gray-300 shadow-sm focus:relative"
+              onClick={() => handleStatusUpdate(faculty.courseReqId, 'rejected')}
+              style={{ wordWrap: "break-word" }}
+            >
+              {showLoading ? <Spinner /> : 'Reject'}
+            </button>
+          </>
+        )}
+      </>
+    )}
+  </div>
+</td>
+
                     <td className="p-0 py-5 border-sa-grey">
     <span
         className={`block text-base w-full h-full overflow-hidden overflow-ellipsis font-semibold ${

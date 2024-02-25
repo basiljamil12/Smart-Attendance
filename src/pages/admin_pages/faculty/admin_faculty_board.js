@@ -217,7 +217,7 @@ function FacultyAdboard() {
                       <td className="p-2 py-5  border-sa-grey">
                         <div class="lg:inline-flex rounded-lg border  bg-sa-pink p-1">
                           <button
-                            class="bg-sa-maroon md:mr-2 text-white inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm  transition-opacity hover:opacity-90 hover:text-gray-300  focus:relative"
+                            class="bg-sa-maroon md:mr-2 text-white hover:scale-105 transition-all duration-300 ease-in-out inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm  hover:opacity-90 hover:text-gray-300  focus:relative"
                             onClick={() => handleNavigate(index)}
                           >
                             <svg
@@ -238,7 +238,7 @@ function FacultyAdboard() {
                           </button>
 
                           <button
-                            class="inline-flex lg:mt-0 mt-2 items-center gap-2 rounded-md bg-[#d9534f] px-4 py-2 text-sm text-white transition-opacity hover:opacity-90  hover:text-gray-300 shadow-sm focus:relative"
+                            class="inline-flex lg:mt-0 mt-2 items-center gap-2 rounded-md bg-[#d9534f] px-4 py-2 text-sm text-white hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90  hover:text-gray-300 shadow-sm focus:relative"
                             onClick={() => openIsDelete(index)}
                           >
                             <svg
@@ -301,12 +301,12 @@ function FacultyAdboard() {
             <div className="flex justify-end mt-6">
               <button
                 onClick={closeIsDelete}
-                className="text-filter-heading transition-opacity hover:opacity-70 mr-4 border-2 border-gray-400 rounded-[9px] border-filter-heading py-1 px-6"
+                className="text-filter-heading hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-70 mr-4 border-2 border-gray-400 rounded-[9px] border-filter-heading py-1 px-6"
               >
                 Cancel
               </button>
               <button
-                className="bg-sa-maroon transition-opacity hover:opacity-70 text-white md:px-7 px-5 rounded-[9px] py-1 "
+                className="bg-sa-maroon hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-70 text-white md:px-7 px-5 rounded-[9px] py-1 "
                 onClick={handleDelete}
               >
                 {deleteShowLoading ? <Spinner /> : <span>Delete</span>}

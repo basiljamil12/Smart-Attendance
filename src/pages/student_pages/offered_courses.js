@@ -34,6 +34,9 @@ function OfferedCourses() {
            else if (course.status === 'accepted') {
             initialRegistrationStatus[course.courseId._id] = 'accepted';
           }
+          else if (course.status === 'removed') {
+            initialRegistrationStatus[course.courseId._id] = 'removed';
+          }
           else if (course.status === 'rejected') {
             initialRegistrationStatus[course.courseId._id] = 'rejected';
           }
@@ -202,8 +205,10 @@ function OfferedCourses() {
             <span className="text-sa-maroon font-bold text-[28px] md:text-[36px]">
             Offered Courses
             </span>
-            
           </div>
+          <div className="flex justify-between mx-10 md:mx-24 mt-2 italic font-semibold text-red-600">
+  *Note: Contact your student advisor in case of removal or rejection of course.*
+</div>
           <div className="overflow-x-auto mt-10 mx-10 md:ml-[6%] md:w-[90%] md:shadow-xl rounded-2xl">
             <table className="table-fixed min-w-full bg-sa-pink w-[800px] md:w-[50vw] rounded-2xl">
               <thead>
@@ -273,9 +278,11 @@ function OfferedCourses() {
       <span className="text-green-600 font-semibold px-8 py-2">Registered</span>
     ) : registrationStatus[course.courseID] === 'rejected' ? (
       <span className="text-red-600 font-semibold px-8 py-2">Rejected</span>
+      ) : registrationStatus[course.courseID] === 'removed' ? (
+        <span className="text-orange-500 font-semibold px-8 py-2">Removed</span>
     ) :(
       <button
-        className="bg-sa-maroon cursor-pointer md:mr-2 text-white inline-flex items-center gap-2 rounded-md px-6 py-2 text-md transition-opacity hover:opacity-90 hover:text-gray-300 focus:relative"
+        className="bg-sa-maroon cursor-pointer md:mr-2 text-white inline-flex items-center gap-2 rounded-md px-6 py-2 text-md hover:opacity-90 hover:scale-105 transition-all duration-300 ease-in-out hover:text-gray-300 focus:relative"
         onClick={() => handleRegister(course.courseID)}
       >
         {showLoading ? <Spinner /> : 'Register'}

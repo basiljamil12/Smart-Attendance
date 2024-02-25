@@ -31,7 +31,7 @@ function RoleSelect() {
             <img src={Teacher} />
           </div>
           <div className="pt-3">
-            <button className="bg-sa-maroon rounded-xl w-48 h-12 shadow-md mx-5"
+            <button className="bg-sa-maroon hover:scale-110 transition-all duration-300 ease-in-out  rounded-xl w-48 h-12 shadow-md mx-5"
             onClick={goToFacultyLogin}>
               <span className="text-white font-bold text-xl">
                 Go To Faculty
@@ -44,7 +44,7 @@ function RoleSelect() {
             <img src={Student} />
           </div>
           <div className="pt-2">
-            <button className="bg-sa-maroon rounded-xl w-48 h-12 shadow-md mx-5"
+            <button className="bg-sa-maroon hover:scale-110 transition-all duration-300 ease-in-out rounded-xl w-48 h-12 shadow-md mx-5"
             onClick={goToStudentLogin}>
               <span className="text-white font-bold text-xl">
                 Go To Student
@@ -57,7 +57,7 @@ function RoleSelect() {
             <img src={Parent} />
           </div>
           <div className="pt-5">
-            <button className="bg-sa-maroon rounded-xl w-48 h-12 shadow-md mx-5"
+            <button className="bg-sa-maroon hover:scale-110 transition-all duration-300 ease-in-out rounded-xl w-48 h-12 shadow-md mx-5"
             onClick={goToParentLogin}
             >
               <span className="text-white font-bold text-xl">Go To Parent</span>
