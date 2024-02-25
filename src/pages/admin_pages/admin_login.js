@@ -189,13 +189,13 @@ function AdminLogin() {
             {showLoading ? <Spinner /> : 'Sign In'}
           </button>{" "}
         </div>
-        <div>
+        {/* <div>
           <p className="text-[14px] font-bold mb-20 text-sa-blue md:text-[14px] md:ml-[47%] w-60 md:w-72 ml-[98px]  text-clue-yellow  cursor-pointer">
             <a  className="underline">
               Forgot Password?
             </a>
           </p>
-        </div>
+        </div> */}
 
         {/* <div className="w-72 shadow-xl h-96 rounded-3xl mx-10 md:my-0 my-10">
           <div>
