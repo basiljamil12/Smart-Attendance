@@ -4,7 +4,7 @@ import StudentNavbar from "../../components/navbars/student_navbar";
 import { useNavigate } from "react-router";
 import CourseManager from "../../models/admin/course/http/get_all_course";
 import { useLocation } from 'react-router-dom';
-import StudentCourseManager from "../../models/student/auth/http/course_req";
+import StudentCourseManager from "../../models/courses/http/course_req";
 import Spinner from "../../components/spinner/spinner";
 import Toast from "../../components/toast/toast";
 function RegisteredCourses() {

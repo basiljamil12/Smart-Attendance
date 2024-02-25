@@ -1,7 +1,6 @@
 import { PartyMode } from "@mui/icons-material";
-import CourseApiConstants from "../../../../constants/courseconstant.js";
-import { BaseResponse,ListResponse } from "../authmodels/coursemodel.js";
-
+import CourseApiConstants from "../../../constants/courseconstant.js";
+import { BaseResponse,ListResponse } from "../course_model/coursemodel.js";
 class StudentCourseManager {
     async createCourse(courseId,status) {
         const url = CourseApiConstants.CREATE_COURSE_REQ;

@@ -3,6 +3,8 @@ const BASE_URL = "http://localhost:3000/api/v1/";
 const CourseApiConstants = {
     CREATE_COURSE_REQ: `${BASE_URL}creq/create`,
     GET_STUDENT_COURSE_REQ: `${BASE_URL}creq/details-by-student`,
+    GET_ALL_COURSE_REQ: `${BASE_URL}creq/alldetails`,
+    UPDATE_COURSE_REQ_STATUS: `${BASE_URL}creq/update?_id=`,
   SIGN_OUT: `${BASE_URL}admin/sign-out`,
   GET_ALL_FACULTY: `${BASE_URL}faculty/alldetails`,
   GET_ALL_PARENT: `${BASE_URL}parent/alldetails`,

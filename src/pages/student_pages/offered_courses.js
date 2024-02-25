@@ -4,7 +4,7 @@ import StudentNavbar from "../../components/navbars/student_navbar";
 import { useNavigate } from "react-router";
 import CourseManager from "../../models/admin/course/http/get_all_course";
 import { useLocation } from 'react-router-dom';
-import StudentCourseManager from "../../models/student/auth/http/course_req";
+import StudentCourseManager from "../../models/courses/http/course_req";
 import Spinner from "../../components/spinner/spinner";
 import Toast from "../../components/toast/toast";
 function OfferedCourses() {
@@ -119,7 +119,7 @@ function OfferedCourses() {
     // Add dependencies if needed (e.g., studentToken, confirmPassword)
   }, []);
   
-  const AttendanceData = courses.map(course => ({
+  const coursesData = courses.map(course => ({
     courseID:course._id,
     courseCode: course.courseCode,
     courseTitle: course.courseName,
@@ -227,7 +227,7 @@ function OfferedCourses() {
                     </tr>
               </thead>
               <tbody>
-                {AttendanceData.map((course, index) => (
+                {coursesData.map((course, index) => (
                   <tr key={index} className="border-b border-sa-grey">
                     <td className="p-0 py-5  border-r border-sa-grey w-[100px]">
                       {index + 1}
