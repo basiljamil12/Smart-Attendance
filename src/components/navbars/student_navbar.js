@@ -1,11 +1,11 @@
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 function StudentNavbar() {
   const navigate = useNavigate();
-  
+
   const [open, setOpen] = useState(false);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [leaveMenuOpen, setLeaveMenuOpen] = useState(false);
@@ -16,7 +16,7 @@ function StudentNavbar() {
         setOpen(false);
       }
     }
-    
+
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -24,20 +24,26 @@ function StudentNavbar() {
   }, [open]);
 
   const handleLeaveClick = () => {
-    navigate('/student/leave');
+    navigate("/student/leave");
     setOpen(false);
   };
 
   const toggleAccountMenu = () => {
+    if (leaveMenuOpen == true) {
+      setLeaveMenuOpen(false);
+    }
     setAccountMenuOpen(!accountMenuOpen);
   };
 
   const toggleLeaveMenu = () => {
+    if (accountMenuOpen == true) {
+      setAccountMenuOpen(false);
+    }
     setLeaveMenuOpen(!leaveMenuOpen);
   };
 
   const handleHomeClick = () => {
-    navigate('/student/dashboard');
+    navigate("/student/dashboard");
     setOpen(false);
   };
 
@@ -89,57 +95,125 @@ function StudentNavbar() {
         </div>
         {open && (
           <div className="absolute top-full left-0 right-0 bg-sa-maroon z-10 pt-2 pb-4 px-4">
-            <span onClick={handleHomeClick} className="transition-opacity hover:opacity-60 block text-xl text-white font-bold mb-2 pb-2 hover:cursor-pointer">
+            <span
+              onClick={handleHomeClick}
+              className="transition-opacity hover:opacity-60 block text-xl text-white font-bold mb-2 pb-2 hover:cursor-pointer"
+            >
               Home
             </span>
             <span className="transition-opacity hover:opacity-60 block text-xl text-white font-bold mb-2 py-2 hover:cursor-pointer">
               Course
             </span>
-            <span onClick={toggleLeaveMenu} className="transition-opacity hover:opacity-60 block text-xl text-white font-bold mb-2 py-2 hover:cursor-pointer">
+            <span
+              onClick={toggleLeaveMenu}
+              className="transition-opacity hover:opacity-60 block text-xl text-white font-bold mb-2 py-2 hover:cursor-pointer"
+            >
               Leave
             </span>
             {leaveMenuOpen && (
               <div className="bg-sa-maroon py-2 px-4 mt-2">
-                <span onClick={handleApplyClick} className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer hover:bg-gray-200">Apply For Leave</span>
-                <span onClick={handleStatusClick} className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer hover:bg-gray-200">View Leave Status</span>
+                <span
+                  onClick={handleApplyClick}
+                  className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer hover:bg-gray-200"
+                >
+                  Apply For Leave
+                </span>
+                <span
+                  onClick={handleStatusClick}
+                  className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer hover:bg-gray-200"
+                >
+                  View Leave Status
+                </span>
               </div>
             )}
-            <span onClick={toggleAccountMenu} className="transition-opacity hover:opacity-60 block text-xl text-white font-bold mb-2 py-2 hover:cursor-pointer">
+            <span
+              onClick={toggleAccountMenu}
+              className="transition-opacity hover:opacity-60 block text-xl text-white font-bold mb-2 py-2 hover:cursor-pointer"
+            >
               Account
             </span>
             {accountMenuOpen && (
               <div className="bg-sa-maroon py-2 px-4 mt-2">
-                <span onClick={handleProfileClick} className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer hover:bg-gray-200">Profile Information</span>
-                <span onClick={handleChangePasswordClick} className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer hover:bg-gray-200">Change Password</span>
-                <span onClick={handleSignoutClick} className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer hover:bg-gray-200">Signout</span>
+                <span
+                  onClick={handleProfileClick}
+                  className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer hover:bg-gray-200"
+                >
+                  Profile Information
+                </span>
+                <span
+                  onClick={handleChangePasswordClick}
+                  className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer hover:bg-gray-200"
+                >
+                  Change Password
+                </span>
+                <span
+                  onClick={handleSignoutClick}
+                  className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer hover:bg-gray-200"
+                >
+                  Signout
+                </span>
               </div>
             )}
           </div>
         )}
-        <div className="md:block hidden">
-          <span onClick={handleHomeClick} className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer">
+        <div className="md:block hidden w-full">
+          <span
+            onClick={handleHomeClick}
+            className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer"
+          >
             Home
           </span>
           <span className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer">
             Course
           </span>
-          <span onClick={toggleLeaveMenu} className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer">
+          <span
+            onClick={toggleLeaveMenu}
+            className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer"
+          >
             Leave
           </span>
-          {leaveMenuOpen && (
-            <div className="bg-white absolute top-full right-36 mt-1 py-2 px-4 rounded-xl shadow-xl w-64">
-              <span onClick={handleApplyClick} className="block text-sa-maroon font-bold text-lg py-2 mb-2 cursor-pointer hover:bg-gray-200">Apply For Leave</span>
-              <span onClick={handleStatusClick} className="block text-sa-maroon font-bold text-lg py-2 mb-2 cursor-pointer hover:bg-gray-200">View Leave Status</span>
-            </div>
-          )}
-          <span onClick={toggleAccountMenu} className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer">
+          <span
+            onClick={toggleAccountMenu}
+            className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer"
+          >
             Account
           </span>
           {accountMenuOpen && (
             <div className="bg-white absolute top-full right-5 mt-1 py-2 px-4 rounded-xl shadow-xl w-64">
-              <span onClick={handleProfileClick} className="block text-sa-maroon font-bold text-lg py-2 cursor-pointer hover:bg-gray-200 border-b-2">Profile Information</span>
-              <span onClick={handleChangePasswordClick} className="block text-sa-maroon font-bold text-lg py-2 cursor-pointer hover:bg-gray-200 border-b-2">Change Password</span>
-              <span onClick={handleSignoutClick} className="block text-sa-maroon font-bold text-lg py-2 cursor-pointer hover:bg-gray-200">Signout</span>
+              <span
+                onClick={handleProfileClick}
+                className="block text-sa-maroon font-bold text-lg py-2 cursor-pointer hover:bg-gray-200 border-b-2"
+              >
+                Profile Information
+              </span>
+              <span
+                onClick={handleChangePasswordClick}
+                className="block text-sa-maroon font-bold text-lg py-2 cursor-pointer hover:bg-gray-200 border-b-2"
+              >
+                Change Password
+              </span>
+              <span
+                onClick={handleSignoutClick}
+                className="block text-sa-maroon font-bold text-lg py-2 cursor-pointer hover:bg-gray-200"
+              >
+                Signout
+              </span>
+            </div>
+          )}
+          {leaveMenuOpen && (
+            <div className="bg-white absolute top-full right-36 mt-1 py-2 px-4 rounded-xl shadow-xl w-64">
+              <span
+                onClick={handleApplyClick}
+                className="block text-sa-maroon font-bold text-lg py-2 mb-2 cursor-pointer hover:bg-gray-200"
+              >
+                Apply For Leave
+              </span>
+              <span
+                onClick={handleStatusClick}
+                className="block text-sa-maroon font-bold text-lg py-2 mb-2 cursor-pointer hover:bg-gray-200"
+              >
+                View Leave Status
+              </span>
             </div>
           )}
         </div>

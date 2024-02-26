@@ -26,6 +26,7 @@ const ApiConstants = {
   EDIT_FACULTY_PASSWORD: `${BASE_URL}faculty/updatebyid/password?_id=`,
   EDIT_PARENT_PASSWORD: `${BASE_URL}parent/updatebyid/password?_id=`,
   EDIT_STUDENT_PASSWORD: `${BASE_URL}student/updatebyid/password?_id=`,
+  CREATE_LEAVE: `${BASE_URL}leave/create`,
 };
 
 export default ApiConstants;

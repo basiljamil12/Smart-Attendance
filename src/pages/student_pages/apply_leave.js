@@ -3,10 +3,13 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FileUpload } from "primereact/fileupload";
 import Toast from "../../components/toast/toast";
+import CreateLeaveManager from "../../models/student/leave/http/create_leave";
+import Spinner from "../../components/spinner/spinner";
 
 function ApplyLeave() {
-
   const navigate = useNavigate();
+  const leaveManager = new CreateLeaveManager();
+  const [showLoading, setShowLoading] = useState(false);
 
   const [startDate1, setStartDate] = useState();
   const [endDate1, setEndDate] = useState();
@@ -32,14 +35,12 @@ function ApplyLeave() {
   const handleSubjectChange = (e) => {
     setSubject(e.target.value);
   };
-  
+
   const handleReasonChange = (e) => {
     setReason(e.target.value);
   };
 
- 
-
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!subject.trim()) {
       // If subject is empty or contains only whitespace
       setToastMessages([
@@ -87,19 +88,64 @@ function ApplyLeave() {
       ]);
       return; // Prevent form submission
     }
-    navigate("/student/dashboard");
+    try {
+      setShowLoading(true);
+      const response = await leaveManager.create(
+        subject,
+        startDate1,
+        endDate1,
+        attachment,
+        reason
+      );
+
+      if (response.success) {
+        const updatedToastMessages = [
+          ...toastMessages,
+          {
+            type: "success",
+            title: "Success",
+            body: response.message,
+          },
+        ];
+        setToastMessages(updatedToastMessages);
+        navigate("/student/dashboard", {
+          state: { toastMessages: updatedToastMessages },
+        });
+      } else {
+        setToastMessages([
+          ...toastMessages,
+          {
+            type: "invalid",
+            title: "Error",
+            body: response.message,
+          },
+        ]);
+      }
+    } catch (response) {
+      setToastMessages([
+        ...toastMessages,
+        {
+          type: "invalid",
+          title: "Error",
+          body: response.message,
+        },
+      ]);
+    } finally {
+      setShowLoading(false); // Stop loading
+    }
   };
   function updateFileName(event) {
     const files = event.target.files;
     let fileNames = "";
-  
+
     if (files && files.length > 0) {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
+        setAttachment(file);
         const fileName = file.name;
         const allowedExtensions = [".jpg", ".jpeg", ".png"];
-        const extension = fileName.substring(fileName.lastIndexOf('.'));
-        
+        const extension = fileName.substring(fileName.lastIndexOf("."));
+
         if (allowedExtensions.includes(extension)) {
           fileNames += fileName;
           if (i !== files.length - 1) {
@@ -125,7 +171,7 @@ function ApplyLeave() {
       document.getElementById("attachements").value = "";
     }
   }
-  
+
   return (
     <div>
       <div>
@@ -219,34 +265,33 @@ function ApplyLeave() {
           >
             Attachements (Optional)
           </label>
-       
 
           <form>
-  <div className="relative md:mb-5 mb-6">
-    <input
-      type="search"
-      id="attachements"
-      className="placeholder-gray-500 focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon h-14 md:h-16 py-4 block w-full p-4 border border-black border-solid text-black rounded-xl bg-white focus:ring-blue-500"
-      placeholder="No File Choosen (PNG, JPG or JPEG)"
-      required
-      disabled 
-    />
-    <label
-      htmlFor="fileInput"
-      className="transition-opacity hover:opacity-90 md:mr-3 text-white absolute end-2.5 bottom-2.5 bg-sa-maroon focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md px-5 md:py-2.5 py-2  cursor-pointer"
-    >
-      Choose File
-      <input
-        type="file"
-        multiple
-        id="fileInput"
-        accept=".png, .jpg, .jpeg"   
-        className="hidden"
-        onChange={updateFileName}
-      />
-    </label>
-  </div>
-</form>
+            <div className="relative md:mb-5 mb-6">
+              <input
+                type="search"
+                id="attachements"
+                className="placeholder-gray-500 focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon h-14 md:h-16 py-4 block w-full p-4 border border-black border-solid text-black rounded-xl bg-white focus:ring-blue-500"
+                placeholder="No File Choosen (PNG, JPG or JPEG)"
+                required
+                disabled
+              />
+              <label
+                htmlFor="fileInput"
+                className="transition-opacity hover:opacity-90 md:mr-3 text-white absolute end-2.5 bottom-2.5 bg-sa-maroon focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md px-5 md:py-2.5 py-2  cursor-pointer"
+              >
+                Choose File
+                <input
+                  type="file"
+                  multiple
+                  id="fileInput"
+                  accept=".png, .jpg, .jpeg"
+                  className="hidden"
+                  onChange={updateFileName}
+                />
+              </label>
+            </div>
+          </form>
         </div>
         <div className="md:ml-3 ml-2 md:mb-6 mb-10 ">
           <label
@@ -273,7 +318,7 @@ function ApplyLeave() {
             class=" hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px]  md:w-[280px] w-[220px]  rounded-[20px]   bg-clip-padding px-3 py-2  leading-tight text-white text-[20px] md:text-[24px]"
             onClick={handleSubmit}
           >
-            Submit
+            {showLoading ? <Spinner /> : "Submit"}
           </button>
         </div>
       </div>
