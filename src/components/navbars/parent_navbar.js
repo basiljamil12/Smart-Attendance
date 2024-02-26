@@ -27,24 +27,36 @@ function ParentNavbar() {
   };
 
   const toggleAccountMenu = () => {
+   
+    if(accountMenuOpen==true){
+      return;
+    }
     setAccountMenuOpen(!accountMenuOpen);
   };
 
   const handleProfileClick = () => {
     // Handle click on Profile Information
     // You can add your logic here
+    navigate('/parent/account/information');
+    
     setAccountMenuOpen(false);
   };
 
   const handleChangePasswordClick = () => {
     // Handle click on Change Password
     // You can add your logic here
+    navigate('/parent/account/change-password');
+
     setAccountMenuOpen(false);
   };
 
   const handleSignoutClick = () => {
     // Handle click on Signout
     // You can add your logic here
+    setAccountMenuOpen(false);
+  };
+  const handleMouseLeave = () => {
+    setOpen(false);
     setAccountMenuOpen(false);
   };
 
@@ -89,11 +101,16 @@ function ParentNavbar() {
           <span   onClick={handleHomeClick} className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer">
             Home
           </span>
-          <span onClick={toggleAccountMenu} className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer">
+          <span 
+         // onClick={toggleAccountMenu} 
+         onMouseEnter={toggleAccountMenu}
+
+          className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer">
             Account
           </span>
           {accountMenuOpen && (
-            <div className="bg-white absolute top-full right-5 mt-1 py-2 px-4 rounded-xl shadow-xl w-64">
+            <div  onMouseLeave={handleMouseLeave}
+             className="bg-white absolute top-full right-5 mt-1 py-2 px-4 rounded-xl shadow-xl w-64">
               <span onClick={handleProfileClick} className="block text-sa-maroon font-bold text-lg py-2 cursor-pointer hover:bg-gray-200 border-b-2">Profile Information</span>
               <span onClick={handleChangePasswordClick} className="block text-sa-maroon font-bold text-lg py-2 cursor-pointer hover:bg-gray-200 border-b-2">Change Password</span>
               <span onClick={handleSignoutClick} className="block text-sa-maroon font-bold text-lg py-2 cursor-pointer hover:bg-gray-200">Signout</span>

@@ -11,6 +11,9 @@ const StudentApiConstants = {
   FORGOT_PASS: `${BASE_URL}student/forgot-password`,
   VALIDATE_TOKEN:`${BASE_URL}student/validate-reset-pass-token`,
   RESET_PASS:`${BASE_URL}student/reset-password`,
+  GET_STUDENT_DETAILS: `${BASE_URL}student/details`,
+  GET_STUDENT_LEAVE:`${BASE_URL}leave/details-by-student`,
+  CHANGE_PASSWORD:`${BASE_URL}/student/update/password`,
 
   CHANGE_USERNAME: `${BASE_URL}admin/change-username`,
   RESET_PASS_1: `${BASE_URL}admin/reset-password-step-1`,

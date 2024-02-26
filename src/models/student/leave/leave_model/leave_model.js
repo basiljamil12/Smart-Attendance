@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+
 export class LeaveData {
   constructor({
     _id,
@@ -24,8 +26,8 @@ export class LeaveData {
       _id: json._id,
       studentId: json.studentId,
       subject: json.subject,
-      fromDate: json.fromDate,
-      toDate: json.toDate,
+      fromDate: format(new Date(json.fromDate), 'MMM dd, yyyy'),
+      toDate: format(new Date(json.toDate), 'MMM dd, yyyy'),
       attachment: json.attachment,
       reason: json.reason,
       status: json.status,

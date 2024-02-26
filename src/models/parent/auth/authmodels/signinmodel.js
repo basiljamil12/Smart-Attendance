@@ -23,19 +23,22 @@ export class UserData {
   }
 }
 export class ResetPass {
-  constructor({ new_password }) {
+  constructor({ old_password,new_password }) {
+    this.old_password = old_password;
     this.new_password = new_password;
   
   }
 
   static fromJson(json) {
     return new ResetPass({
+      old_password: json.old_password,
       new_password: json.new_password,
     });
   }
 
   toJson() {
     return {
+      old_password: this.old_password,
       new_password: this.new_password,
     };
   }

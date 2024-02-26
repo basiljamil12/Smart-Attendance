@@ -38,10 +38,15 @@ import StudentAdboard from "../pages/admin_pages/student/admin_student_board";
 import ParentAdboard from "../pages/admin_pages/parent/admin_parent_board";
 import CourseAdboard from "../pages/admin_pages/course/admin_course_board";
 import EditCourse from "../pages/admin_pages/course/edit_course";
-import LeaveDashboard from "../pages/faculty_pages/leave_dashboard";
+import FacultyLeaveDashboard from "../pages/faculty_pages/leave_dashboard";
 import RegisteredCourses from "../pages/student_pages/registered_courses";
+import StudentLeaveDashboard from "../pages/student_pages/leave_dashboard";
+import ChangePassword from "../pages/change_password";
 function ResetPasswordRoute() {
   return <ResetPassword />;
+}
+function ChangePasswordRoute() {
+  return <ChangePassword />;
 }
 function Layout() {
   const location = useLocation();
@@ -89,7 +94,8 @@ function Layout() {
           <Route path="/parent/dashboard" element={<ParentDashboard />} />
           <Route path="/faculty/dashboard" element={<FacultyDashboard />} />
           <Route path="/student/leave" element={<ApplyLeave />} />
-          <Route path="/faculty/leave" element={<LeaveDashboard />} />
+          <Route path="/student/leave/dashboard" element={<StudentLeaveDashboard />} />
+          <Route path="/faculty/leave" element={<FacultyLeaveDashboard />} />
           <Route path="/student/course/register" element={<OfferedCourses />} />
           <Route path="/student/course/view" element={<RegisteredCourses />} />
           <Route
@@ -103,6 +109,18 @@ function Layout() {
           <Route
             path="/parent/reset-password"
             element={<ResetPasswordRoute />}
+          />
+           <Route
+            path="/student/account/change-password"
+            element={<ChangePasswordRoute />}
+          />
+          <Route
+            path="/faculty/account/change-password"
+            element={<ChangePasswordRoute />}
+          />
+          <Route
+            path="/parent/account/change-password"
+            element={<ChangePasswordRoute />}
           />
           <Route path="/adboard/dashboard" element={<AdminDashboard />} />
           <Route path="/adboard/faculty" element={<FacultyAdboard />} />

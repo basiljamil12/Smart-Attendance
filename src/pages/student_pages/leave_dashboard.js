@@ -1,21 +1,22 @@
 
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import FacultyNavbar from "../../components/navbars/faculty_navbar";
+import StudentNavbar from "../../components/navbars/student_navbar";
 import GetLeaveManager from "../../models/faculty/leave/http/get_leave";
 import Toast from "../../components/toast/toast";
 import Spinner from "../../components/spinner/spinner";
-function FacultyLeaveDashboard() {
+import GetStudentLeaveManager from "../../models/student/leave/http/get_leave";
+function StudentLeaveDashboard() {
     const [showLoading, setShowLoading] = useState(false);
     const [toastMessages, setToastMessages] = useState([]); // 
     const [leaveApprovalData, setLeaveApprovalData] = useState([]);
 
-    const getLeaveManager = new GetLeaveManager();
+    const getStudentLeaveManager = new GetStudentLeaveManager();
     useEffect(() => {
         const fetchData = async () => {
           setShowLoading(true);
           try {
-            const response = await getLeaveManager.getAll();
+            const response = await getStudentLeaveManager.get();
             if (response.success) {
                 setLeaveApprovalData(response.data);
             } else {
@@ -78,7 +79,7 @@ function FacultyLeaveDashboard() {
     return (
         <div className="flex-col">
             <div>
-                <FacultyNavbar />
+                <StudentNavbar />
             </div>
             <div className="w-full">
                 {/* <div className="md:mt-10 md:ml-14 mt-16 md:flex md:items-start md:justify-start">
@@ -89,7 +90,7 @@ function FacultyLeaveDashboard() {
                 <div className="md:mt-14 mt-10">
                     <div className="flex justify-between mx-10 md:mx-24">
                         <span className="text-sa-maroon font-bold text-[28px] md:text-[36px]">
-                            Leave Approval Dashboard
+                            Leave Dashboard
                         </span>
 
                     </div>
@@ -201,4 +202,4 @@ function FacultyLeaveDashboard() {
     );
 }
 
-export default FacultyLeaveDashboard;
+export default StudentLeaveDashboard;

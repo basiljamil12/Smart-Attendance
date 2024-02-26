@@ -9,6 +9,8 @@ function StudentNavbar() {
   const [open, setOpen] = useState(false);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [leaveMenuOpen, setLeaveMenuOpen] = useState(false);
+  const [CourseMenuOpen, setCourseMenuOpen] = useState(false);
+  const [HomeMenuOpen, setHomeMenuOpen] = useState(false);
 
   useEffect(() => {
     function handleResize() {
@@ -32,6 +34,9 @@ function StudentNavbar() {
     if (leaveMenuOpen == true) {
       setLeaveMenuOpen(false);
     }
+    if(accountMenuOpen==true){
+      return;
+    }
     setAccountMenuOpen(!accountMenuOpen);
   };
 
@@ -39,9 +44,27 @@ function StudentNavbar() {
     if (accountMenuOpen == true) {
       setAccountMenuOpen(false);
     }
+    if(leaveMenuOpen==true){
+      return;
+    }
     setLeaveMenuOpen(!leaveMenuOpen);
   };
 
+  const toggleCourseMenu = () => {
+    if (leaveMenuOpen == true) {
+      setLeaveMenuOpen(false);
+    }
+    if(CourseMenuOpen==true){
+      return;
+    }
+    setCourseMenuOpen(!CourseMenuOpen);
+  };
+  const toggleHomeMenu = () => {
+    if (CourseMenuOpen == true) {
+      setCourseMenuOpen(false);
+    }
+    setHomeMenuOpen(!HomeMenuOpen);
+  };
   const handleHomeClick = () => {
     navigate("/student/dashboard");
     setOpen(false);
@@ -50,12 +73,15 @@ function StudentNavbar() {
   const handleProfileClick = () => {
     // Handle click on Profile Information
     // You can add your logic here
+    navigate('/student/account/information');
     setAccountMenuOpen(false);
   };
 
   const handleChangePasswordClick = () => {
     // Handle click on Change Password
     // You can add your logic here
+    navigate('/student/account/change-password');
+
     setAccountMenuOpen(false);
   };
 
@@ -74,9 +100,37 @@ function StudentNavbar() {
     handleLeaveClick();
     setLeaveMenuOpen(false);
   };
+  // const handleMouseEnter = () => {
+  //   setOpen(true);
+  // };
+  // Define a timeout variable
 
+  const handleMouseLeave = () => {
+    //handleAccountMenuLeave();
+    setOpen(false);
+    // if(accountMenuOpen==false){
+    setAccountMenuOpen(false);
+  // }
+    setLeaveMenuOpen(false);
+    setCourseMenuOpen(false);
+  };
+  // let leaveMenuTimeout;
+
+  // const handleAccountMenuLeave = () => {
+  //   // Delay closing the account menu to allow hovering to leave menu
+  //   leaveMenuTimeout = setTimeout(() => {
+  //     setAccountMenuOpen(false);
+  //   }, 200); // Adjust this delay as needed
+  // };
+
+  // const handleAccountMenuEnter = () => {
+  //   // Clear the timeout when re-entering the account menu
+  //   clearTimeout(leaveMenuTimeout);
+  // };
   return (
-    <div className="bg-sa-maroon w-full h-24 flex items-center px-10 relative">
+    <div className="bg-sa-maroon w-full h-24 flex items-center px-10 relative"
+    // onMouseEnter={handleMouseEnter}
+    >
       <div className="flex justify-start w-full">
         <span className="text-xl md:text-3xl text-white font-bold hover:cursor-pointer">
           Smart Attendance
@@ -94,7 +148,7 @@ function StudentNavbar() {
           )}
         </div>
         {open && (
-          <div className="absolute top-full left-0 right-0 bg-sa-maroon z-10 pt-2 pb-4 px-4">
+          <div  className="absolute top-full left-0 right-0 bg-sa-maroon z-10 pt-2 pb-4 px-4">
             <span
               onClick={handleHomeClick}
               className="transition-opacity hover:opacity-60 block text-xl text-white font-bold mb-2 pb-2 hover:cursor-pointer"
@@ -156,32 +210,48 @@ function StudentNavbar() {
             )}
           </div>
         )}
-        <div className="md:block hidden w-full">
+        <div  className="md:block hidden w-full"
+            // onMouseEnter={handleAccountMenuEnter}
+            >
           <span
-            onClick={handleHomeClick}
+               onMouseEnter={toggleHomeMenu}
             className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer"
           >
             Home
           </span>
-          <span className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer">
+          <span
+            onMouseEnter={toggleCourseMenu}
+           className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer">
             Course
           </span>
           <span
-            onClick={toggleLeaveMenu}
+            //onClick={toggleLeaveMenu}
+            onMouseEnter={toggleLeaveMenu}
             className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer"
           >
             Leave
           </span>
           <span
-            onClick={toggleAccountMenu}
+            //onClick={toggleAccountMenu}
+            onMouseEnter={toggleAccountMenu}
+            //onMouseLeave={handleAccountMenuLeave}
+            //  onMouseMove={handleAccountMenuEnter}
             className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer"
           >
             Account
           </span>
           {accountMenuOpen && (
-            <div className="bg-white absolute top-full right-5 mt-1 py-2 px-4 rounded-xl shadow-xl w-64">
-              <span
+            <div className="bg-white absolute top-full right-0 mt-1 py-2 px-4 rounded-xl shadow-xl w-64"
+    onMouseLeave={handleMouseLeave}
+    >
+
+              <span 
                 onClick={handleProfileClick}
+                // onMouseEnter={(e) => {
+                //   e.stopPropagation(); // Stop propagation here
+                //   toggleAccountMenu(); // Toggle the menu
+                // }}
+
                 className="block text-sa-maroon font-bold text-lg py-2 cursor-pointer hover:bg-gray-200 border-b-2"
               >
                 Profile Information
@@ -201,7 +271,8 @@ function StudentNavbar() {
             </div>
           )}
           {leaveMenuOpen && (
-            <div className="bg-white absolute top-full right-36 mt-1 py-2 px-4 rounded-xl shadow-xl w-64">
+            <div className="bg-white absolute top-full right-20 mt-1 py-2 px-4 rounded-xl shadow-xl w-64"
+            onMouseLeave={handleMouseLeave}>
               <span
                 onClick={handleApplyClick}
                 className="block text-sa-maroon font-bold text-lg py-2 mb-2 cursor-pointer hover:bg-gray-200"
@@ -216,6 +287,7 @@ function StudentNavbar() {
               </span>
             </div>
           )}
+          
         </div>
       </div>
     </div>

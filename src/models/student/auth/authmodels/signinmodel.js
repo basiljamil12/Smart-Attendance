@@ -1,8 +1,9 @@
 export class UserData {
-  constructor({ name, email, token }) {
+  constructor({ name, email, token,contactno }) {
     this.name = name;
     this.email = email;
     this.token = token;
+    this.contactno = contactno;
   
   }
 
@@ -11,6 +12,7 @@ export class UserData {
       name: json.name,
       email: json.email,
       token: json.token,
+      contactno: json.contactno,
     });
   }
 
@@ -19,6 +21,7 @@ export class UserData {
       name: this.name,
       email: this.email,
       token: this.token,
+      contactno: this.contactno,
     };
   }
 }
@@ -47,19 +50,22 @@ export class AddAdmin {
   }
 }
 export class ResetPass {
-  constructor({ new_password }) {
+  constructor({ old_password,new_password }) {
+    this.old_password = old_password;
     this.new_password = new_password;
   
   }
 
   static fromJson(json) {
     return new ResetPass({
+      old_password: json.old_password,
       new_password: json.new_password,
     });
   }
 
   toJson() {
     return {
+      old_password: this.old_password,
       new_password: this.new_password,
     };
   }
@@ -81,6 +87,8 @@ export class ChangeUsernameData {
     };
   }
 }
+
+
 export class BaseResponseforReset {
   constructor({ success, data, message }) {
     this.success = success;

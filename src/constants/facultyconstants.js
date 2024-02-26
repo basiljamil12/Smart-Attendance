@@ -12,6 +12,8 @@ const facultyApiConstants = {
   VALIDATE_TOKEN:`${BASE_URL}faculty/validate-reset-pass-token`,
   RESET_PASS:`${BASE_URL}faculty/reset-password`,
   GET_DETAILS: `${BASE_URL}faculty/details`,
+  GET_LEAVE_DETAILS: `${BASE_URL}leave/alldetails`,
+  CHANGE_PASSWORD:`${BASE_URL}/faculty/update/password`,
 
   CHANGE_USERNAME: `${BASE_URL}admin/change-username`,
   RESET_PASS_1: `${BASE_URL}admin/reset-password-step-1`,
