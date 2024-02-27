@@ -77,6 +77,8 @@ function FacultyNavbar() {
   const handleChangePasswordClick = () => {
     // Handle click on Change Password
     // You can add your logic here
+    navigate('/faculty/account/change-password');
+
     setAccountMenuOpen(false);
   };
 
@@ -144,7 +146,7 @@ function FacultyNavbar() {
           </span>
           <span 
                 onMouseEnter={toggleLeaveMenu}
-
+                onClick={handleLeaveClick}
     className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer">
             Leave
           </span>

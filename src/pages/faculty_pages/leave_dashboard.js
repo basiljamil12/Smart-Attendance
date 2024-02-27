@@ -139,7 +139,9 @@ function FacultyLeaveDashboard() {
     } finally {
     }
   };
-
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
   const handleDownload = () => {
     const base64String = leaveDetails.attachment;
     const binaryString = atob(base64String);
@@ -159,8 +161,10 @@ function FacultyLeaveDashboard() {
     }_leave.pdf`;
     a.click();
     
+
     window.URL.revokeObjectURL(a.href);
     document.body.removeChild(a);
+    
   };
 
   return (
@@ -248,14 +252,18 @@ function FacultyLeaveDashboard() {
                       </div>
                     </td>
 
-                    <td className="p-0 py-5    border-sa-grey">
-                      <span
-                        className="block w-full h-full overflow-hidden overflow-ellipsis"
-                        style={{ wordWrap: "break-word" }}
-                      >
-                        {faculty.status}
-                      </span>
-                    </td>
+                    <td className="p-0 py-5 border-sa-grey">
+  <span
+    className={`block font-semibold w-full h-full overflow-hidden overflow-ellipsis ${
+      faculty.status === 'accepted' ? 'text-green-600' :
+      faculty.status === 'rejected' ? 'text-red-600' :
+      faculty.status === 'pending' ? 'text-sa-blue' : ''
+    }`}
+    style={{ wordWrap: "break-word" }}
+  >
+    {capitalizeFirstLetter(faculty.status)}
+  </span>
+</td>
                   </tr>
                 ))}
                 <tr className="border-b-0">
@@ -289,47 +297,56 @@ function FacultyLeaveDashboard() {
               className="bg-white rounded-3xl md:w-[80%] w-[90%] p-8 md:px-12 relative z-10 h-auto max-h-[75vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="mb-5">
+              <div className="md:mb-5 mb-10">
                 <span className="text-sa-maroon font-bold text-2xl md:text-3xl">
                   Leave Request
                 </span>
               </div>
-              <div className="flex items-start my-1">
+              <div className="flex items-start my-2 text-lg ">
                 <span className="text-sa-maroon font-bold">Student Name: </span>
                 <span className="ml-1">
                   {leaveDetails.studentId && leaveDetails.studentId.name}
                 </span>
               </div>
-              <div className="flex items-start my-1">
+              <div className="flex items-start my-2 text-lg">
                 <span className="text-sa-maroon font-bold">Subject:</span>
                 <span className="ml-1">{leaveDetails.subject}</span>
               </div>
-              <div className="flex items-start my-1">
+              <div className="flex items-start my-2 text-lg">
                 <span className="text-sa-maroon font-bold">From Date: </span>
                 <span className="ml-1">
                   {convertDateFormat(leaveDetails.fromDate)}
                 </span>
               </div>
-              <div className="flex items-start my-1">
+              <div className="flex items-start my-2 text-lg">
                 <span className="text-sa-maroon font-bold">To Date: </span>
                 <span className="ml-1">
                   {convertDateFormat(leaveDetails.toDate)}
                 </span>
               </div>
-              <div className="flex items-start my-1">
-                <span className="text-sa-maroon font-bold">Status: </span>
-                <span className="ml-1">{leaveDetails.status}</span>
-              </div>
-              <div className="flex items-start my-1">
-                <span className="text-sa-maroon font-bold">Attachment: </span>
-                <span
-                  className="ml-1 text-sa-maroon underline hover:cursor-pointer"
-                  onClick={handleDownload}
-                >
-                  Download Attachment
-                </span>
-              </div>
-              <div className="flex items-start my-1">
+              <div className="flex items-start my-2 text-lg">
+  <span className="text-sa-maroon font-bold">Status: </span>
+  <span className={`ml-1 font-semibold ${leaveDetails.status === 'accepted' ? 'text-green-600' : 
+    leaveDetails.status === 'rejected' ? 'text-red-600' : 
+    leaveDetails.status === 'pending' ? 'text-sa-blue' : ''}`}>
+    {capitalizeFirstLetter(leaveDetails.status)}
+  </span>
+</div>
+<div className="flex items-start my-2 text-lg">
+<span className={`text-sa-maroon font-bold ${leaveDetails.attachment ? 'md:mt-1' : 'md:mt-0'} mt-4`}>Attachment: </span>
+  {leaveDetails.attachment ? (
+    <button
+      className="bg-sa-maroon md:ml-2 ml-3 text-white inline-flex items-center gap-2 rounded-3xl px-4 py-2 text-sm hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300 focus:relative"
+      onClick={handleDownload}
+      id="downloadButton"
+    >
+      Download Attachment
+    </button>
+  ) : (
+    <span className="ml-1 text-lg">N/A</span>
+  )}
+</div>
+              <div className="flex items-start my-2 text-lg">
                 <span className="text-sa-maroon font-bold">Reason: </span>
               </div>
               <div className="text-left">
@@ -337,19 +354,21 @@ function FacultyLeaveDashboard() {
               </div>
               <div className="mt-10 w-full flex-col md:flex-row md:justify-center">
                 <button
-                  class="bg-sa-approve text-white items-center md:w-28 h-12 rounded-3xl mx-1 md:mx-5 px-4 py-2 text-sm  hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300  focus:relative"
+                  class="bg-sa-approve text-white items-center md:w-40 w-60 h-12 rounded-3xl md:mx-0 md:px-4 py-2 text-base  hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300  focus:relative"
                   onClick={() => handleUpdate("accepted")}
                 >
                   {acceptLoading ? <Spinner /> : "Approve"}
                 </button>
+                <br className="md:hidden inline"></br>
                 <button
-                  class="bg-sa-reject text-white md:w-28 h-12 items-center gap-2 rounded-3xl md:mx-5 px-4 py-2 text-sm  hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300  focus:relative"
+                  class="bg-sa-reject text-white md:w-40 w-60 h-12 items-center gap-2 rounded-3xl  md:mt-0 mt-3 md:mx-3 md:px-4 py-2 text-base  hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300  focus:relative"
                   onClick={() => handleUpdate("rejected")}
                 >
                   {rejectLoading ? <Spinner /> : "Reject"}
                 </button>
+                <br className="md:hidden inline"></br>
                 <button
-                  class="bg-sa-close text-white md:w-28 h-12 items-center gap-2 rounded-3xl mx-1 md:mx-5 px-4 py-2 text-sm  hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300  focus:relative"
+                  class="bg-sa-close text-white md:w-40 w-60 h-12 items-center gap-2 rounded-3xl  md:mt-0 mt-3 mx-1 md:mx-0 md:px-4 py-2 text-base  hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300  focus:relative"
                   onClick={closeDetails}
                 >
                   Close

@@ -108,7 +108,7 @@ function ApplyLeave() {
           },
         ];
         setToastMessages(updatedToastMessages);
-        navigate("/student/dashboard", {
+        navigate("/student/leave/dashboard", {
           state: { toastMessages: updatedToastMessages },
         });
       } else {
@@ -143,7 +143,7 @@ function ApplyLeave() {
         const file = files[i];
         setAttachment(file);
         const fileName = file.name;
-        const allowedExtensions = [".jpg", ".jpeg", ".png"];
+        const allowedExtensions = [".pdf"];
         const extension = fileName.substring(fileName.lastIndexOf("."));
 
         if (allowedExtensions.includes(extension)) {
@@ -157,7 +157,7 @@ function ApplyLeave() {
             {
               type: "invalid",
               title: "Invalid File",
-              body: "Only JPEG, JPG, and PNG files are allowed",
+              body: "Only .pdf files are allowed",
             },
           ]);
           // Clear the input field
@@ -265,14 +265,16 @@ function ApplyLeave() {
           >
             Attachements (Optional)
           </label>
-
+          <div className="flex justify-between  mt-2 italic mb-2 font-semibold text-red-600">
+  *Note: Add all the proofs in 1 pdf file *
+</div>
           <form>
             <div className="relative md:mb-5 mb-6">
               <input
                 type="search"
                 id="attachements"
                 className="placeholder-gray-500 focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon h-14 md:h-16 py-4 block w-full p-4 border border-black border-solid text-black rounded-xl bg-white focus:ring-blue-500"
-                placeholder="No File Choosen (PNG, JPG or JPEG)"
+                placeholder="No File Choosen (.pdf)"
                 required
                 disabled
               />
@@ -283,9 +285,9 @@ function ApplyLeave() {
                 Choose File
                 <input
                   type="file"
-                  multiple
+                  //multiple
                   id="fileInput"
-                  accept=".png, .jpg, .jpeg"
+                  accept=".pdf"
                   className="hidden"
                   onChange={updateFileName}
                 />

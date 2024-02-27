@@ -93,6 +93,7 @@ function StudentNavbar() {
 
   const handleStatusClick = () => {
     // You can add your logic here
+    navigate('/student/leave/dashboard');
     setLeaveMenuOpen(false);
   };
 
