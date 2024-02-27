@@ -2,8 +2,14 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Toast from "../toast/toast";
+import { useLocation } from 'react-router-dom';
+import StudentSignoutManager from "../../models/student/auth/http/signouthttp";
 
 function StudentNavbar() {
+  const studentSignoutManager= new StudentSignoutManager();
+  const location = useLocation(); 
+
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
@@ -11,6 +17,7 @@ function StudentNavbar() {
   const [leaveMenuOpen, setLeaveMenuOpen] = useState(false);
   const [CourseMenuOpen, setCourseMenuOpen] = useState(false);
   const [HomeMenuOpen, setHomeMenuOpen] = useState(false);
+  const [toastMessages, setToastMessages] = useState(location.state?.toastMessages || []); // S
 
   useEffect(() => {
     function handleResize() {
@@ -24,7 +31,43 @@ function StudentNavbar() {
       window.removeEventListener("resize", handleResize);
     };
   }, [open]);
+  const [isSignout, setIsSignout] = useState(false);
+  
+  const closeSignOut = () => {
+    setIsSignout(false);
+  };
+  const openSignOut = () => {
+    setAccountMenuOpen(false);
+    setOpen(false);
+    setIsSignout(true);
+  };
+  const handleSignout=async()=>{
 
+    const response = await studentSignoutManager.signout();
+      if (response.success) {
+        const updatedToastMessages = [
+          ...toastMessages,
+          {
+              type: "success",
+              title: "Success",
+              body: response.message,
+          },
+      ];
+        setToastMessages(updatedToastMessages);
+        navigate("/student/login", { state: { toastMessages: updatedToastMessages } });
+
+      } else {
+        setToastMessages([
+          ...toastMessages,
+          {
+            type: "invalid",
+            title: "Error",
+            body: response.message,
+          },
+        ]);
+      }
+
+}
   const handleLeaveClick = () => {
     navigate("/student/leave");
     setOpen(false);
@@ -73,6 +116,7 @@ function StudentNavbar() {
   const handleProfileClick = () => {
     // Handle click on Profile Information
     // You can add your logic here
+    setOpen(false);
     navigate('/student/account/information');
     setAccountMenuOpen(false);
   };
@@ -80,6 +124,7 @@ function StudentNavbar() {
   const handleChangePasswordClick = () => {
     // Handle click on Change Password
     // You can add your logic here
+    setOpen(false);
     navigate('/student/account/change-password');
 
     setAccountMenuOpen(false);
@@ -96,10 +141,23 @@ function StudentNavbar() {
     navigate('/student/leave/dashboard');
     setLeaveMenuOpen(false);
   };
+  const handleRegisterCourseClick = () => {
+    // You can add your logic here
+    navigate('/student/course/register');
+    setCourseMenuOpen(false);
+    setOpen(false);
+  };
+  const handleViewCourseClick = () => {
+    // You can add your logic here
+    navigate('/student/course/view');
+    setCourseMenuOpen(false);
+    setOpen(false);
+  };
 
   const handleApplyClick = () => {
     handleLeaveClick();
     setLeaveMenuOpen(false);
+    setOpen(false);
   };
   // const handleMouseEnter = () => {
   //   setOpen(true);
@@ -202,10 +260,10 @@ function StudentNavbar() {
                   Change Password
                 </span>
                 <span
-                  onClick={handleSignoutClick}
+                  onClick={openSignOut}
                   className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer hover:bg-gray-200"
                 >
-                  Signout
+                  Sign Out
                 </span>
               </div>
             )}
@@ -264,10 +322,10 @@ function StudentNavbar() {
                 Change Password
               </span>
               <span
-                onClick={handleSignoutClick}
+                onClick={openSignOut}
                 className="block text-sa-maroon font-bold text-lg py-2 cursor-pointer hover:bg-gray-200"
               >
-                Signout
+                Sign Out
               </span>
             </div>
           )}
@@ -288,8 +346,58 @@ function StudentNavbar() {
               </span>
             </div>
           )}
+          {CourseMenuOpen && (
+            <div className="bg-white absolute top-full right-20 mt-1 py-2 px-4 rounded-xl shadow-xl w-64"
+            onMouseLeave={handleMouseLeave}>
+              <span
+                onClick={handleRegisterCourseClick}
+                className="block text-sa-maroon font-bold text-lg py-2 mb-2 cursor-pointer hover:bg-gray-200"
+              >
+                View Registered Courses
+              </span>
+              <span
+                onClick={handleViewCourseClick}
+                className="block text-sa-maroon font-bold text-lg py-2 mb-2 cursor-pointer hover:bg-gray-200"
+              >
+                Register Courses
+              </span>
+            </div>
+          )}
+          
           
         </div>
+        {isSignout && (
+          <div
+            className=" fixed inset-0 flex items-center justify-center z-50"
+            onClick={closeSignOut}
+          >
+            <div className=" bg-black opacity-50 absolute inset-0"></div>
+            <div
+              className=" bg-white rounded-3xl md:w-auto w-80  p-8 px-12 relative z-10"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h2 className="text-black font-semibold md:w-auto w-60 text-left mb-4">
+                Confirm
+              </h2>
+              <p className="text-black text-filter-heading md:w-auto w-60 text-left">
+                Are you sure you want to sign out of your account?
+              </p>
+              <div className="flex justify-end mt-5">
+                <button
+                  onClick={closeSignOut}
+                  className="text-filter-heading transition-opacity hover:opacity-70 mr-4 border-2 border-gray-400 rounded-[9px] border-filter-heading py-1 px-6"
+                >
+                  Cancel
+                </button>
+                <button className="bg-sa-maroon transition-opacity hover:opacity-70 text-white md:px-7 px-4  rounded-[9px] md:py-2 py-3 "
+                onClick={handleSignout}>
+                
+                Sign Out
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

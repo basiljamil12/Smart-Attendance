@@ -2,15 +2,20 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import FacultySignoutManager from "../../models/faculty/auth/http/signouthttp";
+
 
 function FacultyNavbar() {
   const navigate = useNavigate();
+  const facultySignoutManager= new FacultySignoutManager();
 
   const [open, setOpen] = useState(false);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [leaveMenuOpen, setLeaveMenuOpen] = useState(false);
   const [CourseMenuOpen, setCourseMenuOpen] = useState(false);
   const [HomeMenuOpen, setHomeMenuOpen] = useState(false);
+  const location = useLocation(); 
 
   useEffect(() => {
     function handleResize() {
@@ -24,12 +29,49 @@ function FacultyNavbar() {
       window.removeEventListener("resize", handleResize);
     };
   }, [open]);
+  const [toastMessages, setToastMessages] = useState(location.state?.toastMessages || []); // S
 
+  const [isSignout, setIsSignout] = useState(false);
+  
+  const closeSignOut = () => {
+    setIsSignout(false);
+  };
+  const openSignOut = () => {
+    setAccountMenuOpen(false);
+    setOpen(false);
+    setIsSignout(true);
+  };
   const handleLeaveClick = () => {
     navigate('/faculty/leave');
     setOpen(false);
   };
+  const handleSignout=async()=>{
 
+    const response = await facultySignoutManager.signout();
+      if (response.success) {
+        const updatedToastMessages = [
+          ...toastMessages,
+          {
+              type: "success",
+              title: "Success",
+              body: response.message,
+          },
+      ];
+        setToastMessages(updatedToastMessages);
+        navigate("/faculty/login", { state: { toastMessages: updatedToastMessages } });
+
+      } else {
+        setToastMessages([
+          ...toastMessages,
+          {
+            type: "invalid",
+            title: "Error",
+            body: response.message,
+          },
+        ]);
+      }
+
+}
   const toggleAccountMenu = () => {
     if (leaveMenuOpen == true) {
       setLeaveMenuOpen(false);
@@ -71,6 +113,7 @@ function FacultyNavbar() {
     // Handle click on Profile Information
     // You can add your logic here
     navigate('/faculty/account/information');
+    setOpen(false);
     setAccountMenuOpen(false);
   };
 
@@ -78,19 +121,24 @@ function FacultyNavbar() {
     // Handle click on Change Password
     // You can add your logic here
     navigate('/faculty/account/change-password');
-
+    setOpen(false);
     setAccountMenuOpen(false);
   };
 
-  const handleSignoutClick = () => {
-    // Handle click on Signout
-    // You can add your logic here
-    setAccountMenuOpen(false);
-  };
+  // const handleSignoutClick = () => {
+  //   // Handle click on Signout
+  //   // You can add your logic here
+  //   setAccountMenuOpen(false);
+  // };
   const handleMouseLeave = () => {
     setOpen(false);
     setAccountMenuOpen(false);
     setLeaveMenuOpen(false);
+  };
+  const handleCourseClick = () => {
+    // You can add your logic here
+    setOpen(false);
+    navigate('/faculty/course/register');
   };
   return (
     <div className="bg-sa-maroon w-full h-24 flex items-center px-10 relative">
@@ -115,7 +163,10 @@ function FacultyNavbar() {
             <span className="transition-opacity hover:opacity-60 block text-xl text-white font-bold mb-2 pb-2 hover:cursor-pointer">
               Home
             </span>
-            <span className="transition-opacity hover:opacity-60 block text-xl text-white font-bold mb-2 py-2 hover:cursor-pointer">
+            <span 
+            onClick={handleCourseClick}
+            className="transition-opacity hover:opacity-60 block text-xl text-white font-bold mb-2 py-2 hover:cursor-pointer"
+            >
               Course
             </span>
             <span onClick={handleLeaveClick} className="transition-opacity hover:opacity-60 block text-xl text-white font-bold mb-2 py-2 hover:cursor-pointer">
@@ -128,7 +179,7 @@ function FacultyNavbar() {
               <div className="bg-sa-maroon py-2 px-4 mt-2">
                 <span onClick={handleProfileClick} className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer hover:bg-gray-200">Profile Information</span>
                 <span onClick={handleChangePasswordClick} className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer hover:bg-gray-200">Change Password</span>
-                <span onClick={handleSignoutClick} className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer hover:bg-gray-200">Signout</span>
+                <span onClick={openSignOut} className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer hover:bg-gray-200">Sign Out</span>
               </div>
             )}
           </div>
@@ -140,7 +191,7 @@ function FacultyNavbar() {
             Home
           </span>
           <span
-            onMouseEnter={toggleCourseMenu}
+            onClick={handleCourseClick}
           className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer">
             Course
           </span>
@@ -162,10 +213,42 @@ function FacultyNavbar() {
              className="bg-white absolute top-full right-0  py-2 px-4 rounded-xl shadow-xl w-64">
               <span onClick={handleProfileClick} className="block text-sa-maroon font-bold text-lg py-2 cursor-pointer hover:bg-gray-200 border-b-2">Profile Information</span>
               <span onClick={handleChangePasswordClick} className="block text-sa-maroon font-bold text-lg py-2 cursor-pointer hover:bg-gray-200 border-b-2">Change Password</span>
-              <span onClick={handleSignoutClick} className="block text-sa-maroon font-bold text-lg py-2 cursor-pointer hover:bg-gray-200">Signout</span>
+              <span onClick={openSignOut} className="block text-sa-maroon font-bold text-lg py-2 cursor-pointer hover:bg-gray-200">Sign Out</span>
             </div>
           )}
         </div>
+        {isSignout && (
+          <div
+            className=" fixed inset-0 flex items-center justify-center z-50"
+            onClick={closeSignOut}
+          >
+            <div className=" bg-black opacity-50 absolute inset-0"></div>
+            <div
+              className=" bg-white rounded-3xl md:w-auto w-80  p-8 px-12 relative z-10"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h2 className="text-black font-semibold md:w-auto w-60 text-left mb-4">
+                Confirm
+              </h2>
+              <p className="text-black text-filter-heading md:w-auto w-60 text-left">
+                Are you sure you want to sign out of your account?
+              </p>
+              <div className="flex justify-end mt-5">
+                <button
+                  onClick={closeSignOut}
+                  className="text-filter-heading transition-opacity hover:opacity-70 mr-4 border-2 border-gray-400 rounded-[9px] border-filter-heading py-1 px-6"
+                >
+                  Cancel
+                </button>
+                <button className="bg-sa-maroon transition-opacity hover:opacity-70 text-white md:px-7 px-4  rounded-[9px] md:py-2 py-3 "
+                onClick={handleSignout}>
+                
+                Sign Out
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

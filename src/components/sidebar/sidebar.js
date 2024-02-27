@@ -184,7 +184,7 @@ function Sidebar() {
                 >
                   Cancel
                 </button>
-                <button className="bg-sa-maroon transition-opacity hover:opacity-70 text-white md:px-7 px-5 rounded-[9px] py-1 "
+                <button className="bg-sa-maroon transition-opacity hover:opacity-70 text-white md:px-7 px-4 rounded-[9px] py-3 md:py-2 "
                 onClick={handleSignout}>
                 
                 Sign Out

@@ -273,14 +273,14 @@ function ApplyLeave() {
               <input
                 type="search"
                 id="attachements"
-                className="placeholder-gray-500 focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon h-14 md:h-16 py-4 block w-full p-4 border border-black border-solid text-black rounded-xl bg-white focus:ring-blue-500"
+                className="placeholder-gray-500  placeholder:md:text-base placeholder:text-sm focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon h-14 md:h-16 py-4 block w-full p-4 border border-black border-solid text-black rounded-xl bg-white focus:ring-blue-500"
                 placeholder="No File Choosen (.pdf)"
                 required
                 disabled
               />
               <label
                 htmlFor="fileInput"
-                className="transition-opacity hover:opacity-90 md:mr-3 text-white absolute end-2.5 bottom-2.5 bg-sa-maroon focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md px-5 md:py-2.5 py-2  cursor-pointer"
+                className="md:text-base text-sm transition-opacity hover:opacity-90 md:mr-3 text-white absolute end-2.5 bottom-2.5 bg-sa-maroon focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md px-5 md:py-2.5 py-2  cursor-pointer"
               >
                 Choose File
                 <input

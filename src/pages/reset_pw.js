@@ -28,7 +28,7 @@ function ResetPassword() {
 
   // const  pathname  = useLocation();
   const [showLoading, setShowLoading] = useState(true);
-  const [showLoading2, setShowLoading2] = useState(true);
+  const [showLoading2, setShowLoading2] = useState(false);
   const [showPage, setShowPage] = useState(false);
 
   const pathname = window.location.pathname;
@@ -364,17 +364,17 @@ function ResetPassword() {
         />
         {showPassword ? (
           <VisibilityOutlinedIcon
-            className="absolute text-sa-black md:top-[20px] top-[10px] right-[16px] md:right-[14px] cursor-pointer "
+            className="absolute text-sa-black md:top-[20px] top-[14px] right-[16px] md:right-[14px] cursor-pointer "
             onClick={toggleShowPassword}
           />
         ) : (
           <VisibilityOffOutlinedIcon
-            className="absolute text-sa-black md:top-[20px] top-[10px] right-[16px] md:right-[14px] cursor-pointer "
+            className="absolute text-sa-black md:top-[20px] top-[14px] right-[16px] md:right-[14px] cursor-pointer "
             onClick={toggleShowPassword}
           />
         )}
       </div>
-      <div class="relative md:ml-3 ml-2 mt-12 md:mt-6 mb-10 ">
+      <div class="relative md:ml-3 ml-2 mt-6 md:mt-6 mb-10 ">
         <input
           type={showPassword2 ? "text" : "password"}
           //class="shadow-xl focus:outline-none focus:ring-0 focus:border-clue-purchase peer m-0 block h-[45px] md:h-[56px]   md:mr-44  md:w-[102%] w-[245px]  rounded-[20px] border-[1px] border-solid  border-black  bg-transparent bg-clip-padding px-3 py-4 text-base font-normal leading-tight text-black"
@@ -387,12 +387,12 @@ function ResetPassword() {
         />
         {showPassword2 ? (
           <VisibilityOutlinedIcon
-            className="absolute text-sa-black md:top-[20px] top-[10px] right-[16px] md:right-[14px] cursor-pointer "
+            className="absolute text-sa-black md:top-[20px] top-[14px] right-[16px] md:right-[14px] cursor-pointer "
             onClick={toggleShowPassword2}
           />
         ) : (
           <VisibilityOffOutlinedIcon
-            className="absolute text-sa-black md:top-[20px] top-[10px] right-[16px] md:right-[14px] cursor-pointer "
+            className="absolute text-sa-black md:top-[20px] top-[14px] right-[16px] md:right-[14px] cursor-pointer "
             onClick={toggleShowPassword2}
           />
         )}
