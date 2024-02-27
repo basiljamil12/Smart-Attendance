@@ -1,5 +1,5 @@
 class Student {
-  constructor({ _id, name, email, contactno, }) {
+  constructor({ _id, name, email, contactno }) {
     this._id = _id;
     this.name = name;
     this.email = email;
@@ -8,9 +8,18 @@ class Student {
 }
 
 class LeaveData {
-  constructor({ _id, studentId, subject, fromDate, toDate, attachment, reason, status, }) {
+  constructor({
+    _id,
+    studentId,
+    subject,
+    fromDate,
+    toDate,
+    attachment,
+    reason,
+    status,
+  }) {
     this._id = _id;
-    this.studentId = new Student(studentId);
+    this.studentId = studentId;
     this.subject = subject;
     this.fromDate = new Date(fromDate);
     this.toDate = new Date(toDate);
@@ -45,7 +54,11 @@ export class BaseResponse {
   }
 
   static fromJson(json) {
-    return new BaseResponse(json);
+    return new BaseResponse({
+      success: json.success,
+      data: json.data ? LeaveData.fromJson(json.data) : null,
+      message: json.message,
+    });
   }
 
   toJson() {
@@ -60,7 +73,7 @@ export class BaseResponse {
 export class ListResponse {
   constructor({ success, data, message }) {
     this.success = success;
-    this.data = data ? data.map(item => new LeaveData(item)) : null;
+    this.data = data ? data.map((item) => new LeaveData(item)) : null;
     this.message = message;
   }
 
@@ -71,7 +84,7 @@ export class ListResponse {
   toJson() {
     return {
       success: this.success,
-      data: this.data ? this.data.map(item => item.toJson()) : null,
+      data: this.data ? this.data.map((item) => item.toJson()) : null,
       message: this.message,
     };
   }
