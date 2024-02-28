@@ -42,6 +42,7 @@ import FacultyLeaveDashboard from "../pages/faculty_pages/leave_dashboard";
 import RegisteredCourses from "../pages/student_pages/registered_courses";
 import StudentLeaveDashboard from "../pages/student_pages/leave_dashboard";
 import ChangePassword from "../pages/change_password";
+import ParentAccountDetails from "../pages/parent_pages/parent_account_details";
 function ResetPasswordRoute() {
   return <ResetPassword />;
 }
@@ -137,7 +138,11 @@ function Layout() {
           <Route
             path="/student/account/information"
             element={<StudentAccountDetails />}
-          />
+          /> 
+           <Route
+          path="/parent/account/information"
+          element={<ParentAccountDetails />}
+        />
           <Route path="/adboard/parent/edit" element={<EditParent />} />
           <Route path="/adboard/student/edit" element={<EditStudent />} />
           <Route path="/adboard/course/edit" element={<EditCourse />} />

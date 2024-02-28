@@ -85,20 +85,20 @@ function FacultyAccountDetails() {
             </span>
           </div>
           <div className="flex justify-start md:mt-10 mt-10 mb-3 mx-10 md:mx-24">
-            <span className="text-sa-maroon font-bold text-xl">
+            <span className="text-sa-maroon font-bold md:text-xl">
             Name:
             </span>
-            <span className="text-sa-black font-bold ml-2 text-xl">
+            <span className="text-sa-black font-bold ml-2 md:text-xl">
             {AttendanceData.map((data, index) => (
                 <span key={index}>{data.Name}</span>
               ))}
             </span>
           </div>
           <div className="flex justify-start md:mt-4 mb-3 mx-10 md:mx-24">
-            <span className="text-sa-maroon font-bold text-xl">
+            <span className="text-sa-maroon font-bold md:text-xl">
             Email: 
             </span>
-            <span className="text-sa-black font-bold ml-2 text-xl">
+            <span className="text-sa-black font-bold ml-2 md:text-xl">
             {AttendanceData.map((data, index) => (
                 <span key={index}>{data.Email}</span>
               ))}
@@ -106,20 +106,20 @@ function FacultyAccountDetails() {
           </div>
         
           <div className="flex justify-start md:mb-1 mb-3 md:mt-4 mx-10 md:mx-24">
-            <span className="text-sa-maroon font-bold text-xl">
+            <span className="text-sa-maroon font-bold md:text-xl">
            Contact No:
             </span>
-            <span className="text-sa-black font-bold ml-2 text-xl">
+            <span className="text-sa-black font-bold ml-2 md:text-xl">
             {AttendanceData.map((data, index) => (
                 <span key={index}>{data.ContactNo}</span>
               ))}
             </span>
           </div>
           <div className="flex justify-start md:mt-4 mx-10 md:mx-24">
-            <span className="text-sa-maroon font-bold text-xl">
+            <span className="text-sa-maroon font-bold md:text-xl">
             Student Advisor:
             </span>
-            <span className="text-sa-black font-bold ml-2 text-xl">
+            <span className="text-sa-black font-bold ml-2 md:text-xl">
             {AttendanceData.map((data, index) => (
                 <span key={index}>{data.isStudentAdvisor}</span>
               ))}

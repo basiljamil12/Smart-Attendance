@@ -11,7 +11,8 @@ const parentApiConstants = {
   FORGOT_PASS: `${BASE_URL}parent/forgot-password`,
   VALIDATE_TOKEN:`${BASE_URL}parent/validate-reset-pass-token`,
   RESET_PASS:`${BASE_URL}parent/reset-password`,
-  CHANGE_PASSWORD:`${BASE_URL}/parent/update/password`,
+  CHANGE_PASSWORD:`${BASE_URL}parent/update/password`,
+  GET_PARENT_DETAILS:`${BASE_URL}parent/details`,
 
 
   CHANGE_USERNAME: `${BASE_URL}admin/change-username`,

@@ -2,23 +2,24 @@ import React, { useState, useEffect } from "react";
 
 
 import ParentNavbar from "../../components/navbars/parent_navbar"; // Assuming there's a separate navbar component for students
-import StudentDetailsManager from "../../models/student/auth/http/get_details";
+
+import ParentDetailsManager from "../../models/parent/auth/http/get_parent_details";
 import { useNavigate } from "react-router";
 import Toast from "../../components/toast/toast";
 import Spinner from "../../components/spinner/spinner";
 function ParentAccountDetails() {
   const [showLoading, setShowLoading] = useState(false);
   const [toastMessages, setToastMessages] = useState([]); // Set initial toastMessages from location state
-  const studentDetailsManager = new StudentDetailsManager();
-  const [studentData, setStudentData] = useState(null);
+  const parentDetailsManager = new ParentDetailsManager();
+  const [parentData, setParentData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       setShowLoading(true);
       try {
-        const response = await studentDetailsManager.get();
+        const response = await parentDetailsManager.get();
         if (response.success) {
-          setStudentData(response.data);
+          setParentData(response.data);
         } else {
           setToastMessages([
             ...toastMessages,
@@ -46,12 +47,12 @@ function ParentAccountDetails() {
     fetchData();
   }, []);
 
-  const data = studentData
+  const data = parentData
   ? [
       {
-        Name: studentData.name,
-        Email: studentData.email,
-        ContactNo: studentData.contactno,
+        Name: parentData.name,
+        Email: parentData.email,
+        ContactNo: parentData.contactno,
         // isStudentAdvisor: studentData.isStudentAdvisor ? "Yes" : "No",
       },
     ]
@@ -91,30 +92,30 @@ function ParentAccountDetails() {
           </div> */}
           
           <div className="flex justify-start md:mt-10 mb-3  mx-10 md:mx-24">
-            <span className="text-sa-maroon font-bold text-xl">
+            <span className="text-sa-maroon font-bold md:text-xl">
               Name:
             </span>
-            <span className="text-sa-black font-bold ml-2 text-xl">
+            <span className="text-sa-black font-bold ml-2 md:text-xl">
               {data.map((data, index) => (
                 <span key={index}>{data.Name}</span>
               ))}
             </span>
           </div>
           <div className="flex justify-start md:mt-4 mb-3 mx-10 md:mx-24">
-            <span className="text-sa-maroon font-bold text-xl">
+            <span className="text-sa-maroon font-bold md:text-xl">
               Email:
             </span>
-            <span className="text-sa-black font-bold ml-2 text-xl">
+            <span className="text-sa-black font-bold ml-2 md:text-xl">
               {data.map((data, index) => (
                 <span key={index}>{data.Email}</span>
               ))}
             </span>
           </div>
           <div className="flex justify-start md:mb-1 mb-3 md:mt-4 mx-10 md:mx-24">
-            <span className="text-sa-maroon font-bold text-xl">
+            <span className="text-sa-maroon font-bold md:text-xl">
               Contact No:
             </span>
-            <span className="text-sa-black font-bold ml-2 text-xl">
+            <span className="text-sa-black font-bold ml-2 md:text-xl">
               {data.map((data, index) => (
                 <span key={index}>{data.ContactNo}</span>
               ))}

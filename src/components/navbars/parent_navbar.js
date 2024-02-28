@@ -93,11 +93,7 @@ function ParentNavbar() {
     setAccountMenuOpen(false);
   };
 
-  const handleSignoutClick = () => {
-    // Handle click on Signout
-    // You can add your logic here
-    setAccountMenuOpen(false);
-  };
+  
   const handleMouseLeave = () => {
     setOpen(false);
     setAccountMenuOpen(false);
