@@ -38,22 +38,40 @@ class CourseManager {
       throw new Error(error.toString());
     }
   }
-  async getAll() {
+  async getAll(user) {
     const url = ApiConstants.GET_ALL_COURSE;
-    const token = localStorage.getItem("adminToken");
+    // const token = localStorage.getItem("adminToken");
     try {
       const response = await fetch(url, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          // Authorization: `Bearer ${token}`,
         },
       });
 
       if (response.status === 401) {
+        if(user=="admin")
+        {
         window.location.href = "/adboard/signin";
         localStorage.removeItem("adminToken");
         localStorage.removeItem("adminEmail");
         localStorage.removeItem("adminName");
+      }
+      if(user=="faculty")
+        {
+        window.location.href = "/faculty/login";
+        localStorage.removeItem("facultyToken");
+        localStorage.removeItem("facultyEmail");
+        localStorage.removeItem("facultyName");
+      }
+      if(user=="student")
+      {
+      window.location.href = "/student/login";
+      localStorage.removeItem("studentToken");
+      localStorage.removeItem("studentEmail");
+      localStorage.removeItem("studentName");
+    }
         return null;
       }
       if (response.ok) {

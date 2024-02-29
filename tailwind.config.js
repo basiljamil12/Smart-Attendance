@@ -22,6 +22,7 @@ module.exports = {
         "sa-approve": "#408750",
         "sa-reject": "#FF4747",
         "sa-close": "#929292",
+        
       },
     },
   },

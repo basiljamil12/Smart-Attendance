@@ -43,6 +43,7 @@ import RegisteredCourses from "../pages/student_pages/registered_courses";
 import StudentLeaveDashboard from "../pages/student_pages/leave_dashboard";
 import ChangePassword from "../pages/change_password";
 import ParentAccountDetails from "../pages/parent_pages/parent_account_details";
+import AssignCourse from "../pages/faculty_pages/assign_course";
 function ResetPasswordRoute() {
   return <ResetPassword />;
 }
@@ -131,6 +132,7 @@ function Layout() {
           <Route path="/adboard/faculty/add" element={<CreateFaculty />} />
           <Route path="/adboard/faculty/edit" element={<EditFaculty />} />
           <Route path="/faculty/course/register" element={<CourseApproval />} />
+          <Route path="/faculty/course/assign" element={<AssignCourse />} />
           <Route
             path="/faculty/account/information"
             element={<FacultyAccountDetails />}

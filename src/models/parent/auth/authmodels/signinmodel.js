@@ -1,16 +1,17 @@
 export class UserData {
-  constructor({ name, email, token }) {
+  constructor({ name, email, contactno, studentID }) {
     this.name = name;
     this.email = email;
-    this.token = token;
-  
+    this.contactno = contactno;
+    this.studentID = studentID ? new StudentID(studentID) : null;
   }
 
   static fromJson(json) {
     return new UserData({
       name: json.name,
       email: json.email,
-      token: json.token,
+      contactno: json.contactno,
+      studentID: json.studentID,
     });
   }
 
@@ -18,10 +19,39 @@ export class UserData {
     return {
       name: this.name,
       email: this.email,
-      token: this.token,
+      contactno: this.contactno,
+      studentID: this.studentID ? this.studentID.toJson() : null,
     };
   }
 }
+
+export class StudentID {
+  constructor({ _id, name, email, contactno }) {
+    this._id = _id;
+    this.name = name;
+    this.email = email;
+    this.contactno = contactno;
+  }
+
+  static fromJson(json) {
+    return new StudentID({
+      _id: json._id,
+      name: json.name,
+      email: json.email,
+      contactno: json.contactno,
+    });
+  }
+
+  toJson() {
+    return {
+      _id: this._id,
+      name: this.name,
+      email: this.email,
+      contactno: this.contactno,
+    };
+  }
+}
+
 export class ResetPass {
   constructor({ old_password,new_password }) {
     this.old_password = old_password;

@@ -77,7 +77,7 @@ function OfferedCourses() {
     const fetchData = async () => {
       setShowLoading(true);
       try {
-        const response = await courseManager.getAll();
+        const response = await courseManager.getAll("student");
         if (response.success) {
           setCourses(response.data);
          
@@ -282,7 +282,7 @@ function OfferedCourses() {
         <span className="text-orange-500 font-semibold px-8 py-2">Removed</span>
     ) :(
       <button
-        className="bg-sa-maroon cursor-pointer md:mr-2 text-white inline-flex items-center gap-2 rounded-md px-6 py-2 text-md hover:opacity-90 hover:scale-105 transition-all duration-300 ease-in-out hover:text-gray-300 focus:relative"
+        className="bg-sa-maroon cursor-pointer  text-white inline-flex items-center gap-2 rounded-md px-6 py-2 text-md hover:opacity-90 hover:scale-105 transition-all duration-300 ease-in-out hover:text-gray-300 focus:relative"
         onClick={() => handleRegister(course.courseID)}
       >
         {showLoading ? <Spinner /> : 'Register'}

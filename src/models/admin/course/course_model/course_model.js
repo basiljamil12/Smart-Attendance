@@ -1,10 +1,11 @@
 export class CourseData {
-    constructor({ _id, courseCode, courseName, courseCredHrs, studentsEnrolled, courseTeacher }) {
+    constructor({ _id, courseCode, courseName, courseCredHrs, studentsEnrolled, courseTeacher,status }) {
       this._id = _id;
       this.courseCode = courseCode;
       this.courseName = courseName;
       this.courseCredHrs = courseCredHrs;
       this.studentsEnrolled = studentsEnrolled;
+      this.courseTeacher = courseTeacher;
       this.courseTeacher = courseTeacher;
     }
   
@@ -16,6 +17,7 @@ export class CourseData {
         courseCredHrs: json.courseCredHrs,
         studentsEnrolled: json.studentsEnrolled,
         courseTeacher: json.courseTeacher,
+        status: json.status,
       });
     }
   
@@ -27,6 +29,7 @@ export class CourseData {
         courseCredHrs: this.courseCredHrs,
         studentsEnrolled: this.studentsEnrolled,
         courseTeacher: this.courseTeacher,
+        status: this.status,
       };
     }
   }

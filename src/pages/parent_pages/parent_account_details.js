@@ -53,6 +53,8 @@ function ParentAccountDetails() {
         Name: parentData.name,
         Email: parentData.email,
         ContactNo: parentData.contactno,
+        StdName: parentData.studentID.name,
+        StdEmail: parentData.studentID.email,
         // isStudentAdvisor: studentData.isStudentAdvisor ? "Yes" : "No",
       },
     ]
@@ -118,6 +120,26 @@ function ParentAccountDetails() {
             <span className="text-sa-black font-bold ml-2 md:text-xl">
               {data.map((data, index) => (
                 <span key={index}>{data.ContactNo}</span>
+              ))}
+            </span>
+          </div>
+          <div className="flex justify-start md:mb-1 mb-3 md:mt-4 mx-10 md:mx-24">
+            <span className="text-sa-maroon font-bold md:text-xl">
+              Student Name:
+            </span>
+            <span className="text-sa-black font-bold ml-2 md:text-xl">
+              {data.map((data, index) => (
+                <span key={index}>{data.StdName}</span>
+              ))}
+            </span>
+          </div>
+          <div className="flex justify-start md:mb-1 mb-3 md:mt-4 mx-10 md:mx-24">
+            <span className="text-sa-maroon font-bold md:text-xl">
+              Student Email:
+            </span>
+            <span className="text-sa-black font-bold ml-2 md:text-xl">
+              {data.map((data, index) => (
+                <span key={index}>{data.StdEmail}</span>
               ))}
             </span>
           </div>

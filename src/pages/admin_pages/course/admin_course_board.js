@@ -29,7 +29,7 @@ function CourseAdboard() {
 
   const getAllCourse = () => {
     setShowLoading(true);
-    courseManager.getAll().then((value) => {
+    courseManager.getAll("admin").then((value) => {
       if (value == null) {
       } else if (!value.error) {
         const baseResponse = value.success;
