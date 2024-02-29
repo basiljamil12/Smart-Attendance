@@ -9,9 +9,11 @@ import Spinner from "../../components/spinner/spinner";
 import Toast from "../../components/toast/toast";
 import Select from "react-select";
 import FacultyManager from "../../models/admin/faculty/http/get_all_faculty";
+import CourseAssignManager from "../../models/courses/http/assign_course";
 
 function AssignCourse() {
   const facultyManager = new FacultyManager();
+  const courseAssignManager = new CourseAssignManager();
 
     const courseManager = new CourseManager();
     const studentCourseManager = new StudentCourseManager();
@@ -165,54 +167,13 @@ function AssignCourse() {
         creditHrs: course.courseCredHrs,
         courseTeacher: course.courseTeacher,
         // status: course.status,
-        status: "pending",
+        status: course.status,
     }));
 
     const navigate = useNavigate();
 
 
-    //   const handleRegister = async (courseId) => {
-    //     setShowLoading(true);
-    //     try {
-    //       console.log(courseId);
-    //       const response = await studentCourseManager.createCourse(courseId, 'pending');
-    //       if (response.success) {
-    //         setRegistrationStatus(prevStatus => ({
-    //           ...prevStatus,
-    //           [courseId]: 'pending'
-    //         }));
-    //         setToastMessages([
-    //         ...toastMessages,
-    //         {
-    //           type: "success",
-    //           title: "Success",
-    //           body: response.message,
-    //         },
-    //       ]);
-    //       } else {
-    //         setToastMessages([
-    //           ...toastMessages,
-    //           {
-    //             type: "invalid",
-    //             title: "Error",
-    //             body: response.message,
-    //           },
-    //         ]);
-    //       }
-    //     } catch (response) {
-    //       setToastMessages([
-    //         ...toastMessages,
-    //         {
-    //           type: "invalid",
-    //           title: "Error",
-    //           body: response.message,
-    //         },
-    //       ]);
-    //     }
-    //     finally{
-    //       setShowLoading(false);
-    //     }
-    //   };
+     
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
     const customStyles = {
@@ -243,20 +204,70 @@ function AssignCourse() {
         value: faculty._id,
         label: `${faculty.name}`, // Assuming student object has 'name' property
       }));
-    const [assignCourseIdx, setassignCourseIdx] = useState(0);
+    const [assignCourseIdx, setassignCourseIdx] = useState("");
     const [assignCourse, setassignCourse] = useState("");
   
     const openAssignCoursePopup = (id) => {
+        console.log("a",id);
         getAllFaculty();
         setassignCourseIdx(id);
         setassignCourse(true);
       };
       const closeAssignCoursePopup = () => {
         setassignCourse(false);
+        setSelectFacultyName("");
       };
-    function capitalizeFirstLetter(string) {
+      function capitalizeFirstLetter(string) {
+        if (typeof string !== "string" || string.length === 0) {
+            return ""; // Return an empty string or handle the case where string is undefined or empty.
+        }
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
+    const handleAssign = async (courseId,facultyName) => {
+        if (!selectedFacultyName) {
+            // Handle case when no faculty is selected
+            return;
+        }
+        setShowLoading(true);
+        try {
+          const response = await courseAssignManager.assign(courseId,facultyName );
+          if (response.success) {
+            setRegistrationStatus(prevStatus => ({
+                ...prevStatus,
+                [courseId]: 'assigned'
+            }));
+            setToastMessages([
+            ...toastMessages,
+            {
+              type: "success",
+              title: "Success",
+              body: response.message,
+            },
+          ]);
+          } else {
+            setToastMessages([
+              ...toastMessages,
+              {
+                type: "invalid",
+                title: "Error",
+                body: response.message,
+              },
+            ]);
+          }
+        } catch (response) {
+          setToastMessages([
+            ...toastMessages,
+            {
+              type: "invalid",
+              title: "Error",
+              body: response.message,
+            },
+          ]);
+        }
+        finally{
+          setShowLoading(false);
+        }
+      };
     return (
         <div className="flex-col">
             <div>
@@ -351,7 +362,9 @@ function AssignCourse() {
                                                 className="block w-full h-full overflow-hidden overflow-ellipsis"
                                                 style={{ wordWrap: "break-word" }}
                                             >
-                                                {course.courseTeacher ? course.courseTeacher : "N/A"}
+                                                {course.courseTeacher ? course.courseTeacher.name : "N/A"}
+                                               
+                                                {/* {course.courseTeacher ? course.courseTeacher : "N/A"} */}
                                             </span>
                                         </td>
 
@@ -361,16 +374,16 @@ function AssignCourse() {
                                             <div class="lg:inline-flex rounded-lg border  bg-sa-pink p-1">
                                                 {course.status === "assigned" ? (
                                                     <button
-                                                        className="bg-[#d9534f] cursor-pointer  text-white inline-flex items-center gap-2 rounded-md px-6 py-2 text-md hover:opacity-90 hover:scale-105 transition-all duration-300 ease-in-out hover:text-gray-300 focus:relative"
+                                                        className="bg-[#d9534f] cursor-pointer  text-white inline-flex items-center gap-2 rounded-md  lg:px-6 xl:px-11 md:px-2 px-3 py-2 text-md hover:opacity-90 hover:scale-105 transition-all duration-300 ease-in-out hover:text-gray-300 focus:relative"
                                                     // onClick={() => handleRemove(course.courseID)}
                                                     >
                                                         {showLoading ? <Spinner /> : "Remove"}
                                                     </button>
                                                 ) : (
                                                     <button
-                                                        className="bg-sa-maroon cursor-pointer text-white inline-flex items-center gap-2 rounded-md px-6 py-2 text-md hover:opacity-90 hover:scale-105 transition-all duration-300 ease-in-out hover:text-gray-300 focus:relative"
+                                                        className="bg-sa-maroon cursor-pointer text-white inline-flex items-center gap-2 rounded-md lg:px-6 px-3 py-2 text-md hover:opacity-90 hover:scale-105 transition-all duration-300 ease-in-out hover:text-gray-300 focus:relative"
                                                     // onClick={() => handleRegister(course.courseID)}
-                                                    onClick={openAssignCoursePopup}
+                                                    onClick={() => openAssignCoursePopup(course.courseID)} 
                                                     >
                                                         {showLoading ? <Spinner /> : "Assign Course"}
                                                     </button>
@@ -439,9 +452,12 @@ function AssignCourse() {
                 >
                   Cancel
                 </button>
+             
                 <button
                   className="bg-sa-maroon hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-70 text-white md:px-8 px-5 rounded-[9px] py-1 "
-                //   onClick={handlePasswordUpdate}
+                 
+                  onClick={() => handleAssign(assignCourseIdx, selectedFacultyName.value)}
+                  
                 >
                   {assignLoading ? <Spinner /> : 'Assign'}
                 </button>

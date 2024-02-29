@@ -16,6 +16,7 @@ const facultyApiConstants = {
   CHANGE_PASSWORD:`${BASE_URL}/faculty/update/password`,
   GET_LEAVE_ID: `${BASE_URL}leave/details?_id=`,
   UPDATE_LEAVE_STATUS: `${BASE_URL}leave/update?_id=`,
+  ASSIGN_COURSE: `${BASE_URL}course/update-by-advisor?_id=`,
 };
 
 export default facultyApiConstants;

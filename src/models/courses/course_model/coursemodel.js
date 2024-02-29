@@ -101,15 +101,16 @@ class AllCourseInfo {
 }
 
 class Course {
-  constructor({ _id, courseCode, courseName, courseCredHrs, studentsEnrolled, courseTeacher, created_on, deleted_on }) {
+  constructor({ _id, courseCode, courseName, courseCredHrs, studentsEnrolled, courseTeacher, created_on, deleted_on, status }) {
       this._id = _id;
       this.courseCode = courseCode;
       this.courseName = courseName;
       this.courseCredHrs = courseCredHrs;
       this.studentsEnrolled = studentsEnrolled;
-      this.courseTeacher = courseTeacher;
+      this.courseTeacher = courseTeacher ? new Teacher(courseTeacher) : null;
       this.created_on = created_on;
       this.deleted_on = deleted_on;
+      this.status = status;
   }
 
   toJson() {
@@ -119,10 +120,35 @@ class Course {
           courseName: this.courseName,
           courseCredHrs: this.courseCredHrs,
           studentsEnrolled: this.studentsEnrolled,
-          courseTeacher: this.courseTeacher,
+          courseTeacher: this.courseTeacher ? this.courseTeacher.toJson() : null,
           created_on: this.created_on,
-          deleted_on: this.deleted_on
+          deleted_on: this.deleted_on,
+          status: this.status
       };
+  }
+}
+
+class Teacher {
+  constructor({ _id, name, email, contactno, isStudentAdvisor, created_on, deleted_on }) {
+    this._id = _id;
+    this.name = name;
+    this.email = email;
+    this.contactno = contactno;
+    this.isStudentAdvisor = isStudentAdvisor;
+    this.created_on = created_on;
+    this.deleted_on = deleted_on;
+  }
+
+  toJson() {
+    return {
+      _id: this._id,
+      name: this.name,
+      email: this.email,
+      contactno: this.contactno,
+      isStudentAdvisor: this.isStudentAdvisor,
+      created_on: this.created_on,
+      deleted_on: this.deleted_on
+    };
   }
 }
 

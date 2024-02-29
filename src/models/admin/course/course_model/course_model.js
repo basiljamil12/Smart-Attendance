@@ -6,7 +6,7 @@ export class CourseData {
       this.courseCredHrs = courseCredHrs;
       this.studentsEnrolled = studentsEnrolled;
       this.courseTeacher = courseTeacher;
-      this.courseTeacher = courseTeacher;
+      this.status = status;
     }
   
     static fromJson(json) {
