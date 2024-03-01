@@ -3,6 +3,12 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import SignoutManager from "../../models/admin/auth/https/signouthttp"; 
+import Books from "../../assets/images/course.png"
+import Faculty from "../../assets/images/teacherAdboard.png"
+import Parent from "../../assets/images/parent2.png"
+import Student from "../../assets/images/studentAdboard.png"
+import LogoutIcon from '@mui/icons-material/Logout';
+import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
 function Sidebar() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(window.innerWidth >= 768);
@@ -88,38 +94,47 @@ function Sidebar() {
                 Smart Attendance
               </span>
             </div>
-            <div className="border-b-2 border-white mx-4 mb-10 opacity-20"></div>
+            <div className="border-b-2 border-white mx-4 mb-14 opacity-20"></div>
             
             <div
-              className="transition-opacity hover:opacity-80 px-10 pt-5 border-b-10 hover:cursor-pointer"
+              className="flex transition-opacity hover:opacity-80 px-10 pt-5 border-b-10 hover:cursor-pointer"
               onClick={goToFaculty}
             >
-              <span className="text-white font-bold text-xl">Faculty</span>
+              <img src={Faculty} alt="Books" className="w-12 h-12" />
+              <span className="text-white font-bold text-xl mt-2 ml-4">Faculty</span>
             </div>
             <div className="border-b-2 border-white mx-4 my-5 opacity-20"></div>
             <div
-              className="transition-opacity hover:opacity-80 px-10 border-b-10 hover:cursor-pointer"
+              className="flex transition-opacity hover:opacity-80 px-10 border-b-10 hover:cursor-pointer"
               onClick={goToStudent}
             >
-              <span className="text-white font-bold text-xl">Student</span>
+              <img src={Student} alt="Books" className="w-12 h-12" />
+              <span className="ml-4 mt-2 text-white font-bold text-xl">Student</span>
             </div>
             <div className="border-b-2 border-white mx-4 my-5 opacity-20"></div>
             <div
-              className="transition-opacity hover:opacity-80 px-10 border-b-10 hover:cursor-pointer"
+              className="flex transition-opacity hover:opacity-80 px-10 border-b-10 hover:cursor-pointer"
               onClick={goToParent}
             >
-              <span className="text-white font-bold text-xl">Parent</span>
+
+              <img src={Parent} alt="Books" className="w-12 h-12" />
+              <span className="ml-4 mt-2 text-white font-bold text-xl">Parent</span>
             </div>
             <div className="border-b-2 border-white mx-4 my-5 opacity-20"></div>
             <div
-              className="transition-opacity hover:opacity-80 px-10 border-b-10 hover:cursor-pointer"
+              className="flex transition-opacity hover:opacity-80 px-10 border-b-10 hover:cursor-pointer"
               onClick={goToCourse}
             >
-              <span className="text-white font-bold text-xl">Course</span>
+            {/* <AutoStoriesOutlinedIcon style={{ width: 38, height: 38,marginLeft:7}} /> */}
+
+              <img src={Books} alt="Books" className="w-12 h-12" />
+          <span className="text-white font-bold text-xl ml-5 mt-2 ">Course</span>
             </div>
             <div className="border-b-2 border-white mx-4 my-5 opacity-20"></div>
-            <div className="px-10 border-b-10 hover:cursor-pointer">
-              <span className="transition-opacity hover:opacity-80 text-white font-bold text-xl"
+            <div className="flex px-10 border-b-10 hover:cursor-pointer">
+            <LogoutIcon style={{ width: 44, height: 38,marginLeft:9}} />
+              
+              <span className="ml-4 mt-1 transition-opacity hover:opacity-80 text-white font-bold text-xl"
               onClick={openSignOut} >
                 Sign Out</span>
             </div>
