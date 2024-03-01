@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../../../components/sidebar/sidebar";
 import { useNavigate } from "react-router";
-import { Button } from "primereact/button";
 import StudentManager from "../../../models/admin/student/http/get_all_student";
 import Spinner from "../../../components/spinner/spinner";
 import Toast from "../../../components/toast/toast";
 import DeleteStudentManager from "../../../models/admin/student/http/delete_student";
 import { useLocation } from "react-router-dom";
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import Button from '@mui/material/Button';
 
 function StudentAdboard() {
   const studentManager = new StudentManager();
@@ -142,24 +143,50 @@ function StudentAdboard() {
       ) : (
         <div className="w-full">
           <div className="md:mt-8 md:ml-8 mt-16 md:flex md:items-start md:justify-start">
-            <span className="text-sa-maroon  font-bold text-xl md:text-3xl">
+            <span className="text-sa-maroon  font-bold text-2xl md:text-3xl">
               Student Dashboard
             </span>
           </div>
           <div className="md:mt-14 mt-10">
-            <div className="flex justify-between mx-10 md:mx-24">
-              <span className="text-sa-maroon font-bold text-xl md:text-2xl">
+          <div className="flex justify-between xl:mx-16 mx-10">
+
+              <span className="text-sa-maroon font-bold text-xl md:mt-0 mt-2 md:text-2xl">
                 Student List
               </span>
-              <span
-                className="transition-opacity hover:opacity-85 text-sa-maroon font-bold text-lg pt-0.5 underline hover:cursor-pointer"
+              <Button
+               onClick={goToAddStudent}
+    variant="contained"
+    startIcon={<AddBoxIcon />}
+    sx={{
+      backgroundColor: '#925454',
+        cursor: 'pointer',
+        color: 'white',
+        display: 'inline-flex',
+        alignItems: 'center',
+        borderRadius: '6px',
+        padding: '10px 14px',
+        fontSize: '16px',
+        '&:hover': {
+            opacity: 0.9,
+            transform: 'scale(1.05)',
+            backgroundColor: '#925454',
+        },
+        transition: 'all 300ms ease-in-out',
+    }}
+>
+    Add Student
+</Button>
+              {/* <button
+                //className="transition-opacity hover:opacity-85 text-sa-maroon font-bold text-lg pt-0.5 underline hover:cursor-pointer"
+                className="bg-sa-maroon cursor-pointer text-white inline-flex items-center gap-2 rounded-md lg:px-6 px-3 py-2 text-md hover:opacity-90 hover:scale-105 transition-all duration-300 ease-in-out hover:text-gray-300 focus:relative"
+                
                 onClick={goToAddStudent}
               >
                 Add Student
-              </span>
+              </button> */}
             </div>
-            <div className="mb-20 overflow-x-auto mt-10 mx-10 md:ml-[6%] md:w-[90%] md:shadow-xl rounded-2xl">
-              <table className="table-fixed min-w-full bg-sa-pink w-[800px] md:w-[50vw] rounded-2xl">
+            <div className="mb-20 overflow-x-auto mt-10 mx-10 lg:ml-[6%] lg:w-[90%] lg:shadow-xl rounded-2xl">
+              <table className="table-fixed min-w-full bg-sa-pink w-[800px] lg:w-[50vw] rounded-2xl">
                 <thead>
                   <tr className="border-b border-sa-grey">
                     <th className="p-0 py-5  border-r border-sa-grey w-[100px]">
@@ -206,10 +233,13 @@ function StudentAdboard() {
                         </span>
                       </td>
                       <td className="p-2 py-5  border-sa-grey">
-                        <div class="lg:inline-flex rounded-lg border  bg-sa-pink p-1">
-                          <button
-                            class="bg-sa-maroon md:mr-2 text-white inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm  hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300  focus:relative"
-                            onClick={() => handleNavigate(index)}
+                        <div class="xl:inline-flex items-center justify-center w-full h-full  overflow-hidden overflow-ellipsis rounded-lg border  bg-sa-pink p-1">
+                          <button 
+                          //class="bg-sa-maroon md:mr-2 hover:scale-105 transition-all duration-300 ease-in-out text-white inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm   hover:opacity-90 hover:text-gray-300  focus:relative" 
+       // className=" lg:w-[55%] w-[88px]    h-full bg-sa-maroon xl:ml-2 text-white  items-center gap-2 rounded-md py-2 lg:text-base text-sm hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300 focus:relative"
+       className=" xl:w-24 lg:w-[6rem]    h-full bg-sa-maroon xl:ml-0 hover:scale-105 transition-all duration-300 ease-in-out text-white inline-flex items-center gap-2 rounded-md px-4 py-2 lg:text-base text-sm  hover:opacity-90 hover:text-gray-300 focus:relative"
+                          
+                          onClick={() => handleNavigate(index)}
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -218,6 +248,7 @@ function StudentAdboard() {
                               stroke-width="1.5"
                               stroke="currentColor"
                               class="h-4 w-4"
+
                             >
                               <path
                                 stroke-linecap="round"
@@ -228,26 +259,27 @@ function StudentAdboard() {
                             Edit
                           </button>
 
-                          <button
-                            class="inline-flex lg:mt-0 mt-2 items-center gap-2 rounded-md bg-[#d9534f] px-4 py-2 text-sm text-white hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90  hover:text-gray-300 shadow-sm focus:relative"
-                            onClick={() => openIsDelete(index)}
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke-width="1.5"
-                              stroke="currentColor"
-                              class="h-4 w-4"
-                            >
-                              <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-                              />
-                            </svg>
-                            Delete
-                          </button>
+                          <button 
+    className="xl:w-28 lg:w-[7rem] xl:ml-2 hover:scale-105 transition-all duration-300 ease-in-out  h-full inline-flex xl:mt-0 mt-4 items-center  rounded-md bg-[#d9534f] px-4 py-2 lg:text-base text-sm text-white  hover:opacity-90 hover:text-gray-300 shadow-sm focus:relative"
+    onClick={() => openIsDelete(index)}
+>
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="h-4 w-4 mr-2"
+    >
+        <path
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+            d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+        />
+    </svg>
+    Delete
+</button>
+
                         </div>
                         {/* <span className="text-sa-maroon text-md underline mx-2 hover:cursor-pointer">
                       Edit
