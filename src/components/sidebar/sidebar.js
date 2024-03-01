@@ -97,44 +97,45 @@ function Sidebar() {
             <div className="border-b-2 border-white mx-4 mb-14 opacity-20"></div>
             
             <div
-              className="flex transition-opacity hover:opacity-80 px-10 pt-5 border-b-10 hover:cursor-pointer"
+              className="hover:text-gray-300 hover:scale-105 transition-all duration-300 ease-in-out flex hover:opacity-80 px-10 pt-5 border-b-10 hover:cursor-pointer"
               onClick={goToFaculty}
             >
-              <img src={Faculty} alt="Books" className="w-12 h-12" />
-              <span className="text-white font-bold text-xl mt-2 ml-4">Faculty</span>
+              <img src={Faculty} alt="Books" className="w-8 h-8 filter invert" />
+              <span className="text-white font-bold text-xl mt-0.5 ml-4">Faculty</span>
             </div>
             <div className="border-b-2 border-white mx-4 my-5 opacity-20"></div>
             <div
-              className="flex transition-opacity hover:opacity-80 px-10 border-b-10 hover:cursor-pointer"
+              className="hover:text-gray-300 hover:scale-105 transition-all duration-300 ease-in-out flex  hover:opacity-80 px-10 border-b-10 hover:cursor-pointer"
               onClick={goToStudent}
             >
-              <img src={Student} alt="Books" className="w-12 h-12" />
-              <span className="ml-4 mt-2 text-white font-bold text-xl">Student</span>
+              <img src={Student} alt="Books" className="w-8 h-8 filter invert"  />
+              <span className="ml-4 mt-1 text-white font-bold text-xl">Student</span>
             </div>
             <div className="border-b-2 border-white mx-4 my-5 opacity-20"></div>
             <div
-              className="flex transition-opacity hover:opacity-80 px-10 border-b-10 hover:cursor-pointer"
+              className="hover:text-gray-300 hover:scale-105 transition-all duration-300 ease-in-out flex  hover:opacity-80 px-10 border-b-10 hover:cursor-pointer"
               onClick={goToParent}
             >
 
-              <img src={Parent} alt="Books" className="w-12 h-12" />
-              <span className="ml-4 mt-2 text-white font-bold text-xl">Parent</span>
+<img src={Parent} alt="Books" className="w-9 h-8 filter invert" />
+
+              <span className="ml-4 mt-0.5  text-white font-bold text-xl">Parent</span>
             </div>
             <div className="border-b-2 border-white mx-4 my-5 opacity-20"></div>
             <div
-              className="flex transition-opacity hover:opacity-80 px-10 border-b-10 hover:cursor-pointer"
+              className="hover:text-gray-300 hover:scale-105 transition-all duration-300 ease-in-out flex  hover:opacity-80 px-10 border-b-10 hover:cursor-pointer"
               onClick={goToCourse}
             >
             {/* <AutoStoriesOutlinedIcon style={{ width: 38, height: 38,marginLeft:7}} /> */}
 
-              <img src={Books} alt="Books" className="w-12 h-12" />
-          <span className="text-white font-bold text-xl ml-5 mt-2 ">Course</span>
+              <img src={Books} alt="Books" className="w-8 h-8 filter invert"  />
+          <span className="text-white font-bold text-xl ml-5 mt-0.5 ">Course</span>
             </div>
             <div className="border-b-2 border-white mx-4 my-5 opacity-20"></div>
-            <div className="flex px-10 border-b-10 hover:cursor-pointer">
-            <LogoutIcon style={{ width: 44, height: 38,marginLeft:9}} />
+            <div className="hover:text-gray-300 hover:scale-105 transition-all duration-300 ease-in-out flex px-10 border-b-10 hover:cursor-pointer">
+            <LogoutIcon className="text-white" style={{ width: 30, height: 32,marginLeft:7}} />
               
-              <span className="ml-4 mt-1 transition-opacity hover:opacity-80 text-white font-bold text-xl"
+              <span className="ml-4 mt-0.5 transition-opacity hover:opacity-80 text-white font-bold text-xl"
               onClick={openSignOut} >
                 Sign Out</span>
             </div>
