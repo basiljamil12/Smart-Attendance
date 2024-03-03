@@ -160,11 +160,9 @@ function FacultyLeaveDashboard() {
       leaveDetails.studentId && leaveDetails.studentId.name
     }_leave.pdf`;
     a.click();
-    
 
     window.URL.revokeObjectURL(a.href);
     document.body.removeChild(a);
-    
   };
 
   return (
@@ -253,17 +251,21 @@ function FacultyLeaveDashboard() {
                     </td>
 
                     <td className="p-0 py-5 border-sa-grey">
-  <span
-    className={`block font-semibold w-full h-full overflow-hidden overflow-ellipsis ${
-      faculty.status === 'accepted' ? 'text-green-600' :
-      faculty.status === 'rejected' ? 'text-red-600' :
-      faculty.status === 'pending' ? 'text-sa-blue' : ''
-    }`}
-    style={{ wordWrap: "break-word" }}
-  >
-    {capitalizeFirstLetter(faculty.status)}
-  </span>
-</td>
+                      <span
+                        className={`block font-semibold w-full h-full overflow-hidden overflow-ellipsis ${
+                          faculty.status === "accepted"
+                            ? "text-green-600"
+                            : faculty.status === "rejected"
+                            ? "text-red-600"
+                            : faculty.status === "pending"
+                            ? "text-sa-blue"
+                            : ""
+                        }`}
+                        style={{ wordWrap: "break-word" }}
+                      >
+                        {capitalizeFirstLetter(faculty.status)}
+                      </span>
+                    </td>
                   </tr>
                 ))}
                 <tr className="border-b-0">
@@ -325,27 +327,41 @@ function FacultyLeaveDashboard() {
                 </span>
               </div>
               <div className="flex items-start my-2 text-lg">
-  <span className="text-sa-maroon font-bold">Status: </span>
-  <span className={`ml-1 font-semibold ${leaveDetails.status === 'accepted' ? 'text-green-600' : 
-    leaveDetails.status === 'rejected' ? 'text-red-600' : 
-    leaveDetails.status === 'pending' ? 'text-sa-blue' : ''}`}>
-    {capitalizeFirstLetter(leaveDetails.status)}
-  </span>
-</div>
-<div className="flex items-start my-2 text-lg">
-<span className={`text-sa-maroon font-bold ${leaveDetails.attachment ? 'md:mt-1' : 'md:mt-0'} mt-4`}>Attachment: </span>
-  {leaveDetails.attachment ? (
-    <button
-      className="bg-sa-maroon md:ml-2 ml-3 text-white inline-flex items-center gap-2 rounded-3xl px-4 py-2 text-sm hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300 focus:relative"
-      onClick={handleDownload}
-      id="downloadButton"
-    >
-      Download Attachment
-    </button>
-  ) : (
-    <span className="ml-1 text-lg">N/A</span>
-  )}
-</div>
+                <span className="text-sa-maroon font-bold">Status: </span>
+                <span
+                  className={`ml-1 font-semibold ${
+                    leaveDetails.status === "accepted"
+                      ? "text-green-600"
+                      : leaveDetails.status === "rejected"
+                      ? "text-red-600"
+                      : leaveDetails.status === "pending"
+                      ? "text-sa-blue"
+                      : ""
+                  }`}
+                >
+                  {capitalizeFirstLetter(leaveDetails.status)}
+                </span>
+              </div>
+              <div className="flex items-start my-2 text-lg">
+                <span
+                  className={`text-sa-maroon font-bold ${
+                    leaveDetails.attachment ? "md:mt-1" : "md:mt-0"
+                  } mt-4`}
+                >
+                  Attachment:{" "}
+                </span>
+                {leaveDetails.attachment ? (
+                  <button
+                    className="bg-sa-maroon md:ml-2 ml-3 text-white inline-flex items-center gap-2 rounded-3xl px-4 py-2 text-sm hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300 focus:relative"
+                    onClick={handleDownload}
+                    id="downloadButton"
+                  >
+                    Download Attachment
+                  </button>
+                ) : (
+                  <span className="ml-1 text-lg">N/A</span>
+                )}
+              </div>
               <div className="flex items-start my-2 text-lg">
                 <span className="text-sa-maroon font-bold">Reason: </span>
               </div>
@@ -353,22 +369,27 @@ function FacultyLeaveDashboard() {
                 <span>{leaveDetails.reason}</span>
               </div>
               <div className="mt-10 w-full flex-col md:flex-row md:justify-center">
-                <button
-                  class="bg-sa-approve text-white items-center md:w-40 w-60 h-12 rounded-3xl md:mx-0 md:px-4 py-2 text-base  hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300  focus:relative"
-                  onClick={() => handleUpdate("accepted")}
-                >
-                  {acceptLoading ? <Spinner /> : "Approve"}
-                </button>
+                {leaveDetails.status != "accepted" && (
+                  <button
+                    class="bg-sa-approve text-white items-center md:w-40 w-60 h-12 rounded-3xl md:mx-1 md:px-4 py-2 text-base  hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300  focus:relative"
+                    onClick={() => handleUpdate("accepted")}
+                  >
+                    {acceptLoading ? <Spinner /> : "Approve"}
+                  </button>
+                )}
+                <br className="md:hidden inline"></br>
+                {leaveDetails.status != "rejected" && (
+                  <button
+                    class="bg-sa-reject text-white md:w-40 w-60 h-12 items-center gap-2 rounded-3xl  md:mt-0 mt-3 md:mx-1 md:px-4 py-2 text-base  hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300  focus:relative"
+                    onClick={() => handleUpdate("rejected")}
+                  >
+                    {rejectLoading ? <Spinner /> : "Reject"}
+                  </button>
+                )}
+
                 <br className="md:hidden inline"></br>
                 <button
-                  class="bg-sa-reject text-white md:w-40 w-60 h-12 items-center gap-2 rounded-3xl  md:mt-0 mt-3 md:mx-3 md:px-4 py-2 text-base  hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300  focus:relative"
-                  onClick={() => handleUpdate("rejected")}
-                >
-                  {rejectLoading ? <Spinner /> : "Reject"}
-                </button>
-                <br className="md:hidden inline"></br>
-                <button
-                  class="bg-sa-close text-white md:w-40 w-60 h-12 items-center gap-2 rounded-3xl  md:mt-0 mt-3 mx-1 md:mx-0 md:px-4 py-2 text-base  hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300  focus:relative"
+                  class="bg-sa-close text-white md:w-40 w-60 h-12 items-center gap-2 rounded-3xl  md:mt-0 mt-3 mx-1 md:mx-1 md:px-4 py-2 text-base  hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300  focus:relative"
                   onClick={closeDetails}
                 >
                   Close
