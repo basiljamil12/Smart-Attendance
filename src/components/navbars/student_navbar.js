@@ -74,7 +74,10 @@ function StudentNavbar() {
   };
 
   const toggleAccountMenu = () => {
-    if (leaveMenuOpen == true) {
+    if (CourseMenuOpen == true) {
+      setCourseMenuOpen(false);
+    }
+    else if (leaveMenuOpen == true) {
       setLeaveMenuOpen(false);
     }
     if(accountMenuOpen==true){
@@ -84,7 +87,10 @@ function StudentNavbar() {
   };
 
   const toggleLeaveMenu = () => {
-    if (accountMenuOpen == true) {
+    if (CourseMenuOpen == true) {
+      setCourseMenuOpen(false);
+    }
+    else if (accountMenuOpen == true) {
       setAccountMenuOpen(false);
     }
     if(leaveMenuOpen==true){
@@ -96,6 +102,9 @@ function StudentNavbar() {
   const toggleCourseMenu = () => {
     if (leaveMenuOpen == true) {
       setLeaveMenuOpen(false);
+    }
+    else if (accountMenuOpen == true) {
+      setAccountMenuOpen(false);
     }
     if(CourseMenuOpen==true){
       return;
@@ -214,9 +223,26 @@ function StudentNavbar() {
             >
               Home
             </span>
-            <span className="transition-opacity hover:opacity-60 block text-xl text-white font-bold mb-2 py-2 hover:cursor-pointer">
+            <span  onClick={toggleCourseMenu} className="transition-opacity hover:opacity-60 block text-xl text-white font-bold mb-2 py-2 hover:cursor-pointer">
               Course
             </span>
+            {CourseMenuOpen && (
+            <div  className="bg-sa-maroon py-2 px-4 mt-2">
+           
+              <span
+                onClick={handleRegisterCourseClick}
+                className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer "
+              >
+                View Registered Courses
+              </span>
+              <span
+                onClick={handleViewCourseClick}
+                className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer "
+              >
+                Register Courses
+              </span>
+            </div>
+          )}
             <span
               onClick={toggleLeaveMenu}
               className="transition-opacity hover:opacity-60 block text-xl text-white font-bold mb-2 py-2 hover:cursor-pointer"
@@ -227,13 +253,13 @@ function StudentNavbar() {
               <div className="bg-sa-maroon py-2 px-4 mt-2">
                 <span
                   onClick={handleApplyClick}
-                  className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer hover:bg-gray-200"
+                  className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer "
                 >
                   Apply For Leave
                 </span>
                 <span
                   onClick={handleStatusClick}
-                  className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer hover:bg-gray-200"
+                  className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer "
                 >
                   View Leave Status
                 </span>
@@ -249,19 +275,19 @@ function StudentNavbar() {
               <div className="bg-sa-maroon py-2 px-4 mt-2">
                 <span
                   onClick={handleProfileClick}
-                  className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer hover:bg-gray-200"
+                  className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer "
                 >
                   Profile Information
                 </span>
                 <span
                   onClick={handleChangePasswordClick}
-                  className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer hover:bg-gray-200"
+                  className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer "
                 >
                   Change Password
                 </span>
                 <span
                   onClick={openSignOut}
-                  className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer hover:bg-gray-200"
+                  className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer "
                 >
                   Sign Out
                 </span>
@@ -300,7 +326,7 @@ function StudentNavbar() {
             Account
           </span>
           {accountMenuOpen && (
-            <div className="bg-white absolute top-full right-0 mt-1 py-2 px-4 rounded-xl shadow-xl w-64"
+            <div className="bg-white absolute z-50 border border-sa-grey top-full right-0 mt-1 py-2 px-4 rounded-xl shadow-xl w-64"
     onMouseLeave={handleMouseLeave}
     >
 
@@ -311,53 +337,53 @@ function StudentNavbar() {
                 //   toggleAccountMenu(); // Toggle the menu
                 // }}
 
-                className="block text-sa-maroon font-bold text-lg py-2 cursor-pointer hover:bg-gray-200 border-b-2"
+                className="hover:scale-105 mb-1 transition-all duration-300 ease-in-out block border-b-2 border-sa-maroon text-sa-maroon font-bold text-lg py-2 cursor-pointer hover:bg-gray-200 "
               >
                 Profile Information
               </span>
               <span
                 onClick={handleChangePasswordClick}
-                className="block text-sa-maroon font-bold text-lg py-2 cursor-pointer hover:bg-gray-200 border-b-2"
+                className="hover:scale-105 transition-all mb-1 duration-300 ease-in-out block border-b-2 border-sa-maroon text-sa-maroon font-bold text-lg py-2 cursor-pointer hover:bg-gray-200 "
               >
                 Change Password
               </span>
               <span
                 onClick={openSignOut}
-                className="block text-sa-maroon font-bold text-lg py-2 cursor-pointer hover:bg-gray-200"
+                className="hover:scale-105 transition-all duration-300 ease-in-out block text-sa-maroon font-bold text-lg py-2 cursor-pointer hover:bg-gray-200"
               >
                 Sign Out
               </span>
             </div>
           )}
           {leaveMenuOpen && (
-            <div className="bg-white absolute top-full right-20 mt-1 py-2 px-4 rounded-xl shadow-xl w-64"
+            <div className="bg-white z-50 absolute border border-sa-grey top-full right-20 mt-1 py-2 px-4 rounded-xl shadow-xl w-64"
             onMouseLeave={handleMouseLeave}>
               <span
                 onClick={handleApplyClick}
-                className="block text-sa-maroon font-bold text-lg py-2 mb-2 cursor-pointer hover:bg-gray-200"
+                className="hover:scale-105 transition-all duration-300 ease-in-out block border-b-2 border-sa-maroon text-sa-maroon font-bold text-lg py-2 mb-2 cursor-pointer hover:bg-gray-200"
               >
                 Apply For Leave
               </span>
               <span
                 onClick={handleStatusClick}
-                className="block text-sa-maroon font-bold text-lg py-2 mb-2 cursor-pointer hover:bg-gray-200"
+                className="hover:scale-105 transition-all duration-300 ease-in-out block text-sa-maroon font-bold text-lg py-2 cursor-pointer hover:bg-gray-200"
               >
                 View Leave Status
               </span>
             </div>
           )}
           {CourseMenuOpen && (
-            <div className="bg-white absolute top-full right-20 mt-1 py-2 px-4 rounded-xl shadow-xl w-64"
+            <div className="bg-white absolute border z-50 border-sa-grey top-full right-44 mt-1 py-2 px-4 rounded-xl shadow-xl w-64"
             onMouseLeave={handleMouseLeave}>
               <span
                 onClick={handleRegisterCourseClick}
-                className="block text-sa-maroon font-bold text-lg py-2 mb-2 cursor-pointer hover:bg-gray-200"
+                className="block border-b-2 border-sa-maroon text-sa-maroon font-bold text-lg py-2 mb-2 cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out hover:bg-gray-200"
               >
                 View Registered Courses
               </span>
               <span
                 onClick={handleViewCourseClick}
-                className="block text-sa-maroon font-bold text-lg py-2 mb-2 cursor-pointer hover:bg-gray-200"
+                className="block hover:scale-105 transition-all duration-300 ease-in-out text-sa-maroon font-bold text-lg py-2  cursor-pointer hover:bg-gray-200"
               >
                 Register Courses
               </span>

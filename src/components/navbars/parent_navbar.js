@@ -142,9 +142,9 @@ function ParentNavbar() {
             </span>
             {accountMenuOpen && (
               <div className="bg-sa-maroon py-2 px-4 mt-2">
-                <span onClick={handleProfileClick} className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer hover:bg-gray-200">Profile Information</span>
-                <span onClick={handleChangePasswordClick} className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer hover:bg-gray-200">Change Password</span>
-                <span onClick={openSignOut} className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer hover:bg-gray-200">Sign Out</span>
+                <span onClick={handleProfileClick} className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer ">Profile Information</span>
+                <span onClick={handleChangePasswordClick} className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer ">Change Password</span>
+                <span onClick={openSignOut} className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer ">Sign Out</span>
               </div>
             )}
           </div>
@@ -162,10 +162,10 @@ function ParentNavbar() {
           </span>
           {accountMenuOpen && (
             <div  onMouseLeave={handleMouseLeave}
-             className="bg-white absolute top-full right-5 mt-1 py-2 px-4 rounded-xl shadow-xl w-64">
-              <span onClick={handleProfileClick} className="block text-sa-maroon font-bold text-lg py-2 cursor-pointer hover:bg-gray-200 border-b-2">Profile Information</span>
-              <span onClick={handleChangePasswordClick} className="block text-sa-maroon font-bold text-lg py-2 cursor-pointer hover:bg-gray-200 border-b-2">Change Password</span>
-              <span onClick={openSignOut} className="block text-sa-maroon font-bold text-lg py-2 cursor-pointer hover:bg-gray-200">Sign Out</span>
+             className="bg-white absolute  border z-50 border-sa-grey top-full right-0  py-2 px-4 rounded-xl shadow-xl w-64">
+              <span onClick={handleProfileClick} className="border-b-2 mb-1 border-sa-maroon hover:scale-105  transition-all duration-300 ease-in-out block text-sa-maroon font-bold text-lg py-2 cursor-pointer hover:bg-gray-200 ">Profile Information</span>
+              <span onClick={handleChangePasswordClick} className="hover:scale-105 border-b-2 mb-1 border-sa-maroon transition-all duration-300 ease-in-out block text-sa-maroon font-bold text-lg py-2 cursor-pointer hover:bg-gray-200 ">Change Password</span>
+              <span onClick={openSignOut} className="hover:scale-105 transition-all duration-300 ease-in-out block text-sa-maroon font-bold text-lg py-2 cursor-pointer hover:bg-gray-200">Sign Out</span>
             </div>
           )}
         </div>
