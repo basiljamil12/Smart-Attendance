@@ -16,7 +16,7 @@ function FacultyNavbar() {
   const [open, setOpen] = useState(false);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [leaveMenuOpen, setLeaveMenuOpen] = useState(false);
-  const [CourseMenuOpen, setCourseMenuOpen] = useState(false);
+  const [courseMenuOpen, setCourseMenuOpen] = useState(false);
   const [HomeMenuOpen, setHomeMenuOpen] = useState(false);
   const location = useLocation();
 
@@ -115,7 +115,10 @@ function FacultyNavbar() {
     if (leaveMenuOpen == true) {
       setLeaveMenuOpen(false);
     }
-    if (accountMenuOpen == true) {
+   else if (courseMenuOpen==true){
+    setCourseMenuOpen(false);
+   }
+    else if (accountMenuOpen == true) {
       return;
     }
     setAccountMenuOpen(!accountMenuOpen);
@@ -124,6 +127,10 @@ function FacultyNavbar() {
   const toggleLeaveMenu = () => {
     if (accountMenuOpen == true) {
       setAccountMenuOpen(false);
+    }
+    else if(courseMenuOpen==true){
+    setCourseMenuOpen(false);
+
     }
     if (leaveMenuOpen == true) {
       return;
@@ -135,18 +142,32 @@ function FacultyNavbar() {
     if (leaveMenuOpen == true) {
       setLeaveMenuOpen(false);
     }
-    if (CourseMenuOpen == true) {
+    else if (accountMenuOpen == true) {
+      setAccountMenuOpen(false);
+    }
+    else if (courseMenuOpen == true) {
       return;
     }
-    setCourseMenuOpen(!CourseMenuOpen);
+    setCourseMenuOpen(!courseMenuOpen);
   };
   const toggleHomeMenu = () => {
-    if (CourseMenuOpen == true) {
+    if (courseMenuOpen == true) {
       setCourseMenuOpen(false);
     }
     setHomeMenuOpen(!HomeMenuOpen);
   };
-
+  const handleCourseRegisterClick = () => {
+    // You can add your logic here
+    setOpen(false);
+    setCourseMenuOpen(false);
+    navigate("/faculty/course/register");
+  };
+  const handleAssignCourseClick = () => {
+    // You can add your logic here
+    navigate("/faculty/course/assign");
+    setCourseMenuOpen(false);
+    setOpen(false);
+  };
   const handleProfileClick = () => {
     // Handle click on Profile Information
     // You can add your logic here
@@ -172,13 +193,14 @@ function FacultyNavbar() {
     setOpen(false);
     setAccountMenuOpen(false);
     setLeaveMenuOpen(false);
+    setCourseMenuOpen(false);
   };
 
-  const handleCourseClick = () => {
-    // You can add your logic here
-    setOpen(false);
-    navigate("/faculty/course/register");
-  };
+  // const handleCourseClick = () => {
+  //   // You can add your logic here
+  //   setOpen(false);
+  //   navigate("/faculty/course/register");
+  // };
 
   const handleHomeClick = () => {
     // You can add your logic here
@@ -217,12 +239,29 @@ function FacultyNavbar() {
             </span>
             {isStudentAdvisor && ( 
             <span
-              onClick={handleCourseClick}
+              onClick={toggleCourseMenu}
               className="transition-opacity hover:opacity-60 block text-xl text-white font-bold mb-2 py-2 hover:cursor-pointer"
             >
               Course
             </span>
            )} 
+           {courseMenuOpen && (
+              <div className="bg-sa-maroon py-2 px-4 mt-2">
+
+                <span
+                  onClick={handleCourseRegisterClick}
+                  className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer "
+                >
+                  Register Courses
+                </span>
+                <span
+                  onClick={handleAssignCourseClick}
+                  className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer "
+                >
+                  Assign Courses
+                </span>
+              </div>
+            )}
 
             {isStudentAdvisor && ( 
             <span
@@ -257,13 +296,15 @@ function FacultyNavbar() {
           </span>
           {isStudentAdvisor && ( 
           <span
-            onClick={handleCourseClick}
-            className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer"
+          onMouseEnter={toggleCourseMenu}
+          className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer"
+            // onClick={handleCourseClick}
+            // className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer"
           >
             Course
           </span>
            )} 
-
+           
           {isStudentAdvisor && ( 
           <span
             onMouseEnter={toggleLeaveMenu}
@@ -279,6 +320,23 @@ function FacultyNavbar() {
           >
             Account
           </span>
+          {courseMenuOpen && (
+            <div className="bg-white absolute border z-50 border-sa-grey top-full right-44 mt-1 py-2 px-4 rounded-xl shadow-xl w-64"
+              onMouseLeave={handleMouseLeave}>
+              <span
+                onClick={handleCourseRegisterClick}
+                className="block border-b-2 border-sa-maroon text-sa-maroon font-bold text-lg py-2 mb-2 cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out hover:bg-gray-200"
+              >
+                Register Courses
+              </span>
+              <span
+                onClick={handleAssignCourseClick}
+                className="block hover:scale-105 transition-all duration-300 ease-in-out text-sa-maroon font-bold text-lg py-2  cursor-pointer hover:bg-gray-200"
+              >
+                Assign Courses
+              </span>
+            </div>
+          )}
           {accountMenuOpen && (
             <div
               onMouseLeave={handleMouseLeave}
@@ -288,6 +346,8 @@ function FacultyNavbar() {
               <span onClick={openSignOut} className="  border-sa-maroon hover:scale-105 transition-all duration-300 ease-in-out block text-sa-maroon font-bold text-lg py-2 cursor-pointer hover:bg-gray-200">Sign Out</span>
             </div>
           )}
+          
+
         </div>
         {isSignout && (
           <div
