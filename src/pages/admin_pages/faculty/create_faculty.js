@@ -269,8 +269,8 @@ const createFacultyManager = new CreateFacultyManager();
             <option value="" disabled >
               Is student advisor?
             </option>
-            <option value="no">No</option>
-            <option value="yes">Yes</option>
+            <option value="false">No</option>
+            <option value="true">Yes</option>
           </select>
         </div>
 

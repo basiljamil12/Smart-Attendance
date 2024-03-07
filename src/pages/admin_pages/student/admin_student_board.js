@@ -218,7 +218,7 @@ function StudentAdboard() {
                       </td>
                       <td className="p-0 py-5  border-r border-sa-grey">
                         <span
-                          className="block w-full h-full overflow-hidden overflow-ellipsis"
+                          className="block mx-2 h-full overflow-hidden overflow-ellipsis"
                           style={{ wordWrap: "break-word" }}
                         >
                           {student.email}
