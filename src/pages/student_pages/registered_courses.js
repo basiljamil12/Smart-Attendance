@@ -25,7 +25,6 @@ function RegisteredCourses() {
         const response = await studentCourseManager.getStudentCourses();
         if (response.success) {
           setCoursesReq(response.data);
-          console.log(coursesReq);
           const initialRegistrationStatus = {};
           response.data.map(course => {
             if (course.status === 'accepted') {

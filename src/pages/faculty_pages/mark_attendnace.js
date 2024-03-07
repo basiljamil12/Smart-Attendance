@@ -14,12 +14,8 @@ function MarkAttendance() {
     const AttendanceData = [
         {
             stdName: "SDD",
-            creditHrs: "2",
-        },
-        {
-            stdName: "DSA",
             creditHrs: "3",
-        },
+        }
     ];
 
     const navigate = useNavigate();
@@ -81,6 +77,12 @@ function MarkAttendance() {
       updatedSelectedRadio[rowIndex] = radioIndex === selectedRadio[rowIndex] ? null : radioIndex;
       setSelectedRadio(updatedSelectedRadio);
     };
+    const [selectedHour, setSelectedHour] = useState(null);
+    const handleHourChange = (selectedHour) => {
+        // Here, you can add your logic to handle the selected hour
+        // For example, you might want to update state with the selected hour
+        setSelectedHour(selectedHour);
+    };
     return (
         <div className="flex-col">
             <div>
@@ -111,7 +113,7 @@ function MarkAttendance() {
                         </span>
 
                     </div>
-                    <div className="flex justify-between mx-10 md:mb-7 mb-5  md:mx-24">
+                    <div className="flex justify-between mx-10 md:mb-10 mb-5  md:mx-24">
                         <span className="text-sa-maroon font-bold text-lg md:text-xl">
                             Credit Hours:
                         </span>
@@ -134,6 +136,39 @@ function MarkAttendance() {
               </div>
             </div>
                     </div>
+                    <div className="flex items-start md:mx-24 mx-10 md:mb-7 mb-5">
+    <span className="text-sa-maroon font-bold text-lg md:text-xl">
+        Select Hours:
+    </span>
+    <div className="flex ml-5">
+        {AttendanceData.map((data, index) => (
+            <div key={index} className="flex">
+                {[...Array(parseInt(data.creditHrs)).keys()].map((hour) => (
+                    <div key={hour} className="flex items-center ml-4">
+                        <input
+                            type="radio"
+                            id={`hour-${hour + 1}`}
+                            name={`selectedHour-${index}`}
+                            value={hour + 1}
+                            className="mr-2 hidden"
+                             onChange={(e) => handleHourChange(e.target.value)}
+                        />
+                        <label
+                            htmlFor={`hour-${hour + 1}`}
+                            className={`block w-6 h-6 rounded-full border-2 border-gray-600 cursor-pointer ${
+                                parseInt(selectedHour) === hour + 1 ? "bg-sa-maroon border-none" : ""
+                            }`}
+                        ></label>
+                        <span className="ml-2">{hour + 1}</span>
+                    </div>
+                ))}
+            </div>
+        ))}
+    </div>
+</div>
+
+                   
+
                     {!isManualAttendance && (
                         <>
                     <div className="flex-col justify-center items-center md:ml-20 ml-5 mx-[4%] ">

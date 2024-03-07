@@ -94,7 +94,7 @@ function FacultyDashboard() {
                     <div  class="lg:inline-flex rounded-lg border  bg-sa-pink p-1">
                    
   <button
-    class="bg-sa-maroon  text-white inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm  hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300  focus:relative"
+    class="bg-sa-maroon  text-white inline-flex items-center gap-2 rounded-md px-3 py-3  md:text-base text-sm  hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300  focus:relative"
     
   >
    

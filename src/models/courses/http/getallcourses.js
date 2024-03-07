@@ -39,7 +39,6 @@ class FacultyCourseManager {
     const url = `${CourseApiConstants.UPDATE_COURSE_REQ_STATUS}${courseReqId}`;
         
         // const url = `{CourseApiConstants.UPDATE_COURSE_REQ_STATUS}{courseReqId}`;
-        console.log(url);
         const token = localStorage.getItem("facultyToken");
         const params = {
             status: status,

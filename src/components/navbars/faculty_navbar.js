@@ -4,10 +4,14 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import FacultySignoutManager from "../../models/faculty/auth/http/signouthttp";
+import FacultyDetailsManager from "../../models/faculty/auth/http/getdetails";
 
 function FacultyNavbar() {
   const navigate = useNavigate();
   const facultySignoutManager = new FacultySignoutManager();
+  const facultyDetailsManager = new FacultyDetailsManager();
+  const [facultyData, setFacultyData] = useState(null);
+  const [isStudentAdvisor, setIsStudentAdvisor] = useState(null);
 
   const [open, setOpen] = useState(false);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
@@ -16,6 +20,41 @@ function FacultyNavbar() {
   const [HomeMenuOpen, setHomeMenuOpen] = useState(false);
   const location = useLocation();
 
+  useEffect(() => {
+    const fetchData = async () => {
+      // setShowLoading(true);
+      try {
+        const response = await facultyDetailsManager.get();
+        if (response.success) {
+          setFacultyData(response.data);
+          setIsStudentAdvisor(response.data.isStudentAdvisor);
+        } else {
+          setToastMessages([
+            ...toastMessages,
+            {
+              type: "invalid",
+              title: "Error",
+              body: response.message,
+            },
+          ]);
+        }
+      } catch (error) {
+        setToastMessages([
+          ...toastMessages,
+          {
+            type: "invalid",
+            title: "Error",
+            body: error.message,
+          },
+        ]);
+      } finally {
+        // setShowLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+  
   useEffect(() => {
     function handleResize() {
       if (window.innerWidth >= 768 && open) {
@@ -176,18 +215,23 @@ function FacultyNavbar() {
             >
               Home
             </span>
+            {isStudentAdvisor && ( 
             <span
               onClick={handleCourseClick}
               className="transition-opacity hover:opacity-60 block text-xl text-white font-bold mb-2 py-2 hover:cursor-pointer"
             >
               Course
             </span>
+           )} 
+
+            {isStudentAdvisor && ( 
             <span
               onClick={handleLeaveClick}
               className="transition-opacity hover:opacity-60 block text-xl text-white font-bold mb-2 py-2 hover:cursor-pointer"
             >
               Leave
             </span>
+            )}
             <span
               onClick={toggleAccountMenu}
               className="transition-opacity hover:opacity-60 block text-xl text-white font-bold mb-2 py-2 hover:cursor-pointer"
@@ -211,12 +255,16 @@ function FacultyNavbar() {
           >
             Home
           </span>
+          {isStudentAdvisor && ( 
           <span
             onClick={handleCourseClick}
             className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer"
           >
             Course
           </span>
+           )} 
+
+          {isStudentAdvisor && ( 
           <span
             onMouseEnter={toggleLeaveMenu}
             onClick={handleLeaveClick}
@@ -224,6 +272,7 @@ function FacultyNavbar() {
           >
             Leave
           </span>
+           )} 
           <span
             onMouseEnter={toggleAccountMenu}
             className="transition-opacity hover:opacity-60 text-xl text-white font-bold mx-5 hover:cursor-pointer"
