@@ -1,6 +1,7 @@
 export class CourseInfo {
-    constructor({ courseId,status }) {
-        this.courseId = courseId;
+    constructor({ courseId,studentId,status }) {
+      this.courseId = courseId;
+      this.studentId = studentId;
         this.status = status;
     
     }
@@ -8,6 +9,7 @@ export class CourseInfo {
     static fromJson(json) {
       return new CourseInfo({
         courseId: json.courseId,
+        studentId: json.studentId,
         status: json.status,
       });
     }
@@ -15,6 +17,7 @@ export class CourseInfo {
     toJson() {
       return {
         courseId: this.courseId,
+        studentId: this.studentId,
         status: this.status,
       };
     }

@@ -45,6 +45,32 @@ import ChangePassword from "../pages/change_password";
 import ParentAccountDetails from "../pages/parent_pages/parent_account_details";
 import AssignCourse from "../pages/faculty_pages/assign_course";
 import MarkAttendance from "../pages/faculty_pages/mark_attendnace";
+// import FacultyDetailsManager from "../models/faculty/auth/http/getdetails";
+// const facultyDetailsManager = new FacultyDetailsManager();
+
+// const [isStudentAdvisor, setIsStudentAdvisor] = useState(false); // State to store if user is a student advisor
+// const [facultyData, setFacultyData] = useState(null);
+
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       // setShowLoading(true);
+//       try {
+//         const response = await facultyDetailsManager.get();
+//         if (response.success) {
+//           setFacultyData(response.data);
+//           setIsStudentAdvisor(response.data.isStudentAdvisor); // Update isStudentAdvisor state
+//         } else {
+//           // Handle error
+//         }
+//       } catch (error) {
+//         // Handle error
+//       } finally {
+//         // setShowLoading(false);
+//       }
+//     };
+
+//     fetchData();
+//   }, []);
 function ResetPasswordRoute() {
   return <ResetPassword />;
 }
