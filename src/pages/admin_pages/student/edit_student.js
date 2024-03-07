@@ -326,7 +326,7 @@ function EditStudent() {
       ))}
       <div className="md:ml-14 ml-5 w-full mx-[6%] ">
         <p className="text-sa-maroon text-[36px]  mb-5 text-left md:mt-10 mt-20 font-bold">
-          Create Student
+          Edit Student
         </p>
 
         <div className="md:ml-3 ml-2 mt-5 md:mt-6 mb-5 ">
