@@ -428,7 +428,7 @@ function EditStudent() {
             {showLoading ? <Spinner /> : "Save"}
           </button>
           <button
-            class="ml-5 hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px]  md:w-[250px] w-[200px]  rounded-[20px]   bg-clip-padding px-3 md:py-2   leading-tight text-white text-[14px] md:text-[24px]"
+            class="ml-5 hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px]  md:w-[280px] w-[200px]  rounded-[20px]   bg-clip-padding px-3 md:py-2   leading-tight text-white text-[14px] md:text-[24px]"
             onClick={openIsPassword}
           >
             {showLoading ? <Spinner /> : "Change Password"}
@@ -436,48 +436,69 @@ function EditStudent() {
         </div>
       </div>
       {isPassword && (
-        <div
-          className=" fixed inset-0 flex items-center justify-center z-50"
-          onClick={closeIsPassword}
-        >
-          <div className=" bg-black opacity-50 absolute inset-0"></div>
           <div
-            className=" bg-white rounded-3xl md:w-[30%] w-80  p-8 px-12 relative z-10"
-            onClick={(e) => e.stopPropagation()}
+            className=" fixed inset-0 flex items-center justify-center z-50"
+            onClick={closeIsPassword}
           >
-            <h2 className="text-black font-semibold md:w-auto w-60 text-left mb-4">
-              Update
-            </h2>
-            <p className="text-black text-filter-heading md:w-auto w-60 text-left">
-              Enter the new password here:
-            </p>
-            <div className="mt-12 md:mt-8 mb-5 ">
-              <input
-                type="text"
-                id="newpass"
-                placeholder="Enter New Password"
-                onChange={handlePasswordChange}
-                value={password}
-                className="placeholder-gray-500 w-full flex items-start justify-start  h-14 md:h-16 py-4  border-[1px] border-black border-solid   text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon"
-              />
-            </div>
-            <div className="flex justify-end mt-6">
-              <button
-                onClick={closeIsPassword}
-                className="text-filter-heading  hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-70 mr-4 border-2 border-gray-400 rounded-[9px] border-filter-heading py-1 px-6"
-              >
-                Cancel
-              </button>
-              <button
-                className="bg-sa-maroon  hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-70 text-white md:px-7 px-5 rounded-[9px] py-1 "
-                onClick={handlePasswordUpdate}
-              >
-                {passwordShowLoading ? <Spinner /> : <span>Save</span>}
-              </button>
+            <div className=" bg-black opacity-50 absolute inset-0"></div>
+            <div
+              className=" bg-white rounded-3xl md:w-[32rem] w-80  p-8 px-12 relative z-10"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h2 className="text-sa-maroon text-xl md:text-2xl  font-semibold md:w-auto w-60 text-left mb-4">
+                Update Password
+              </h2>
+              <p className="text-black  mb-4 text-filter-heading md:w-auto w-60 text-left">
+                Enter the new password here:
+              </p>
+              <div class="relative mb-6 ">
+          <input
+            type={showPassword ? "text" : "password"}
+            class="shadow-xl focus:outline-none focus:ring-0 focus:border-clue-purchase peer m-0 block h-[45px] md:h-[56px]   md:mr-44  md:w-[102%] w-[245px]  rounded-[14px] border-[1px] border-solid  border-black  bg-transparent bg-clip-padding px-3 py-4 text-base font-normal leading-tight text-black"
+            id="password"
+            value={password}
+            onChange={handlePasswordChange}
+            placeholder="Password"
+          />
+          {showPassword ? (
+            <VisibilityOutlinedIcon
+              className="absolute text-sa-black md:top-[16px] top-[10px] right-[-4px] md:right-[10px] cursor-pointer "
+              onClick={toggleShowPassword}
+            />
+          ) : (
+            <VisibilityOffOutlinedIcon
+              className="absolute text-sa-black md:top-[16px] top-[10px] right-[-4px] md:right-[10px] cursor-pointer "
+              onClick={toggleShowPassword}
+            />
+          )}
+        </div>
+              {/* <div className="mt-12 md:mt-5 mb-5 ">
+                <input
+                  type="text"
+                  id="newpass"
+                  placeholder="Enter New Password"
+                  onChange={handlePasswordChange}
+                  value={password}
+                  className="placeholder-gray-500 w-full flex items-start justify-start  h-14 md:h-16 py-4  border-[1px] border-black border-solid   text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon"
+                />
+              </div> */}
+              <div className="flex justify-end mt-6">
+                <button
+                  onClick={closeIsPassword}
+                  className="text-filter-heading md:text-base hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-70 mr-4 border-2 border-gray-400 rounded-[9px] border-filter-heading py-2 px-4 md:px-4"
+                >
+                  Cancel
+                </button>
+                <button
+                  className="bg-sa-maroon md:text-base hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-70 text-white md:px-8 px-7 rounded-[9px] py-2 "
+                  onClick={handlePasswordUpdate}
+                >
+                  {passwordShowLoading ? <Spinner /> : <span>Save</span>}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
     </div>
   );
 }
