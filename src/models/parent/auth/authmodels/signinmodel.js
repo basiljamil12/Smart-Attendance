@@ -1,17 +1,23 @@
 export class UserData {
-  constructor({ name, email, contactno, studentID }) {
+  constructor({ name, email,password, contactno, studentID,token }) {
     this.name = name;
     this.email = email;
+    this.password = password;
     this.contactno = contactno;
     this.studentID = studentID ? new StudentID(studentID) : null;
+    this.token = token;
+
   }
 
   static fromJson(json) {
     return new UserData({
       name: json.name,
       email: json.email,
+      password: json.password,
       contactno: json.contactno,
       studentID: json.studentID,
+      token: json.token,
+
     });
   }
 
@@ -19,8 +25,11 @@ export class UserData {
     return {
       name: this.name,
       email: this.email,
+      password: this.password,
       contactno: this.contactno,
       studentID: this.studentID ? this.studentID.toJson() : null,
+      token: this.token,
+
     };
   }
 }

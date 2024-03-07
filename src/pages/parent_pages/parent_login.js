@@ -86,7 +86,8 @@ function ParentLogin() {
     }
     const response = await parenthttpManager.login(email, password);
       if(response.success){
-      handleSignInResponse(response);}
+      handleSignInResponse(response);
+    }
       else{
         handleSignInError(response.message);
       }

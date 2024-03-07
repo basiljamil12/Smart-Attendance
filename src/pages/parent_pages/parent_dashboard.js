@@ -1,8 +1,48 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+
 import ParentNavbar from "../../components/navbars/parent_navbar";
 import { useNavigate } from "react-router";
+import ParentDetailsManager from "../../models/parent/auth/http/get_parent_details";
 
 function ParentDashboard() {
+  const [showLoading, setShowLoading] = useState(false);
+  const [toastMessages, setToastMessages] = useState([]); // Set initial toastMessages from location state
+  const parentDetailsManager = new ParentDetailsManager();
+  const [parentData, setParentData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setShowLoading(true);
+      try {
+        const response = await parentDetailsManager.get();
+        if (response.success) {
+          setParentData(response.data);
+        } else {
+          setToastMessages([
+            ...toastMessages,
+            {
+              type: "invalid",
+              title: "Error",
+              body: response.message,
+            },
+          ]);
+        }
+      } catch (error) {
+        setToastMessages([
+          ...toastMessages,
+          {
+            type: "invalid",
+            title: "Error",
+            body: error.message,
+          },
+        ]);
+      } finally {
+        setShowLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
   const AttendanceData = [
     {
       courseTitle: "SDD",
@@ -19,7 +59,18 @@ function ParentDashboard() {
       totalHrs: "48",
     },
   ];
-
+  const data = parentData
+  ? [
+      {
+        Name: parentData.name,
+        Email: parentData.email,
+        ContactNo: parentData.contactno,
+        StdName: parentData.studentID.name,
+        StdEmail: parentData.studentID.email,
+        // isStudentAdvisor: studentData.isStudentAdvisor ? "Yes" : "No",
+      },
+    ]
+  : [];
   const navigate = useNavigate();
 
   // const goToAddFaculty = () => {
@@ -45,7 +96,9 @@ function ParentDashboard() {
             <span
               className="text-sa-maroon font-bold text-xl md:text-2xl pt-0.5 mt-3"      
             >
-              Diyan Ali Shaikh
+             {data.map((data, index) => (
+                <span key={index}>{data.StdName}</span>
+              ))}
             </span>
           </div>
           <div className="overflow-x-auto mt-10 mx-10 md:ml-[6%] md:w-[90%] md:shadow-xl rounded-2xl">
