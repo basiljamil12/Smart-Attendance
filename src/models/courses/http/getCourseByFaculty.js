@@ -35,7 +35,7 @@ class GetFacultyCourseManager {
         }
       }
       async getbyId(id) {
-        const url = CourseApiConstants.GET_COURSE_BY_ID+id;
+        const url = CourseApiConstants.ATTENDANCE_LIST+id;
         const token = localStorage.getItem("facultyToken");
         try {
           const response = await fetch(url, {
