@@ -308,7 +308,7 @@ function AssignCourse() {
                         </span>
                     </div>
 
-                    <div className="overflow-x-auto mt-10 mx-10 md:ml-[6%] md:w-[90%] md:shadow-xl rounded-2xl">
+                    <div className="overflow-x-auto mt-10 mb-10 mx-10 md:ml-[6%] md:w-[90%] md:shadow-xl rounded-2xl">
                         <table className="table-fixed min-w-full bg-sa-pink w-[800px] md:w-[50vw] rounded-2xl">
                             <thead>
                                 <tr className="border-b border-sa-grey">
@@ -440,7 +440,7 @@ function AssignCourse() {
             
             <div className=" bg-black opacity-50 absolute inset-0"></div>
             <div
-              className=" bg-white rounded-3xl md:w-[30%] w-80  p-8 px-12 relative z-10"
+              className=" bg-white rounded-3xl md:w-[35%] w-80  p-8 px-12 relative z-10"
               onClick={(e) => e.stopPropagation()}
             >
               <h2 className="text-sa-maroon text-2xl font-semibold md:w-auto w-60 text-left mb-4">

@@ -381,7 +381,7 @@ function StudentNavbar() {
             </div>
           )}
           {CourseMenuOpen && (
-            <div className="bg-white absolute border z-50 border-sa-grey top-full right-44 mt-1 py-2 px-4 rounded-xl shadow-xl w-64"
+            <div className="bg-white absolute border z-50 border-sa-grey top-full right-44 mt-1 py-2 px-4 rounded-xl shadow-xl w-72"
               onMouseLeave={handleMouseLeave}>
               <span
                 onClick={handleRegisterCourseClick}
