@@ -18,9 +18,9 @@ function FacultyDashboard() {
 
   const navigate = useNavigate();
 
-  // const goToAddFaculty = () => {
-  //   navigate("/adboard/faculty/add");
-  // };
+  const handleMarkAttendance = () => {
+    navigate("/faculty/course/mark-attendance");
+  };
 
   return (
     <div className="flex-col">
@@ -95,14 +95,11 @@ function FacultyDashboard() {
                    
   <button
     class="bg-sa-maroon  text-white inline-flex items-center gap-2 rounded-md px-3 py-3  md:text-base text-sm  hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300  focus:relative"
+onClick={handleMarkAttendance}
     
-  >
-   
-
+  >  
    Mark Attendance
   </button>
-
-
 
   
 </div>

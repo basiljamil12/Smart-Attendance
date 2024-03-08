@@ -235,13 +235,13 @@ function StudentNavbar() {
               <div className="bg-sa-maroon py-2 px-4 mt-2">
 
                 <span
-                  onClick={handleRegisterCourseClick}
+                  onClick={handleViewCourseClick}
                   className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer "
                 >
                   View Registered Courses
                 </span>
                 <span
-                  onClick={handleViewCourseClick}
+                  onClick={handleRegisterCourseClick}
                   className="block text-white font-bold text-xl py-2 mb-2 cursor-pointer "
                 >
                   Register Courses
@@ -384,13 +384,13 @@ function StudentNavbar() {
             <div className="bg-white absolute border z-50 border-sa-grey top-full right-44 mt-1 py-2 px-4 rounded-xl shadow-xl w-72"
               onMouseLeave={handleMouseLeave}>
               <span
-                onClick={handleRegisterCourseClick}
+                onClick={handleViewCourseClick}
                 className="block border-b-2 border-sa-maroon text-sa-maroon font-bold text-lg py-2 mb-2 cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out hover:bg-gray-200"
               >
                 View Registered Courses
               </span>
               <span
-                onClick={handleViewCourseClick}
+                onClick={handleRegisterCourseClick}
                 className="block hover:scale-105 transition-all duration-300 ease-in-out text-sa-maroon font-bold text-lg py-2  cursor-pointer hover:bg-gray-200"
               >
                 Register Courses

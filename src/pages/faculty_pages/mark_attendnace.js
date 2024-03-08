@@ -97,7 +97,7 @@ function MarkAttendance() {
                 <div className="md:mt-14 mt-10">
                     <div className="flex justify-between mx-10 mb-10 md:mx-24">
                         <span className="text-sa-maroon font-bold text-3xl md:text-4xl">
-                            Dashboard
+                            Mark Attendance
                         </span>
 
                     </div>

@@ -132,10 +132,10 @@ function Sidebar() {
           <span className="text-white font-bold text-xl ml-5 mt-0.5 ">Course</span>
             </div>
             <div className="border-b-2 border-white mx-4 my-5 opacity-20"></div>
-            <div className="hover:text-gray-300 hover:scale-105 transition-all duration-300 ease-in-out flex px-10 border-b-10 hover:cursor-pointer">
-            <LogoutIcon className="text-white" style={{ width: 30, height: 32,marginLeft:7}} />
+            <div className="hover:text-gray-300  hover:scale-105 transition-all duration-300 ease-in-out flex px-10 border-b-10 hover:cursor-pointer">
+            <LogoutIcon className="text-white" style={{ width: 30, height: 32,marginLeft:7,marginBottom:8}} />
               
-              <span className="ml-4 mt-0.5 transition-opacity hover:opacity-80 text-white font-bold text-xl"
+              <span className="ml-4 mb-8 mt-0.5 transition-opacity hover:opacity-80 text-white font-bold text-xl"
               onClick={openSignOut} >
                 Sign Out</span>
             </div>
