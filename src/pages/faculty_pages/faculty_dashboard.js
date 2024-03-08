@@ -1,26 +1,75 @@
-
-import React from "react";
+import React, { useState, useEffect } from "react";
 import FacultyNavbar from "../../components/navbars/faculty_navbar";
-
+import GetFacultyCourseManager from "../../models/courses/http/getCourseByFaculty";
 import { useNavigate } from "react-router";
-
+import Toast from "../../components/toast/toast";
+import Spinner from "../../components/spinner/spinner";
 function FacultyDashboard() {
-  const AttendanceData = [
-    {
-      courseTitle: "SDD",
-      creditHrs: "2",
-    },
-    {
-      courseTitle: "DSA",
-      creditHrs: "3",
-    },
-  ];
+  const [facultyData, setFacultyData] = useState(null);
+  const [showLoading, setShowLoading] = useState(false);
+  const [toastMessages, setToastMessages] = useState([]); //
+  const getFacultyCourseManager = new GetFacultyCourseManager();
+  useEffect(() => {
+    const fetchData = async () => {
+      setShowLoading(true);
+      try {
+        
+        const response = await getFacultyCourseManager.get();
+        if (response.success) {
+          setFacultyData(response.data);
+          console.log(response);
+        } else {
+          setToastMessages([
+            ...toastMessages,
+            {
+              type: "invalid",
+              title: "Error",
+              body: response.message,
+            },
+          ]);
+        }
+      } catch (error) {
+        setToastMessages([
+          ...toastMessages,
+          {
+            type: "invalid",
+            title: "Error",
+            body: error.message,
+          },
+        ]);
+      } finally {
+        setShowLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+  const AttendanceData = facultyData
+  ? [
+      {
+        courseId: facultyData._id,
+        courseCode: facultyData.courseCode,
+        courseTitle: facultyData.courseName,
+        creditHrs: facultyData.courseCredHrs,
+      },
+    ]
+  : [];
+
+  // const AttendanceData = [
+  //   {
+  //     courseCode:"ABC-112",
+  //     courseTitle: "SDD",
+  //     creditHrs: "2",
+      
+  //   }
+  // ];
 
   const navigate = useNavigate();
 
-  const handleMarkAttendance = () => {
-    navigate("/faculty/course/mark-attendance");
+  const handleMarkAttendance = (courseId) => {
+    navigate(`/faculty/course/mark-attendance?courseId=${courseId}`); // Include courseId in the URL
   };
+  
 
   return (
     <div className="flex-col">
@@ -48,6 +97,9 @@ function FacultyDashboard() {
                     #
                   </th>
                   <th className="p-0 py-5  border-r border-sa-grey">
+                    Course Code
+                  </th>
+                  <th className="p-0 py-5  border-r border-sa-grey">
                     Course Title
                   </th>
                   <th className="p-0 py-5  border-r border-sa-grey">
@@ -60,10 +112,18 @@ function FacultyDashboard() {
                     </tr>
               </thead>
               <tbody>
-                {AttendanceData.map((faculty, index) => (
+              {facultyData && AttendanceData.map((faculty, index) => (
                   <tr key={index} className="border-b border-sa-grey">
                     <td className="p-0 py-5  border-r border-sa-grey w-[100px]">
                       {index + 1}
+                    </td>
+                    <td className="p-0 py-5  border-r border-sa-grey">
+                      <span
+                        className="block w-full h-full overflow-hidden overflow-ellipsis"
+                        style={{ wordWrap: "break-word" }}
+                      >
+                        {faculty.courseCode}
+                      </span>
                     </td>
                     <td className="p-0 py-5  border-r border-sa-grey">
                       <span
@@ -95,7 +155,7 @@ function FacultyDashboard() {
                    
   <button
     class="bg-sa-maroon  text-white inline-flex items-center gap-2 rounded-md px-3 py-3  md:text-base text-sm  hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300  focus:relative"
-onClick={handleMarkAttendance}
+    onClick={() => handleMarkAttendance(faculty.courseId)} 
     
   >  
    Mark Attendance
@@ -116,6 +176,7 @@ onClick={handleMarkAttendance}
                 ))}
                 <tr className="border-b-0">
                   <td className="md:py-32 py-16 border-r border-sa-grey w-[100px]"></td>
+                  <td className="md:py-32 py-16 border-r border-sa-grey"></td>
                   <td className="md:py-32 py-16 border-r border-sa-grey"></td>
                   <td className="md:py-32 py-16 border-r border-sa-grey"></td>
                  

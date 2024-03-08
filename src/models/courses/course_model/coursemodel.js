@@ -109,11 +109,25 @@ class Course {
       this.courseCode = courseCode;
       this.courseName = courseName;
       this.courseCredHrs = courseCredHrs;
-      this.studentsEnrolled = studentsEnrolled;
+      this.studentsEnrolled = studentsEnrolled; // This may be null
       this.courseTeacher = courseTeacher ? new Teacher(courseTeacher) : null;
       this.created_on = created_on;
       this.deleted_on = deleted_on;
       this.status = status;
+  }
+
+  static fromJson(json) {
+    return new Course({
+        _id: json._id,
+        courseCode: json.courseCode,
+        courseName: json.courseName,
+        courseCredHrs: json.courseCredHrs,
+        studentsEnrolled: json.studentsEnrolled, // Allow null value
+        courseTeacher: json.courseTeacher ? new Teacher(json.courseTeacher) : null,
+        created_on: json.created_on,
+        deleted_on: json.deleted_on,
+        status: json.status
+    });
   }
 
   toJson() {
@@ -122,7 +136,7 @@ class Course {
           courseCode: this.courseCode,
           courseName: this.courseName,
           courseCredHrs: this.courseCredHrs,
-          studentsEnrolled: this.studentsEnrolled,
+          studentsEnrolled: this.studentsEnrolled, // Keep the property as is
           courseTeacher: this.courseTeacher ? this.courseTeacher.toJson() : null,
           created_on: this.created_on,
           deleted_on: this.deleted_on,
@@ -130,6 +144,7 @@ class Course {
       };
   }
 }
+
 
 class Teacher {
   constructor({ _id, name, email, contactno, isStudentAdvisor, created_on, deleted_on }) {
@@ -224,3 +239,51 @@ export class ListResponseForAllCourse {
       };
   }
 }
+
+export class ListResponseForFacultyCourse {
+  constructor({ success, data, message }) {
+      this.success = success;
+      this.data = data ? data.map(entry => new Course(entry)) : null;
+      this.message = message;
+  }
+
+  static fromJson(json) {
+      return new ListResponseForFacultyCourse({
+          success: json.success,
+          data: json.data ? json.data.map(entry => Course.fromJson(entry)) : null,
+          message: json.message,
+      });
+  }
+
+  toJson() {
+      return {
+          success: this.success,
+          data: this.data ? this.data.map(entry => entry.toJson()) : null,
+          message: this.message,
+      };
+  }
+}
+export class BaseResponseForFacultyCourse {
+  constructor({ success, data, message }) {
+      this.success = success;
+      this.data = data ? new Course(data) : null;
+      this.message = message;
+  }
+
+  static fromJson(json) {
+      return new BaseResponseForFacultyCourse({
+          success: json.success,
+          data: json.data ? Course.fromJson(json.data) : null,
+          message: json.message,
+      });
+  }
+
+  toJson() {
+      return {
+          success: this.success,
+          data: this.data ? this.data.toJson() : null,
+          message: this.message,
+      };
+  }
+}
+

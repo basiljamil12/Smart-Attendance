@@ -5,12 +5,10 @@ import { BaseResponse,BaseResponseForAllCourse } from "../course_model/coursemod
 class CourseAssignManager {
     async assign(courseID,facultyID) {
     const url = facultyApiConstants.ASSIGN_COURSE + courseID;
-    console.log(courseID);
 
         const params = {
             courseTeacher: facultyID,
         };
-        console.log(params);
         const token = localStorage.getItem("facultyToken");
         try {
       

@@ -5,6 +5,8 @@ const CourseApiConstants = {
     GET_STUDENT_COURSE_REQ: `${BASE_URL}creq/details-by-student`,
     GET_ALL_COURSE_REQ: `${BASE_URL}creq/alldetails`,
     UPDATE_COURSE_REQ_STATUS: `${BASE_URL}creq/update?_id=`,
+    GET_COURSES_BY_TEACHER: `${BASE_URL}course/details-by-teacher-token`,
+    GET_COURSE_BY_ID: `${BASE_URL}course/detailsbyTeacher?_id=`,
   SIGN_OUT: `${BASE_URL}admin/sign-out`,
   GET_ALL_FACULTY: `${BASE_URL}faculty/alldetails`,
   GET_ALL_PARENT: `${BASE_URL}parent/alldetails`,
