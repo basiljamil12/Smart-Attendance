@@ -8,6 +8,8 @@ const BASE_URL = "http://localhost:3000/api/v1/";
 const attendanceApiConstants = {
   GET_ATT_BY_ID: `${BASE_URL}attendance/details?_id=`,
   CREATE_ATTENDANCE: `${BASE_URL}attendance/create`,
+  GET_ATTENDANCE_BY_STUDENT: `${BASE_URL}course-info/details-by-student`,
+  GET_ATTENDANCE_BY_COURSE_ID: `${BASE_URL}course-info/details-by-course?_id=`,
 };
 
 export default attendanceApiConstants;

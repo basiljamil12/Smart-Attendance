@@ -1,30 +1,91 @@
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import StudentNavbar from "../../components/navbars/student_navbar";
 import { useNavigate } from "react-router";
-
+import AttendanceManager from "../../models/attendance/http/get_attendance";
+import Toast from "../../components/toast/toast";
+import Spinner from "../../components/spinner/spinner";
 function StudentDashboard() {
-  const AttendanceData = [
-    {
-      courseTitle: "SDD",
-      teacherName: "Ali",
-      presentHrs: "20",
-      absentHrs: "2",
-      totalHrs: "48",
-    },
-    {
-      courseTitle: "DSA",
-      teacherName: "IBU",
-      presentHrs: "25",
-      absentHrs: "7",
-      totalHrs: "48",
-    },
-  ];
+  const attendanceManager = new AttendanceManager();
+  const [studentData, setStudentData] = useState(null);
+  const [showLoading, setShowLoading] = useState(false);
+  const [toastMessages, setToastMessages] = useState([]); // Set initial toastMessages from location state
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setShowLoading(true);
+      try {
+        const response = await attendanceManager.getByStudent();
+        if (response.success) {
+          setStudentData(response.data);
+          console.log(response.data);
+        } else {
+          setToastMessages([
+            ...toastMessages,
+            {
+              type: "invalid",
+              title: "Error",
+              body: response.message,
+            },
+          ]);
+        }
+      } catch (error) {
+        setToastMessages([
+          ...toastMessages,
+          {
+            type: "invalid",
+            title: "Error",
+            body: error.message,
+          },
+        ]);
+      } finally {
+        setShowLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const AttendanceData = studentData ? studentData.map(data => ({
+    courseID: data.courseId._id,
+    courseTitle: data.courseId.courseName,
+    courseTeacher: data.courseId.courseTeacher,
+    presentHours: data.present_hours,
+    absentHours: data.absent_hours,
+    totalHours: data.total_hours,
+  })) : [];
+  const calculatePercentage = (presentHours, totalHours) => {
+    
+    const present = parseInt(presentHours);
+    const total = parseInt(totalHours);
+  
+    if (total === 0 || isNaN(present) || isNaN(total)) {
+      return "N/A";
+    }
+  
+    return ((present / total) * 100).toFixed(2) + "%";
+  };
+  // const AttendanceData = [
+  //   {
+  //     courseTitle: "SDD",
+  //     teacherName: "Ali",
+  //     presentHrs: "20",
+  //     absentHrs: "2",
+  //     totalHrs: "48",
+  //   },
+  //   {
+  //     courseTitle: "DSA",
+  //     teacherName: "IBU",
+  //     presentHrs: "25",
+  //     absentHrs: "7",
+  //     totalHrs: "48",
+  //   },
+  // ];
 
   const navigate = useNavigate();
 
-  const handleDetails = () => {
-    navigate("/student/dashboard/details");
+  const handleDetails = (courseId) => {
+    navigate(`/student/dashboard/details?courseId=${courseId}`);
   };
 
   return (
@@ -91,7 +152,7 @@ function StudentDashboard() {
                         className="block w-full h-full overflow-hidden overflow-ellipsis"
                         style={{ wordWrap: "break-word" }}
                       >
-                        {faculty.teacherName}
+                        {faculty.courseTeacher}
                       </span>
                     </td>
                     <td className="p-0 py-5  border-r border-sa-grey">
@@ -99,7 +160,7 @@ function StudentDashboard() {
                         className="block w-full h-full overflow-hidden overflow-ellipsis"
                         style={{ wordWrap: "break-word" }}
                       >
-                        {faculty.presentHrs}
+                        {faculty.presentHours} ({calculatePercentage(faculty.presentHours, faculty.totalHours)})
                       </span>
                     </td>
                     <td className="p-0 py-5  border-r border-sa-grey">
@@ -107,7 +168,7 @@ function StudentDashboard() {
                         className="block w-full h-full overflow-hidden overflow-ellipsis"
                         style={{ wordWrap: "break-word" }}
                       >
-                        {faculty.absentHrs}
+                        {faculty.absentHours}
                       </span>
                     </td>
                     <td className="p-0 py-5  border-r  border-sa-grey">
@@ -115,24 +176,17 @@ function StudentDashboard() {
                         className="block w-full h-full overflow-hidden overflow-ellipsis"
                         style={{ wordWrap: "break-word" }}
                       >
-                        {faculty.totalHrs}
+                        {faculty.totalHours }
                       </span>
                     </td>
-                    {/* <td className="p-0 py-5  border-sa-grey">
-                      <span
-                        className="block cursor-pointer transition-opacity hover:opacity-70 underline text-sa-table-blue w-full h-full overflow-hidden overflow-ellipsis"
-                        style={{ wordWrap: "break-word" }}
-                        onClick={handleDetails}
-                      >
-                        Go to Details
-                      </span>
-                    </td> */}
+
                      <td className="p-2 py-5  border-sa-grey">
                     <div  class="lg:inline-flex rounded-lg border  bg-sa-pink p-1">
                    
   <button
     class="bg-sa-maroon  text-white inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm  hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300  focus:relative"
-    onClick={handleDetails}
+    onClick={() => handleDetails(faculty.courseID)} 
+   
   >
    
 

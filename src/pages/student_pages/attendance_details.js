@@ -1,36 +1,106 @@
 
-import React from "react";
+import React, { useState, useEffect } from "react";
+
 import StudentNavbar from "../../components/navbars/student_navbar";
-import { useNavigate } from "react-router";
-
+import { useNavigate, useLocation } from "react-router";
+import AttendanceManager from "../../models/attendance/http/get_attendance";
+import Toast from "../../components/toast/toast";
+import Spinner from "../../components/spinner/spinner";
 function StudentAttendanceDetails() {
-  const AttendanceData = [
-    {
-      courseTitle: "SDD",
-      teacherName: "Ali",
-      presentHrs: "20",
-      absentHrs: "2",
-      totalHrs: "48",
-    },
-  ];
+  const location = useLocation();
 
+  const searchParams = new URLSearchParams(location.search);
+  const forId = searchParams.get("courseId");
+  const attendanceManager = new AttendanceManager();
+  const [studentData, setStudentData] = useState(null);
+  const [showLoading, setShowLoading] = useState(false);
+  const [toastMessages, setToastMessages] = useState([]); // Set initial toastMessages from location state
+
+  useEffect(() => {
+
+    if (!forId) return; // Add a null check here
+  
+    const fetchData = async () => {
+      setShowLoading(true);
+      try {
+        const response = await attendanceManager.getByCourseID(forId);
+        console.log("Response:", response);
+
+        if (response.success) {
+          setStudentData(response.data);
+          console.log("AB", response.data); // Update here
+        } else {
+          setToastMessages([
+            ...toastMessages,
+            {
+              type: "invalid",
+              title: "Error",
+              body: response.message,
+            },
+          ]);
+        }
+      } catch (error) {
+        setToastMessages([
+          ...toastMessages,
+          {
+            type: "invalid",
+            title: "Error",
+            body: error.message,
+          },
+        ]);
+      } finally {
+        setShowLoading(false);
+      }
+    };
+  
+    fetchData();
+  }, [forId]);
+  
+  const AttendanceData = studentData ? [studentData].map(data => ({
+    courseID: data?.courseId?._id,
+    courseTitle: data?.courseId?.courseName,
+    courseTeacher: data?.courseId?.courseTeacher,
+    attendanceRecords: data?.attendance?.map(record => ({
+      date: record?.date,
+      topic: record?.topics,
+      presenthrs: record?.present_hours,
+      absenthrs: record?.absent_hours,
+      hours: record?.hours,
+    })),
+    presentHours: data?.present_hours,
+    absentHours: data?.absent_hours,
+    totalHours: data?.total_hours,
+  })) : [];
+  const convertDateFormat = (startDate) => {
+    const parsedDate = new Date(startDate);
+
+    const options = { year: "numeric", month: "short", day: "numeric" };
+    const formattedStartDate = parsedDate.toLocaleDateString("en-US", options);
+    return formattedStartDate;
+  };
   const navigate = useNavigate();
 
-  // const goToAddFaculty = () => {
-  //   navigate("/adboard/faculty/add");
-  // };
 
   return (
     <div className="flex-col">
       <div>
         <StudentNavbar />
       </div>
+      {toastMessages.map((toast, index) => (
+        <Toast
+          className="mb-0"
+          key={index}
+          toasts={[toast]}
+          onClose={() => {
+            // Remove the toast message when it's closed
+            const updatedToasts = [...toastMessages];
+            updatedToasts.splice(index, 1);
+            setToastMessages(updatedToasts);
+          }}
+        />
+      ))}
       <div className="w-full">
-        {/* <div className="md:mt-10 md:ml-14 mt-16 md:flex md:items-start md:justify-start">
-          <span className="text-sa-maroon  font-bold text-[32px] md:text-[36px]">
-              Dashboard
-          </span>
-        </div> */}
+  
         <div className="md:mt-14 mt-10">
           <div className="flex justify-between mx-10 md:mx-24">
             <span className="text-sa-maroon font-bold text-[28px] md:text-[36px]">
@@ -39,25 +109,22 @@ function StudentAttendanceDetails() {
           
           </div>
           <div className="flex justify-start md:mt-10 mx-10 md:mx-24">
-            <span className="text-sa-maroon font-bold text-xl">
-            Course Title:
-            </span>
-            <span className="text-sa-black font-bold ml-2 text-xl">
-            {AttendanceData.map((data, index) => (
-                <span key={index}>{data.courseTitle}</span>
-              ))}
-            </span>
-          </div>
-          <div className="flex justify-start md:mt-4 mx-10 md:mx-24">
-            <span className="text-sa-maroon font-bold text-xl">
-            Teacher Name: 
-            </span>
-            <span className="text-sa-black font-bold ml-2 text-xl">
-            {AttendanceData.map((data, index) => (
-                <span key={index}>{data.teacherName}</span>
-              ))}
-            </span>
-          </div>
+  <span className="text-sa-maroon font-bold text-xl">Course Title:</span>
+  <span className="text-sa-black font-bold ml-2 text-xl">
+    {AttendanceData && AttendanceData?.map((data, index) => (
+      <span key={index}>{data?.courseTitle}</span>
+    ))}
+  </span>
+</div>
+<div className="flex justify-start md:mt-4 mx-10 md:mx-24">
+  <span className="text-sa-maroon font-bold text-xl">Teacher Name:</span>
+  <span className="text-sa-black font-bold ml-2 text-xl">
+    {AttendanceData && AttendanceData?.map((data, index) => (
+      <span key={index}>{data?.courseTeacher}</span>
+    ))}
+  </span>
+</div>
+
           
           <div className="overflow-x-auto mt-10 mx-10 md:ml-[6%] md:w-[90%] md:shadow-xl rounded-2xl">
             <table className="table-fixed min-w-full bg-sa-pink w-[800px] md:w-[50vw] rounded-2xl">
@@ -67,10 +134,10 @@ function StudentAttendanceDetails() {
                     #
                   </th>
                   <th className="p-0 py-5  border-r border-sa-grey">
-                    Course Title
+                    Date of Class
                   </th>
                   <th className="p-0 py-5  border-r border-sa-grey">
-                    Teacher Name
+                    Topic of Class
                   </th>
                   <th className="p-0 py-5  border-r border-sa-grey">
                     Present Hours
@@ -85,17 +152,18 @@ function StudentAttendanceDetails() {
                     </tr>
               </thead>
               <tbody>
-                {AttendanceData.map((faculty, index) => (
-                  <tr key={index} className="border-b border-sa-grey">
+              {AttendanceData && AttendanceData.map((faculty, index) => (
+                  faculty?.attendanceRecords?.map((record, recordIndex) => (
+                 <tr key={index} className="border-b border-sa-grey">
                     <td className="p-0 py-5  border-r border-sa-grey w-[100px]">
-                      {index + 1}
+                      {recordIndex + 1}
                     </td>
                     <td className="p-0 py-5  border-r border-sa-grey">
                       <span
                         className="block w-full h-full overflow-hidden overflow-ellipsis"
                         style={{ wordWrap: "break-word" }}
                       >
-                        {faculty.courseTitle}
+                        {convertDateFormat(record?.date)}
                       </span>
                     </td>
                     <td className="p-0 py-5  border-r border-sa-grey">
@@ -103,7 +171,7 @@ function StudentAttendanceDetails() {
                         className="block w-full h-full overflow-hidden overflow-ellipsis"
                         style={{ wordWrap: "break-word" }}
                       >
-                        {faculty.teacherName}
+                        {record?.topic}
                       </span>
                     </td>
                     <td className="p-0 py-5  border-r border-sa-grey">
@@ -111,7 +179,7 @@ function StudentAttendanceDetails() {
                         className="block w-full h-full overflow-hidden overflow-ellipsis"
                         style={{ wordWrap: "break-word" }}
                       >
-                        {faculty.presentHrs}
+                        {record?.presenthrs}
                       </span>
                     </td>
                     <td className="p-0 py-5  border-r border-sa-grey">
@@ -119,7 +187,7 @@ function StudentAttendanceDetails() {
                         className="block w-full h-full overflow-hidden overflow-ellipsis"
                         style={{ wordWrap: "break-word" }}
                       >
-                        {faculty.absentHrs}
+                        {record?.absenthrs}
                       </span>
                     </td>
                     <td className="p-0 py-5  border-r  border-sa-grey">
@@ -127,20 +195,13 @@ function StudentAttendanceDetails() {
                         className="block w-full h-full overflow-hidden overflow-ellipsis"
                         style={{ wordWrap: "break-word" }}
                       >
-                        {faculty.totalHrs}
+                        {record?.hours}
                       </span>
                     </td>
                   
-                    {/* <td className="p-2 py-5  border-sa-grey">
-                      <span className="text-sa-maroon text-md underline mx-2 hover:cursor-pointer">
-                        Edit
-                      </span>
-                      <span>|</span>
-                      <span className="text-sa-maroon text-md underline mx-2 hover:cursor-pointer">
-                        Delete
-                      </span>
-                    </td> */}
+                
                   </tr>
+                  ))
                 ))}
                 <tr className="border-b-0">
                   <td className="md:py-32 py-16 border-r border-sa-grey w-[100px]"></td>
@@ -153,6 +214,7 @@ function StudentAttendanceDetails() {
             </table>
           </div>
         </div>
+     
       </div>
     </div>
   );
