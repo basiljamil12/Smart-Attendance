@@ -1,19 +1,21 @@
 export class AttendanceData {
-  constructor({ _id, courseId, date, attendance }) {
+  constructor({ _id, courseId,attendance_hours, topics, attendance }) {
     this._id = _id;
     this.courseId = courseId;
-    this.date = date;
-    this.attendance = attendance.map(({ studentId, status }) => ({
-      studentId,
-      status,
-    }));
+    this.attendance_hours = attendance_hours;
+    this.topics = topics;
+    // this.attendance = attendance.map(({ studentId, status }) => ({
+    //   studentId,
+    //   status,
+    // }));
   }
 
   static fromJson(json) {
     return new AttendanceData({
       id: json._id,
       courseId: json.courseId,
-      date: json.date,
+      attendance_hours: json.attendance_hours,
+      topics: json.topics,
       attendance: json.attendance,
     });
   }
@@ -22,7 +24,8 @@ export class AttendanceData {
     return {
       id: this._id,
       courseId: this.courseId,
-      date: this.date,
+      attendance_hours: this.attendance_hours,
+      topics: this.topics,
       attendance: this.attendance,
     };
   }

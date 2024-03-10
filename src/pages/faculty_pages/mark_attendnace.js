@@ -6,7 +6,9 @@ import Toast from "../../components/toast/toast";
 import Spinner from "../../components/spinner/spinner";
 import { useNavigate, useLocation } from "react-router";
 import GetFacultyCourseManager from "../../models/courses/http/getCourseByFaculty";
+import CreateAttendanceManager from "../../models/attendance/http/create_attendance";
 function MarkAttendance() {
+    const createAttendanceManager = new CreateAttendanceManager();
     const [facultyData, setFacultyData] = useState(null);
     const [showLoading, setShowLoading] = useState(false);
     const [toastMessages, setToastMessages] = useState([]); //
@@ -22,7 +24,6 @@ function MarkAttendance() {
                 const response = await getFacultyCourseManager.getbyId(forId);
                 if (response.success) {
                     setFacultyData(response.data);
-                    console.log(response);
                 } else {
                     setToastMessages([
                         ...toastMessages,
@@ -58,12 +59,14 @@ function MarkAttendance() {
                 courseTeacherName: facultyData.courseTeacher.name,
                 creditHrs: facultyData.courseCredHrs,
                 studentRecords: facultyData?.studentsEnrolled?.map(record => ({
+                    stdId:record?._id,
                     stdName: record?.name,
                     topic: record?.topics,
                     presenthrs: record?.present_hours,
                     absenthrs: record?.absent_hours,
                     hours: record?.hours,
-                  })),
+                    status:record?.status
+                })),
                 // stdName: facultyData.studentsEnrolled.map(student => student.name),
             },
         ]
@@ -77,7 +80,10 @@ function MarkAttendance() {
     //         creditHrs: "3",
     //     }
     // ];
-
+    const [topic, setTopic] = useState("");
+    const handleTopicChange = (e) => {
+        setTopic(e.target.value);
+    };
     const navigate = useNavigate();
 
     // const goToAddFaculty = () => {
@@ -130,33 +136,102 @@ function MarkAttendance() {
 
     const [isManualAttendance, setisManualAttendance] = useState(false);
 
-    
-    const [selectedRadio, setSelectedRadio] = useState([]);
+
+    const [selectedRadio, setSelectedRadio] = useState(Array.from({ length: facultyData?.studentsEnrolled?.length || 0 }, () => 0));
 
     const handleRadioChange = (radioIndex, rowIndex) => {
         const updatedSelectedRadio = [...selectedRadio];
         updatedSelectedRadio[rowIndex] = radioIndex;
+        console.log('Updated selectedRadio:', updatedSelectedRadio);
         setSelectedRadio(updatedSelectedRadio);
     };
-  
+
     const [selectedHour, setSelectedHour] = useState(null);
     const handleHourChange = (selectedHour) => {
-        // Here, you can add your logic to handle the selected hour
-        // For example, you might want to update state with the selected hour
-        setSelectedHour(selectedHour);
+        const parsedHour = parseInt(selectedHour, 10); // Parse selectedHour as an integer
+        setSelectedHour(parsedHour);
     };
+
+    const handleSubmit = async() => {
+
+      try {
+      setShowLoading(true);
+      const courseId = searchParams.get("courseId"); // Assuming courseId is obtained from somewhere
+        const attendance_hours = selectedHour;
+        console.log("abbb",typeof(attendance_hours)) ;// Assuming selectedHour contains the selected attendance hours
+        const topics = topic;
+      
+        const attendance = AttendanceData.flatMap((faculty) => {
+         
+            if (faculty && faculty.studentRecords) {
+                console.log("Student Records:", faculty.studentRecords);
+                return faculty.studentRecords.map((record, recordIndex) => ({
+                    studentId: record?.stdId,
+                    status: selectedRadio[recordIndex] === 0 ? "present" : "absent",
+                }));
+            } else {
+                console.log("No student records found.");
+                return [];
+            }
+        });
+       
+        // Make the API request individually
+        const response = await createAttendanceManager.create(courseId, attendance_hours, topics,attendance);
+
+      
+      if (response.success) {
+        setToastMessages([
+          ...toastMessages,
+          {
+            type: "success",
+            title: "Success",
+            body: response.message,
+          },
+        ]);
+      } else {
+        setToastMessages([
+          ...toastMessages,
+          {
+            type: "invalid",
+            title: "Error",
+            body: response.message,
+          },
+        ]);
+      }
+    } catch (error) {
+      setToastMessages([
+        ...toastMessages,
+        {
+          type: "invalid",
+          title: "Error",
+          body: error.message,
+        },
+      ]);
+    } finally {
+      setShowLoading(false);
+    }
+  };
     return (
-        <div className="flex-col">
+        <div className="flex-col w-full">
             <div>
                 <FacultyNavbar />
             </div>
+            {toastMessages.map((toast, index) => (
+                <Toast
+                    className="mb-0"
+                    key={index}
+                    toasts={[toast]}
+                    onClose={() => {
+                        // Remove the toast message when it's closed
+                        const updatedToasts = [...toastMessages];
+                        updatedToasts.splice(index, 1);
+                        setToastMessages(updatedToasts);
+                    }}
+                />
+            ))}
             <div className="w-full">
-                {/* <div className="md:mt-10 md:ml-14 mt-16 md:flex md:items-start md:justify-start">
-          <span className="text-sa-maroon  font-bold text-[32px] md:text-[36px]">
-              Dashboard
-          </span>
-        </div> */}
-                <div className="md:mt-14 mt-10">
+
+                <div className="md:mt-14 mt-10 w-full">
                     <div className="flex justify-between mx-10 mb-10 md:mx-24">
                         <span className="text-sa-maroon font-bold text-3xl md:text-4xl">
                             Mark Attendance
@@ -182,7 +257,7 @@ function MarkAttendance() {
                                 <span>{facultyData.courseTeacher.name}</span>
                             )}    </span>
                     </div>
-                    <div className="flex items-start mx-10 md:mb-10 mb-5 ">
+                    <div className="flex items-start mx-10 md:mb-4 mb-5 ">
                         <span className="text-sa-maroon font-bold  md:ml-14  text-lg md:text-xl">
                             Credit Hours:
                         </span>
@@ -193,6 +268,7 @@ function MarkAttendance() {
 
                             )}    </span>
                     </div>
+                    <div className="flex items-start mx-10  md:ml-24  border-b-2 border-sa-grey my-7"></div>
                     <div className="flex justify-between mx-10   md:mx-24">
                         <div className="flex mb-5">
                             <span className="text-sa-maroon text-xl font-semibold">Manual Attendance</span>
@@ -210,7 +286,7 @@ function MarkAttendance() {
                             </div>
                         </div>
                     </div>
-                    <div className="flex items-start md:mx-24 mx-10 md:mb-7 mb-5">
+                    <div className="flex items-start md:mx-24 mx-10 md:mb-2 mb-5">
                         <span className="text-sa-maroon font-bold text-lg md:text-xl">
                             Select Hours:
                         </span>
@@ -239,20 +315,34 @@ function MarkAttendance() {
                             ))}
                         </div>
                     </div>
+                    <div className="flex  mx-10 mb-3  ">
+                        <span className="text-sa-maroon text-left font-bold text-lg  md:ml-14 mt-4  md:text-xl">
+                            Topic Covered in Class:
+                        </span>
+                    </div>
+                    <div className="flex   md:ml-24 md:mx-10 mx-10 mb-10  ">
 
+                        <input
+                            type="text"
+                            id="topic"
+                            placeholder="Topic Name"
+                            onChange={handleTopicChange}
+                            value={topic}
+                            className="placeholder-gray-500 w-full  h-14 md:h-16 py-4  border-[1px] border-black border-solid   text-black p-2 rounded-xl focus:outline-none focus:ring-0 focus:border focus:border-sa-maroon "
+                        />
+                    </div>
 
+                    <div className="flex items-start mx-10  md:ml-24 border-b-2 border-sa-grey mb-5 "></div>
 
                     {!isManualAttendance && (
                         <>
-                            <div className="flex-col justify-center items-center md:ml-20 ml-5 mx-[4%] ">
+                            <div className="flex-col justify-center items-center md:ml-20 ml-8 mx-10  ">
                                 <div className="md:ml-3 ml-2 md:mb-5 mb-10 ">
-                                    {/* <label
-            className="text-sa-black block text-left  text-[20px] font-[600] mb-2 text-filter-heading"
-            htmlFor="link"
-          >
-            Attachements (Optional)
-          </label> */}
-
+                                    <div className="flex   mb-3  ">
+                                        <span className="text-sa-maroon text-left font-bold text-lg mt-2   md:text-xl">
+                                            Upload Image
+                                        </span>
+                                    </div>
                                     <form>
                                         <div className="relative md:mb-5 mb-6">
                                             <input
@@ -343,55 +433,55 @@ function MarkAttendance() {
                                 </tr>
                             </thead>
                             <tbody>
-                            {AttendanceData.map((faculty, rowIndex) => (
-                                 faculty?.studentRecords?.map((record, recordIndex) => (
-    <tr key={recordIndex} className="border-b border-sa-grey">
-        <td className="p-0 py-5 border-r border-sa-grey w-[100px]">
-            {recordIndex + 1}
-        </td>
-        <td className="p-0 py-5 border-r border-sa-grey">
-            <span
-                className="block w-full h-full overflow-hidden overflow-ellipsis"
-                style={{ wordWrap: "break-word" }}
-            >
-                {record.stdName}
-            </span>
-        </td>
-        <td className="p-0 py-5 border-r border-sa-grey">
-            <div className="w-full h-full flex items-center justify-center">
-                <input
-                    type="radio"
-                    id={`present-${recordIndex}`}
-                    name={`attendance-${recordIndex}`}
-                    checked={selectedRadio[recordIndex] === 0}
-                    className="hidden"
-                    onChange={() => handleRadioChange(0, recordIndex)}
-                />
-                <label
-                    htmlFor={`present-${recordIndex}`}
-                    className={`block w-6 h-6 rounded-full border-2 border-gray-600 cursor-pointer ${selectedRadio[recordIndex] === 0 ? "bg-sa-maroon border-none" : ""}`}
-                ></label>
-            </div>
-        </td>
-        <td className="p-0 py-5 border-sa-grey">
-            <div className="w-full h-full flex items-center justify-center">
-                <input
-                    type="radio"
-                    id={`absent-${recordIndex}`}
-                    name={`attendance-${recordIndex}`}
-                    checked={selectedRadio[recordIndex] === 1}
-                    className="hidden"
-                    onChange={() => handleRadioChange(1, recordIndex)}
-                />
-                <label
-                    htmlFor={`absent-${recordIndex}`}
-                    className={`block w-6 h-6 rounded-full border-2 border-gray-600 cursor-pointer ${selectedRadio[recordIndex] === 1 ? "bg-sa-maroon border-none" : ""}`}
-                ></label>
-            </div>
-        </td>
-    </tr>
-     ))
-))}
+                                {AttendanceData.map((faculty, rowIndex) => (
+                                    faculty?.studentRecords?.map((record, recordIndex) => (
+                                        <tr key={recordIndex} className="border-b border-sa-grey">
+                                            <td className="p-0 py-5 border-r border-sa-grey w-[100px]">
+                                                {recordIndex + 1}
+                                            </td>
+                                            <td className="p-0 py-5 border-r border-sa-grey">
+                                                <span
+                                                    className="block w-full h-full overflow-hidden overflow-ellipsis"
+                                                    style={{ wordWrap: "break-word" }}
+                                                >
+                                                    {record.stdName}
+                                                </span>
+                                            </td>
+                                            <td className="p-0 py-5 border-r border-sa-grey">
+                                                <div className="w-full h-full flex items-center justify-center">
+                                                    <input
+                                                        type="radio"
+                                                        id={`present-${recordIndex}`}
+                                                        name={`attendance-${recordIndex}`}
+                                                        checked={selectedRadio[recordIndex] === 0}
+                                                        className="hidden"
+                                                        onChange={() => handleRadioChange(0, recordIndex)}
+                                                    />
+                                                    <label
+                                                        htmlFor={`present-${recordIndex}`}
+                                                        className={`block w-6 h-6 rounded-full border-2 border-gray-600 cursor-pointer ${selectedRadio[recordIndex] === 0 ? "bg-sa-maroon border-none" : ""}`}
+                                                    ></label>
+                                                </div>
+                                            </td>
+                                            <td className="p-0 py-5 border-sa-grey">
+                                                <div className="w-full h-full flex items-center justify-center">
+                                                    <input
+                                                        type="radio"
+                                                        id={`absent-${recordIndex}`}
+                                                        name={`attendance-${recordIndex}`}
+                                                        checked={selectedRadio[recordIndex] === 1}
+                                                        className="hidden"
+                                                        onChange={() => handleRadioChange(1, recordIndex)}
+                                                    />
+                                                    <label
+                                                        htmlFor={`absent-${recordIndex}`}
+                                                        className={`block w-6 h-6 rounded-full border-2 border-gray-600 cursor-pointer ${selectedRadio[recordIndex] === 1 ? "bg-sa-maroon border-none" : ""}`}
+                                                    ></label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ))}
                                 <tr className="border-b-0">
                                     <td className="md:py-32 py-16 border-r border-sa-grey w-[100px]"></td>
                                     <td className="md:py-32 py-16 border-r border-sa-grey"></td>
@@ -404,6 +494,7 @@ function MarkAttendance() {
                     <div className="flex md:mt-14 mt-10 mb-10 justify-center items-center">
                         <button
                             //className="mb-4 h-[45px] md:h-[56px] bg-sa-maroon rounded-[20px] md:w-[102%] w-[245px] md:mr-3  shadow-md mx-5 text-white font-bold text-[26px]"
+                            onClick={handleSubmit}
                             class=" hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px]   rounded-[20px]   bg-clip-padding md:px-24 px-16 py-2  leading-tight text-white text-[20px] md:text-[24px]"
 
                         >Submit</button>

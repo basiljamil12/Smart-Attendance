@@ -6,29 +6,38 @@ import {
 import attendanceApiConstants from "../../../constants/attendanceconstants.js";
 
 class CreateAttendanceManager {
-  async get(id) {
+  async create(courseId,attendance_hours,topics,attendance) {
+    console.log("Attendance array:", attendance); 
     const url = attendanceApiConstants.CREATE_ATTENDANCE;
-    const token = localStorage.getItem("studentToken");
+    const token = localStorage.getItem("facultyToken");
+    const requestBody = {
+      courseId,
+      attendance_hours,
+      topics,
+      attendance
+  };
+
     try {
       const response = await fetch(url, {
-        method: "GET",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
 
           Authorization: `Bearer ${token}`,
         },
+        body: JSON.stringify(requestBody), 
       });
 
-      if (response.status === 401) {
-        window.location.href = "/student/login";
-        localStorage.removeItem("studentToken");
-        localStorage.removeItem("studentEmail");
-        localStorage.removeItem("studentName");
-        return null;
-      }
+      // if (response.status === 401) {
+      //   window.location.href = "/student/login";
+      //   localStorage.removeItem("studentToken");
+      //   localStorage.removeItem("studentEmail");
+      //   localStorage.removeItem("studentName");
+      //   return null;
+      // }
       if (response.ok) {
         const responseBody = await response.json();
-        return new ListResponse(responseBody);
+        return new BaseResponse(responseBody);
       } else {
         const errorBody = await response.text();
         throw new Error(errorBody);
