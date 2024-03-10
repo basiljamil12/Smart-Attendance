@@ -49,6 +49,7 @@ function MarkAttendance() {
 
         fetchData();
     }, []);
+    const [selectedRecordIndex, setSelectedRecordIndex] = useState(null); // Define selectedRecordIndex state
     const AttendanceData = facultyData
         ? [
             {
@@ -56,6 +57,14 @@ function MarkAttendance() {
                 courseTitle: facultyData.courseName,
                 courseTeacherName: facultyData.courseTeacher.name,
                 creditHrs: facultyData.courseCredHrs,
+                studentRecords: facultyData?.studentsEnrolled?.map(record => ({
+                    stdName: record?.name,
+                    topic: record?.topics,
+                    presenthrs: record?.present_hours,
+                    absenthrs: record?.absent_hours,
+                    hours: record?.hours,
+                  })),
+                // stdName: facultyData.studentsEnrolled.map(student => student.name),
             },
         ]
         : [];
@@ -121,13 +130,15 @@ function MarkAttendance() {
 
     const [isManualAttendance, setisManualAttendance] = useState(false);
 
-    const [selectedRadio, setSelectedRadio] = useState(Array(AttendanceData.length).fill(null));
+    
+    const [selectedRadio, setSelectedRadio] = useState([]);
 
     const handleRadioChange = (radioIndex, rowIndex) => {
         const updatedSelectedRadio = [...selectedRadio];
-        updatedSelectedRadio[rowIndex] = radioIndex === selectedRadio[rowIndex] ? null : radioIndex;
+        updatedSelectedRadio[rowIndex] = radioIndex;
         setSelectedRadio(updatedSelectedRadio);
     };
+  
     const [selectedHour, setSelectedHour] = useState(null);
     const handleHourChange = (selectedHour) => {
         // Here, you can add your logic to handle the selected hour
@@ -332,55 +343,55 @@ function MarkAttendance() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {AttendanceData.map((faculty, rowIndex) => (
-                                    <tr key={rowIndex} className="border-b  border-sa-grey">
-                                        <td className="p-0 py-5  border-r  border-sa-grey w-[100px]">
-                                            {rowIndex + 1}
-                                        </td>
-                                        <td className="p-0 py-5  border-r border-sa-grey">
-                                            <span
-                                                className="block w-full h-full overflow-hidden overflow-ellipsis"
-                                                style={{ wordWrap: "break-word" }}
-                                            >
-                                                {faculty.stdName}
-                                            </span>
-                                        </td>
-                                        <td className="p-0 py-5 border-r  border-sa-grey">
-                                            <div className="w-full h-full flex items-center justify-center">
-                                                <input
-                                                    type="radio"
-                                                    id={`present-${rowIndex}`}
-                                                    name={`attendance-${rowIndex}`}
-                                                    checked={selectedRadio[rowIndex] === 0}
-                                                    className="hidden"
-                                                    onChange={() => handleRadioChange(0, rowIndex)}
-                                                />
-                                                <label
-                                                    htmlFor={`present-${rowIndex}`}
-                                                    className={`block w-6 h-6 rounded-full border-2 border-gray-600 cursor-pointer ${selectedRadio[rowIndex] === 0 ? "bg-sa-maroon border-none" : ""
-                                                        }`}
-                                                ></label>
-                                            </div>
-                                        </td>
-                                        <td className="p-0 py-5  border-sa-grey">
-                                            <div className="w-full h-full flex items-center justify-center">
-                                                <input
-                                                    type="radio"
-                                                    id={`absent-${rowIndex}`}
-                                                    name={`attendance-${rowIndex}`}
-                                                    checked={selectedRadio[rowIndex] === 1}
-                                                    className="hidden"
-                                                    onChange={() => handleRadioChange(1, rowIndex)}
-                                                />
-                                                <label
-                                                    htmlFor={`absent-${rowIndex}`}
-                                                    className={`block w-6 h-6 rounded-full border-2 border-gray-600  cursor-pointer ${selectedRadio[rowIndex] === 1 ? "bg-sa-maroon  border-none" : ""
-                                                        }`}
-                                                ></label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
+                            {AttendanceData.map((faculty, rowIndex) => (
+                                 faculty?.studentRecords?.map((record, recordIndex) => (
+    <tr key={recordIndex} className="border-b border-sa-grey">
+        <td className="p-0 py-5 border-r border-sa-grey w-[100px]">
+            {recordIndex + 1}
+        </td>
+        <td className="p-0 py-5 border-r border-sa-grey">
+            <span
+                className="block w-full h-full overflow-hidden overflow-ellipsis"
+                style={{ wordWrap: "break-word" }}
+            >
+                {record.stdName}
+            </span>
+        </td>
+        <td className="p-0 py-5 border-r border-sa-grey">
+            <div className="w-full h-full flex items-center justify-center">
+                <input
+                    type="radio"
+                    id={`present-${recordIndex}`}
+                    name={`attendance-${recordIndex}`}
+                    checked={selectedRadio[recordIndex] === 0}
+                    className="hidden"
+                    onChange={() => handleRadioChange(0, recordIndex)}
+                />
+                <label
+                    htmlFor={`present-${recordIndex}`}
+                    className={`block w-6 h-6 rounded-full border-2 border-gray-600 cursor-pointer ${selectedRadio[recordIndex] === 0 ? "bg-sa-maroon border-none" : ""}`}
+                ></label>
+            </div>
+        </td>
+        <td className="p-0 py-5 border-sa-grey">
+            <div className="w-full h-full flex items-center justify-center">
+                <input
+                    type="radio"
+                    id={`absent-${recordIndex}`}
+                    name={`attendance-${recordIndex}`}
+                    checked={selectedRadio[recordIndex] === 1}
+                    className="hidden"
+                    onChange={() => handleRadioChange(1, recordIndex)}
+                />
+                <label
+                    htmlFor={`absent-${recordIndex}`}
+                    className={`block w-6 h-6 rounded-full border-2 border-gray-600 cursor-pointer ${selectedRadio[recordIndex] === 1 ? "bg-sa-maroon border-none" : ""}`}
+                ></label>
+            </div>
+        </td>
+    </tr>
+     ))
+))}
                                 <tr className="border-b-0">
                                     <td className="md:py-32 py-16 border-r border-sa-grey w-[100px]"></td>
                                     <td className="md:py-32 py-16 border-r border-sa-grey"></td>

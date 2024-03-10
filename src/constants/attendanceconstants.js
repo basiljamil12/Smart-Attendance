@@ -10,6 +10,7 @@ const attendanceApiConstants = {
   CREATE_ATTENDANCE: `${BASE_URL}attendance/create`,
   GET_ATTENDANCE_BY_STUDENT: `${BASE_URL}course-info/details-by-student`,
   GET_ATTENDANCE_BY_COURSE_ID: `${BASE_URL}course-info/details-by-course?_id=`,
+  GET_ATTENDANCE_BY_PARENT: `${BASE_URL}course-info/parent-details`,
 };
 
 export default attendanceApiConstants;

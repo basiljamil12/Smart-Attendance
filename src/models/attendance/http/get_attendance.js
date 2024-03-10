@@ -40,10 +40,23 @@ class AttendanceManager {
     }
   }
 
-  async getByStudent() {
-    const url = attendanceApiConstants.GET_ATTENDANCE_BY_STUDENT;
+  async getByStudent(fromParent) {
+    let url;
+    if (fromParent) {
+      url = attendanceApiConstants.GET_ATTENDANCE_BY_PARENT;
+    }
+    else {
+      url = attendanceApiConstants.GET_ATTENDANCE_BY_STUDENT;
+
+    }
     console.log(url);
-    const token = localStorage.getItem("studentToken");
+    let token;
+    if (fromParent) {
+      token = localStorage.getItem("parentToken");
+    }
+    else {
+      token = localStorage.getItem("studentToken");
+    }
     try {
       const response = await fetch(url, {
         method: "GET",
@@ -55,10 +68,19 @@ class AttendanceManager {
       });
 
       if (response.status === 401) {
-        window.location.href = "/student/login";
-        localStorage.removeItem("studentToken");
-        localStorage.removeItem("studentEmail");
-        localStorage.removeItem("studentName");
+        if (fromParent) {
+          window.location.href = "/parent/login";
+          localStorage.removeItem("parentToken");
+          localStorage.removeItem("parentEmail");
+          localStorage.removeItem("parentName");
+        }
+        else {
+          window.location.href = "/student/login";
+          localStorage.removeItem("studentToken");
+          localStorage.removeItem("studentEmail");
+          localStorage.removeItem("studentName");
+        }
+
         return null;
       }
       if (response.ok) {
@@ -73,7 +95,7 @@ class AttendanceManager {
     }
   }
   async getByCourseID(id) {
-    const url = attendanceApiConstants.GET_ATTENDANCE_BY_COURSE_ID+id;
+    const url = attendanceApiConstants.GET_ATTENDANCE_BY_COURSE_ID + id;
 
     const token = localStorage.getItem("studentToken");
     try {

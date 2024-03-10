@@ -13,7 +13,6 @@ function FacultyDashboard() {
     const fetchData = async () => {
       setShowLoading(true);
       try {
-        
         const response = await getFacultyCourseManager.get();
         if (response.success) {
           setFacultyData(response.data);
@@ -44,16 +43,13 @@ function FacultyDashboard() {
 
     fetchData();
   }, []);
-  const AttendanceData = facultyData
-  ? [
-      {
-        courseId: facultyData._id,
-        courseCode: facultyData.courseCode,
-        courseTitle: facultyData.courseName,
-        creditHrs: facultyData.courseCredHrs,
-      },
-    ]
-  : [];
+  const AttendanceData = facultyData ? facultyData.map(data => ({
+  
+        courseId: data._id,
+        courseCode: data.courseCode,
+        courseTitle: data.courseName,
+        creditHrs: data.courseCredHrs,
+      })) : [];
 
   // const AttendanceData = [
   //   {
@@ -76,6 +72,19 @@ function FacultyDashboard() {
       <div>
         <FacultyNavbar />
       </div>
+      {toastMessages.map((toast, index) => (
+        <Toast
+          className="mb-0"
+          key={index}
+          toasts={[toast]}
+          onClose={() => {
+            // Remove the toast message when it's closed
+            const updatedToasts = [...toastMessages];
+            updatedToasts.splice(index, 1);
+            setToastMessages(updatedToasts);
+          }}
+        />
+      ))}
       <div className="w-full">
         {/* <div className="md:mt-10 md:ml-14 mt-16 md:flex md:items-start md:justify-start">
           <span className="text-sa-maroon  font-bold text-[32px] md:text-[36px]">

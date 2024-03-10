@@ -109,7 +109,7 @@ class Course {
       this.courseCode = courseCode;
       this.courseName = courseName;
       this.courseCredHrs = courseCredHrs;
-      this.studentsEnrolled = studentsEnrolled; // This may be null
+      this.studentsEnrolled = studentsEnrolled ? studentsEnrolled.map(student => new Student(student)) : null; // This may be null
       this.courseTeacher = courseTeacher ? new Teacher(courseTeacher) : null;
       this.created_on = created_on;
       this.deleted_on = deleted_on;

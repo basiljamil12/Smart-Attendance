@@ -25,7 +25,7 @@ class GetFacultyCourseManager {
           if (response.ok) {
             const responseBody = await response.json();
 
-            return new BaseResponseForFacultyCourse(responseBody);
+            return new ListResponseForFacultyCourse(responseBody);
           } else {
             const errorBody = await response.text();
             throw new Error(errorBody);

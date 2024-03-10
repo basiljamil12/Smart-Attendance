@@ -37,7 +37,7 @@ export class CourseAndAttendanceData {
     this.absent_hours = absent_hours;
     this.attendance = attendance.map(({ date, topics,present_hours,absent_hours,hours }) => ({
       date,
-      topics: topics ?? "No topic specified", 
+      topics: topics ,
       present_hours,
       absent_hours,
       hours
