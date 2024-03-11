@@ -19,7 +19,19 @@ function CourseAdboard() {
   const location = useLocation();  
   const [toastMessages, setToastMessages] = useState(location.state?.toastMessages || []); // Set initial toastMessages from location state
 
+  useEffect(() => {
+    // Check if there are toast messages in the location state
+    if (location.state?.toastMessages) {
+      // Display the toast message
+      const toastMessage = location.state.toastMessages[0]; // Assuming there's only one toast message
+      setToastMessages([toastMessage]);
 
+      // Clear the location state after showing the toast message
+      setTimeout(() => {
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }, 0);
+    }
+  }, [location.state]);
   const navigate = useNavigate();
   const [isDelete, setIsDelete] = useState(false);
 

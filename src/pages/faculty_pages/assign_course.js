@@ -25,7 +25,19 @@ function AssignCourse() {
     const [courses, setCourses] = useState([]); // State to store fetched courses data
     const [coursesReq, setCoursesReq] = useState([]); // State to store fetched courses data
     const [registrationStatus, setRegistrationStatus] = useState({}); // State to keep track of registration status for each course
-
+    useEffect(() => {
+      // Check if there are toast messages in the location state
+      if (location.state?.toastMessages) {
+        // Display the toast message
+        const toastMessage = location.state.toastMessages[0]; // Assuming there's only one toast message
+        setToastMessages([toastMessage]);
+  
+        // Clear the location state after showing the toast message
+        setTimeout(() => {
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }, 0);
+      }
+    }, [location.state]);
     //   useEffect(() => {
     //     const getCoursesReq = async () => {
     //       setShowLoading(true);

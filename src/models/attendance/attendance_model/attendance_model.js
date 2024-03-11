@@ -4,10 +4,10 @@ export class AttendanceData {
     this.courseId = courseId;
     this.attendance_hours = attendance_hours;
     this.topics = topics;
-    // this.attendance = attendance.map(({ studentId, status }) => ({
-    //   studentId,
-    //   status,
-    // }));
+    this.attendance = attendance?.map(({ studentId, status }) => ({
+      studentId,
+      status,
+    })) || [];
   }
 
   static fromJson(json) {

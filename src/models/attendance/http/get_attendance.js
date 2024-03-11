@@ -127,6 +127,39 @@ class AttendanceManager {
       throw new Error(error.toString());
     }
   }
+  async getByDate(id) {
+    const url = attendanceApiConstants.GET_ATTENDANCE_BY_DATE + id;
+
+    const token = localStorage.getItem("facultyToken");
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 401) {
+        window.location.href = "/faculty/login";
+        localStorage.removeItem("facultyToken");
+        localStorage.removeItem("facultyEmail");
+        localStorage.removeItem("facultyName");
+        return null;
+      }
+      if (response.ok) {
+        const responseBody = await response.json();
+        console.log("new",responseBody);
+        return new BaseResponse(responseBody);
+      } else {
+        const errorBody = await response.text();
+        throw new Error(errorBody);
+      }
+    } catch (error) {
+      throw new Error(error.toString());
+    }
+  }
 }
 
 export default AttendanceManager;

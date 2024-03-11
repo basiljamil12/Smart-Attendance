@@ -29,10 +29,49 @@ class CreateAttendanceManager {
       });
 
       // if (response.status === 401) {
-      //   window.location.href = "/student/login";
-      //   localStorage.removeItem("studentToken");
-      //   localStorage.removeItem("studentEmail");
-      //   localStorage.removeItem("studentName");
+      //   window.location.href = "/faculty/login";
+      //   localStorage.removeItem("facultyToken");
+      //   localStorage.removeItem("facultyEmail");
+      //   localStorage.removeItem("facultyName");
+      //   return null;
+      // }
+      if (response.ok) {
+        const responseBody = await response.json();
+        return new BaseResponse(responseBody);
+      } else {
+        const errorBody = await response.text();
+        throw new Error(errorBody);
+      }
+    } catch (error) {
+      throw new Error(error.toString());
+    }
+  }
+  async update(courseId,attendance_hours,topics,attendance) {
+    const url = attendanceApiConstants.UPDATE_ATTENDANCE;
+    const token = localStorage.getItem("facultyToken");
+    const requestBody = {
+      courseId,
+      attendance_hours,
+      topics,
+      attendance
+  };
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(requestBody), 
+      });
+
+      // if (response.status === 401) {
+      //   window.location.href = "/faculty/login";
+      //   localStorage.removeItem("facultyToken");
+      //   localStorage.removeItem("facultyEmail");
+      //   localStorage.removeItem("facultyName");
       //   return null;
       // }
       if (response.ok) {

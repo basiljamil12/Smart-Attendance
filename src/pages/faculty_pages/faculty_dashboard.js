@@ -1,13 +1,36 @@
 import React, { useState, useEffect } from "react";
 import FacultyNavbar from "../../components/navbars/faculty_navbar";
 import GetFacultyCourseManager from "../../models/courses/http/getCourseByFaculty";
-import { useNavigate } from "react-router";
+import { useNavigate,useLocation, } from "react-router";
 import Toast from "../../components/toast/toast";
 import Spinner from "../../components/spinner/spinner";
+import AttendanceManager from "../../models/attendance/http/get_attendance";
+
 function FacultyDashboard() {
+  const attendanceManager = new AttendanceManager();
+  const [isAttendanceMarkedDashboard, setisAttendanceMarkedDashboard] = useState([false]); //
+
   const [facultyData, setFacultyData] = useState(null);
+  const [courseID, setcourseID] = useState(null);
   const [showLoading, setShowLoading] = useState(false);
-  const [toastMessages, setToastMessages] = useState([]); //
+  const location = useLocation(); 
+  const [toastMessages, setToastMessages] = useState(location.state?.toastMessages || []); // Set initial toastMessages from location state
+
+  
+  useEffect(() => {
+    // Check if there are toast messages in the location state
+    if (location.state?.toastMessages) {
+      // Display the toast message
+      const toastMessage = location.state.toastMessages[0]; // Assuming there's only one toast message
+      setToastMessages([toastMessage]);
+
+      // Clear the location state after showing the toast message
+      setTimeout(() => {
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }, 0);
+    }
+  }, [location.state]);
+
   const getFacultyCourseManager = new GetFacultyCourseManager();
   useEffect(() => {
     const fetchData = async () => {
@@ -16,7 +39,27 @@ function FacultyDashboard() {
         const response = await getFacultyCourseManager.get();
         if (response.success) {
           setFacultyData(response.data);
-          console.log(response);
+          const attendanceStatus = {}; // Object to store attendance status for each course
+
+          for (const course of response.data) {
+            const courseId = course._id;
+            const attendanceResponse = await attendanceManager.getByDate(courseId);
+            if (attendanceResponse.success) {
+              attendanceStatus[courseId] = true; // Attendance marked for this course
+            } else {
+              attendanceStatus[courseId] = false; // Attendance not marked for this course
+            }
+          }
+          
+          setisAttendanceMarkedDashboard(attendanceStatus); // Set state with attendance status object
+  
+        //   console.log(response.data);
+
+        //   if (response.data.length > 0) {
+        //     // Accessing the first item in the array and extracting its _id
+        //     const courseId = response.data[0]._id;
+        //     setcourseID(courseId);
+        // }
         } else {
           setToastMessages([
             ...toastMessages,
@@ -43,8 +86,36 @@ function FacultyDashboard() {
 
     fetchData();
   }, []);
+//   useEffect(() => {
+//     if (courseID) {
+//       const firstFetchData = async () => {
+//           setShowLoading(true);
+//           try {
+//               const response = await attendanceManager.getByDate(courseID);
+//               if (response.success) {
+//                 setisAttendanceMarkedDashboard(true);
+//               } else {
+//                 setisAttendanceMarkedDashboard(false);
+//               }
+//           } catch (error) {
+//               setToastMessages([
+//                   ...toastMessages,
+//                   {
+//                       type: "invalid",
+//                       title: "Error",
+//                       body: error.message,
+//                   },
+//               ]);
+//           } finally {
+//               setShowLoading(false);
+//           }
+//       };
+
+//       firstFetchData();
+//     }
+// }, [courseID]);
   const AttendanceData = facultyData ? facultyData.map(data => ({
-  
+    
         courseId: data._id,
         courseCode: data.courseCode,
         courseTitle: data.courseName,
@@ -162,23 +233,17 @@ function FacultyDashboard() {
                     <td className="p-2 py-5  border-sa-grey">
                     <div  class="lg:inline-flex rounded-lg border  bg-sa-pink p-1">
                    
-  <button
-    class="bg-sa-maroon  text-white inline-flex items-center gap-2 rounded-md px-3 py-3  md:text-base text-sm  hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300  focus:relative"
+                    <button
+    className={`inline-flex items-center gap-2 rounded-md px-3 py-3 text-white md:text-base text-sm hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300 focus:relative ${isAttendanceMarkedDashboard[faculty.courseId] ? ' bg-orange-600' : 'bg-sa-maroon'}`}
     onClick={() => handleMarkAttendance(faculty.courseId)} 
-    
-  >  
-   Mark Attendance
-  </button>
+>
+    {isAttendanceMarkedDashboard[faculty.courseId] ? "Edit Attendance" : "Mark Attendance"}
+</button>
+
 
   
 </div>
-                      {/* <span className="text-sa-maroon text-md underline mx-2 hover:cursor-pointer">
-                        Edit
-                      </span>
-                      <span>|</span>
-                      <span className="text-sa-maroon text-md underline mx-2 hover:cursor-pointer">
-                        Delete
-                      </span> */}
+                   
                     </td>
                    
                   </tr>
