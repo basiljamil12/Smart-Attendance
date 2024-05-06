@@ -1,9 +1,10 @@
   export class StudentData {
-    constructor({ _id, name, email, contactno }) {
+    constructor({ _id, name, email, contactno,registered_face }) {
       this._id = _id;
       this.name = name;
       this.email = email;
       this.contactno = contactno;
+      this.registered_face = registered_face;
     }
   
     static fromJson(json) {
@@ -12,6 +13,7 @@
         name: json.name,
         email: json.email,
         contactno: json.contactno,
+        registered_face: json.registered_face,
       });
     }
   
@@ -21,6 +23,7 @@
         name: this.name,
         email: this.email,
         contactno: this.contactno,
+        registered_face: this.registered_face,
       };
     }
   }

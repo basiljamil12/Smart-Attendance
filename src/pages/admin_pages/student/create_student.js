@@ -106,7 +106,6 @@ const createStudentManager = new CreateStudentManager();
     
       if(response.success){
         const updatedToastMessages = [
-          ...toastMessages,
           {
               type: "success",
               title: "Success",

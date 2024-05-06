@@ -45,6 +45,7 @@ import ChangePassword from "../pages/change_password";
 import ParentAccountDetails from "../pages/parent_pages/parent_account_details";
 import AssignCourse from "../pages/faculty_pages/assign_course";
 import MarkAttendance from "../pages/faculty_pages/mark_attendnace";
+import FacialRegAdboard from "../pages/admin_pages/face_registration/face_reg_dashboard";
 // import FacultyDetailsManager from "../models/faculty/auth/http/getdetails";
 // const facultyDetailsManager = new FacultyDetailsManager();
 
@@ -100,6 +101,7 @@ function Layout() {
     "/adboard/dashboard/parent/create",
     "/adboard/course",
     "/adboard/course/edit",
+    "/adboard/face-registration",
   ].includes(location.pathname);
 
   return (
@@ -176,6 +178,7 @@ function Layout() {
           <Route path="/adboard/parent/edit" element={<EditParent />} />
           <Route path="/adboard/student/edit" element={<EditStudent />} />
           <Route path="/adboard/course/edit" element={<EditCourse />} />
+          <Route path="/adboard/face-registration" element={<FacialRegAdboard />} />
         </Routes>
       </div>
     </div>

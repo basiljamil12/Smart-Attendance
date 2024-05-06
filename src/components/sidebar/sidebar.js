@@ -9,6 +9,7 @@ import Parent from "../../assets/images/parent2.png"
 import Student from "../../assets/images/studentAdboard.png"
 import LogoutIcon from '@mui/icons-material/Logout';
 import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
+import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
 function Sidebar() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(window.innerWidth >= 768);
@@ -41,7 +42,10 @@ function Sidebar() {
   const goToStudent = () => {
     navigate("/adboard/student");
   };
-
+  const goToFaceReg = () => {
+    navigate("/adboard/face-registration");
+  };
+  
   const goToCourse = () => {
     navigate("/adboard/course");
   };
@@ -132,6 +136,19 @@ function Sidebar() {
           <span className="text-white font-bold text-xl ml-5 mt-0.5 ">Course</span>
             </div>
             <div className="border-b-2 border-white mx-4 my-5 opacity-20"></div>
+            <div
+              className="hover:text-gray-300 hover:scale-105 transition-all duration-300 ease-in-out flex  hover:opacity-80 px-10 border-b-10 hover:cursor-pointer"
+              onClick={goToFaceReg}
+            >
+            {/* <AutoStoriesOutlinedIcon style={{ width: 38, height: 38,marginLeft:7}} /> */}
+
+              {/* <img src={Books} alt="Books" className="w-8 h-8 filter invert"  /> */}
+            <HowToRegOutlinedIcon className="text-white" style={{ width: 35, height: 35,marginLeft:2,marginBottom:0}} />
+
+          <span className="text-white font-bold text-lg text-left ml-4 mt-0.5 ">Face Registration</span>
+            </div>
+            <div className="border-b-2 border-white mx-4 my-5 opacity-20"></div>
+
             <div className="hover:text-gray-300  hover:scale-105 transition-all duration-300 ease-in-out flex px-10 border-b-10 hover:cursor-pointer">
             <LogoutIcon className="text-white" style={{ width: 30, height: 32,marginLeft:7,marginBottom:8}} />
               
