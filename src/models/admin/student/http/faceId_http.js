@@ -1,6 +1,6 @@
 import FaceIdConstants from "../../../../constants/faceidconstants.js";
 import { BaseResponse } from "../student_model/student_model.js";
-class CreateFaceIdManager {
+class FaceIdManager {
   async createFaceId(studentId,  attachment ) {
     const url = FaceIdConstants.CREATE_FACEID;
     const token = localStorage.getItem("adminToken");
@@ -38,6 +38,36 @@ class CreateFaceIdManager {
       throw new Error(error.toString());
     }
   }
+
+  async delete(id) {
+    const url = FaceIdConstants.DELETE_FACEID + id;
+    const token = localStorage.getItem("adminToken");
+    try {
+      const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 401) {
+        window.location.href = "/adboard/signin";
+        localStorage.removeItem("adminToken");
+        localStorage.removeItem("adminEmail");
+        localStorage.removeItem("adminName");
+        return null;
+      }
+      if (response.ok) {
+        const responseBody = await response.json();
+        return new BaseResponse(responseBody);
+      } else {
+        const errorBody = await response.text();
+        throw new Error(errorBody);
+      }
+    } catch (error) {
+      throw new Error(error.toString());
+    }
+  }
 }
 
-export default CreateFaceIdManager;
+export default FaceIdManager;

@@ -5,13 +5,40 @@ import { useLocation } from 'react-router-dom';
 import FacultyCourseManager from "../../models/courses/http/getallcourses";
 import Spinner from "../../components/spinner/spinner";
 import Toast from "../../components/toast/toast";
+import { FlareSharp } from "@mui/icons-material";
 function CourseApproval() {
   const facultyCourseManager = new FacultyCourseManager();
   const [showLoading, setShowLoading] = useState(false);
   const [showLoading2, setShowLoading2] = useState(false);
   const location = useLocation();
   const [coursesReq, setCoursesReq] = useState([]); // State to store fetched courses data
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [courseReqID, setCourseReqID] = useState("");
+  const [approveStatus, setApproveStatus] = useState(false);
+  const [removeStatus, setRemoveStatus] = useState(false);
+  const [rejectStatus, setRejectStatus] = useState(false);
+  
+  const closePopup = () => {
+    
+   setApproveStatus(false);
+   setRemoveStatus(false);
+   setRejectStatus(false);
+    setIsPopupOpen(false);
+  };
+  const openPopup = (id,status) => {
+   if(status==="accepted"){
+    setApproveStatus(true);
+   }
+   else if (status === 'rejected') {
+    setRejectStatus(true);
+   }  
+   else   {
+    setRemoveStatus(true);
 
+   }
+    setCourseReqID(id);
+    setIsPopupOpen(true);
+  };
   const [toastMessages, setToastMessages] = useState(location.state?.toastMessages || []); // S
   useEffect(() => {
     // Check if there are toast messages in the location state
@@ -109,7 +136,7 @@ function CourseApproval() {
                 return { ...course, status: 'rejected' };
             }
             // If the status was 'removed', update it to 'removed'
-            else if (status === 'removed') {
+            else{
                 return { ...course, status: 'removed' };
             }
         }
@@ -117,6 +144,7 @@ function CourseApproval() {
     });
     setCoursesReq(updatedCoursesReq);
       if (response.success) {
+        closePopup(false);
         setToastMessages([
           ...toastMessages,
           {
@@ -185,7 +213,7 @@ function CourseApproval() {
             </span>
 
           </div>
-          <div className="overflow-x-auto mt-10 mx-10 md:ml-[6%] md:w-[90%] md:shadow-xl rounded-2xl">
+          <div className="overflow-x-auto mt-10 mx-10 md:ml-[6%] md:w-[90%] md:shadow-xl rounded-2xl mb-20">
             <table className="table-fixed min-w-full bg-sa-pink w-[800px] md:w-[50vw] rounded-2xl">
               <thead>
                 <tr className="border-b border-sa-grey">
@@ -244,7 +272,7 @@ function CourseApproval() {
     {faculty && faculty.status === 'rejected' ? (
       <button
         className=" lg:w-[55%] w-[88px]    h-full bg-[#198754] xl:ml-2 text-white  items-center gap-2 rounded-md py-2 lg:text-base text-sm hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300 focus:relative"
-        onClick={() => handleStatusUpdate(faculty.courseReqId, 'accepted')}
+        onClick={() => openPopup(faculty.courseReqId, 'accepted')}
       >
         {showLoading ? <Spinner /> : 'Approve'}
       </button>
@@ -252,8 +280,8 @@ function CourseApproval() {
       <>
         {faculty && faculty.status === 'registered' ? (
           <button
-            className="  lg:w-[55%] w-[88px] h-full xl:mt-0 items-center rounded-md bg-[#d9534f] hover:scale-105 transition-all duration-300 ease-in-out  py-2.5 text-sm lg:text-base text-white hover:opacity-90 hover:text-gray-300 shadow-sm focus:relative"
-            onClick={() => handleStatusUpdate(faculty.courseReqId, 'removed')}
+            className="  lg:w-[55%] w-[88px] h-full xl:mt-0 items-center rounded-md bg-orange-500 hover:scale-105 transition-all duration-300 ease-in-out  py-2.5 text-sm lg:text-base text-white hover:opacity-90 hover:text-gray-300 shadow-sm focus:relative"
+            onClick={() => openPopup(faculty.courseReqId, 'removed')}
           >
             {showLoading ? <Spinner /> : 'Remove'}
           </button>
@@ -261,7 +289,7 @@ function CourseApproval() {
           <>
             <button
               className=" xl:w-[6rem] lg:w-[6rem]    h-full bg-[#198754] xl:ml-2 hover:scale-105 transition-all duration-300 ease-in-out text-white inline-flex items-center gap-2 rounded-md px-4 py-2 lg:text-base text-sm  hover:opacity-90 hover:text-gray-300 focus:relative"
-              onClick={() => handleStatusUpdate(faculty.courseReqId, 'accepted')}
+              onClick={() => openPopup(faculty.courseReqId, 'accepted')}
             >
               {showLoading ? <Spinner /> : 'Approve'}
             </button>
@@ -270,7 +298,7 @@ function CourseApproval() {
             <div className="border-b border-[1px] mx-5 mt-5 border-sa-grey block xl:hidden"></div>
             <button
               className="xl:w-[5rem] lg:w-[5rem] hover:scale-105 transition-all duration-300 ease-in-out  h-full inline-flex xl:mt-0 mt-5 items-center  rounded-md bg-[#d9534f] px-4 py-2 lg:text-base text-sm text-white  hover:opacity-90 hover:text-gray-300 shadow-sm focus:relative"
-              onClick={() => handleStatusUpdate(faculty.courseReqId, 'rejected')}
+              onClick={() => openPopup(faculty.courseReqId, 'rejected')}
               style={{ wordWrap: "break-word" }}
             >
               {showLoading ? <Spinner /> : 'Reject'}
@@ -299,6 +327,64 @@ function CourseApproval() {
 
                   </tr>
                 ))}
+                {isPopupOpen && (
+          <div
+            className=" fixed inset-0 flex items-center justify-center z-50"
+            onClick={closePopup}
+          >
+            <div className=" bg-black opacity-50 absolute inset-0"></div>
+            <div
+              className=" bg-white rounded-3xl md:w-auto w-80  p-8 px-12 relative z-10"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h2 className="text-black font-bold text-xl md:w-auto w-60 text-left mb-4">
+                Confirm
+              </h2>
+              {approveStatus && (
+  <p className="text-black text-filter-heading md:w-auto w-60 text-left">
+    Are you sure you want to approve this course?
+  </p>
+)}
+
+{rejectStatus && (
+  <p className="text-black text-filter-heading md:w-auto w-60 text-left">
+    Are you sure you want to reject this course?
+  </p>
+)}
+
+{removeStatus && (
+  <p className="text-black text-filter-heading md:w-auto w-60 text-left">
+    Are you sure you want to remove this course?
+  </p>
+)}
+              <div className="flex justify-end mt-6">
+                <button
+                  onClick={closePopup}
+                  className="text-filter-heading hover:scale-105 transition-all duration-300 ease-in-out   hover:opacity-70 mr-4 border-2 border-gray-400 rounded-[9px] border-filter-heading py-1 px-6"
+                >
+                  Cancel
+                </button>
+                {approveStatus && (
+  <button className="bg-green-700 hover:scale-105 transition-all duration-300 ease-in-out  hover:opacity-70 text-white md:px-7 px-4 rounded-[9px] py-3 md:py-2" onClick={() => handleStatusUpdate(courseReqID, "accepted")}>
+    Approve
+  </button>
+)}
+
+{rejectStatus && (
+  <button className="bg-red-500 hover:scale-105 transition-all duration-300 ease-in-out  hover:opacity-70 text-white md:px-7 px-4 rounded-[9px] py-3 md:py-2" onClick={() => handleStatusUpdate(courseReqID, "rejected")}>
+    Reject
+  </button>
+)}
+
+{removeStatus && (
+  <button className="bg-orange-600 hover:scale-105 transition-all duration-300 ease-in-out  hover:opacity-70 text-white md:px-7 px-4 rounded-[9px] py-3 md:py-2" onClick={() => handleStatusUpdate(courseReqID, "removed")}>
+    Remove
+  </button>
+)}
+              </div>
+            </div>
+          </div>
+        )}
                 <tr className="border-b-0">
                   <td className="md:py-32 py-16 border-r border-sa-grey w-[100px]"></td>
                   <td className="md:py-32 py-16 border-r border-sa-grey"></td>

@@ -17,7 +17,19 @@ function OfferedCourses() {
   const [courses, setCourses] = useState([]); // State to store fetched courses data
   const [coursesReq, setCoursesReq] = useState([]); // State to store fetched courses data
   const [registrationStatus, setRegistrationStatus] = useState({}); // State to keep track of registration status for each course
-
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [courseID, setCourseID] = useState("");
+  
+  const closePopup = () => {
+    
+   
+    setIsPopupOpen(false);
+    setCourseID("");
+  };
+  const openPopup = (id) => {
+    setCourseID(id);
+    setIsPopupOpen(true);
+  };
   useEffect(() => {
     const getCoursesReq = async () => {
       setShowLoading(true);
@@ -135,13 +147,13 @@ function OfferedCourses() {
   const handleRegister = async (courseId) => {
     setShowLoading(true);
     try {
-      console.log(courseId);
       const response = await studentCourseManager.createCourse(courseId, 'pending');
       if (response.success) {
         setRegistrationStatus(prevStatus => ({
           ...prevStatus,
           [courseId]: 'pending'
         }));
+        closePopup();
         setToastMessages([
         ...toastMessages,
         {
@@ -283,13 +295,44 @@ function OfferedCourses() {
     ) :(
       <button
         className="bg-sa-maroon cursor-pointer  text-white inline-flex items-center gap-2 rounded-md px-6 py-2 md:text-base text-sm hover:opacity-90 hover:scale-105 transition-all duration-300 ease-in-out hover:text-gray-300 focus:relative"
-        onClick={() => handleRegister(course.courseID)}
+        onClick={() => openPopup(course.courseID)}
       >
         {showLoading ? <Spinner /> : 'Register'}
       </button>
     )}
 
-
+{isPopupOpen && (
+          <div
+            className=" fixed inset-0 flex items-center justify-center z-50"
+            onClick={closePopup}
+          >
+            <div className=" bg-black opacity-50 absolute inset-0"></div>
+            <div
+              className=" bg-white rounded-3xl md:w-auto w-80  p-8 px-12 relative z-10"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h2 className="text-black font-bold text-xl md:w-auto w-60 text-left mb-4">
+                Confirm
+              </h2>
+              <p className="text-black text-filter-heading md:w-auto w-60 text-left">
+                Are you sure you want to register this course?
+              </p>
+              <div className="flex justify-end mt-6">
+                <button
+                  onClick={closePopup}
+                  className="text-filter-heading hover:scale-105 transition-all duration-300 ease-in-out  hover:opacity-70 mr-4 border-2 border-gray-400 rounded-[9px] border-filter-heading py-1 px-6"
+                >
+                  Cancel
+                </button>
+                <button className="bg-sa-maroon hover:scale-105 transition-all duration-300 ease-in-out  hover:opacity-70 text-white md:px-7 px-4 rounded-[9px] py-3 md:py-2 "
+                 onClick={() => handleRegister(courseID)}>
+                
+                Register
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
   
 </div>

@@ -1,7 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+/* @font-face {
+  font-family: 'Inter';
+  src: url('../src/fonts/Inter-Regular.ttf') format('truetype'); /* Adjust the path and filename as needed */
+ */
+/* } */
 
 body {
   font-family: 'Inter', sans-serif;

@@ -25,6 +25,19 @@ function AssignCourse() {
     const [courses, setCourses] = useState([]); // State to store fetched courses data
     const [coursesReq, setCoursesReq] = useState([]); // State to store fetched courses data
     const [registrationStatus, setRegistrationStatus] = useState({}); // State to keep track of registration status for each course
+    
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [courseID, setCourseID] = useState("");
+    
+    const closePopup = () => {
+      
+     
+      setIsPopupOpen(false);
+    };
+    const openPopup = (id) => {
+      setCourseID(id);
+      setIsPopupOpen(true);
+    };
     useEffect(() => {
       // Check if there are toast messages in the location state
       if (location.state?.toastMessages) {
@@ -250,6 +263,7 @@ function AssignCourse() {
               body: response.message,
             },
           ]);
+          closePopup();
           closeAssignCoursePopup();
           const updatedResponse = await courseManager.getAll("faculty");
           if (updatedResponse.success) {
@@ -396,7 +410,7 @@ function AssignCourse() {
                                                 {course.status === "assigned" ? (
                                                     <button
                                                         className="bg-[#d9534f] cursor-pointer  text-white inline-flex items-center gap-2 rounded-md  lg:px-6 xl:px-11 md:px-2 px-3 py-2 text-md hover:opacity-90 hover:scale-105 transition-all duration-300 ease-in-out hover:text-gray-300 focus:relative"
-                                                     onClick={() => handleAssign(course.courseID,null)}
+                                                     onClick={() => openPopup(course.courseID)}
                                                     
                                                     >
                                                         {showLoading ? <Spinner /> : "Remove"}
@@ -429,6 +443,38 @@ function AssignCourse() {
 
                                     </tr>
                                 ))}
+                                {isPopupOpen && (
+          <div
+            className=" fixed inset-0 flex items-center justify-center z-50"
+            onClick={closePopup}
+          >
+            <div className=" bg-black opacity-50 absolute inset-0"></div>
+            <div
+              className=" bg-white rounded-3xl md:w-auto w-80  p-8 px-12 relative z-10"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h2 className="text-black font-bold text-xl md:w-auto w-60 text-left mb-4">
+                Confirm
+              </h2>
+              <p className="text-black text-filter-heading md:w-auto w-60 text-left">
+                Are you sure you want to remove this course?
+              </p>
+              <div className="flex justify-end mt-6">
+                <button
+                  onClick={closePopup}
+                  className="text-filter-heading hover:scale-105 transition-all duration-300 ease-in-out  hover:opacity-70 mr-4 border-2 border-gray-400 rounded-[9px] border-filter-heading py-1 px-6"
+                >
+                  Cancel
+                </button>
+                <button className="bg-[#d9534f] hover:scale-105 transition-all duration-300 ease-in-out  hover:opacity-70 text-white md:px-7 px-4 rounded-[9px] py-3 md:py-2 "
+                 onClick={() => handleAssign(courseID,null)}>
+                
+                Remove
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
                                 <tr className="border-b-0">
                                     <td className="md:py-32 py-16 border-r border-sa-grey w-[100px]"></td>
                                     <td className="md:py-32 py-16 border-r border-sa-grey"></td>

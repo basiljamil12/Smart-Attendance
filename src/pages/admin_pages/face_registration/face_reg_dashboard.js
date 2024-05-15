@@ -1,24 +1,17 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "../../../components/sidebar/sidebar";
 import { useNavigate } from "react-router";
 import StudentManager from "../../../models/admin/student/http/get_all_student";
 import Spinner from "../../../components/spinner/spinner";
 import Toast from "../../../components/toast/toast";
-import DeleteStudentManager from "../../../models/admin/student/http/delete_student";
 import { useLocation } from "react-router-dom";
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import Button from '@mui/material/Button';
-import CreateFaceIdManager from "../../../models/admin/student/http/create_faceId";
+import FaceIdManager from "../../../models/admin/student/http/faceId_http";
 function FacialRegAdboard() {
 
     const studentManager = new StudentManager();
-    const createFaceIdManager = new CreateFaceIdManager();
-    const deleteManager = new DeleteStudentManager();
+    const createFaceIdManager = new FaceIdManager();
 
     const [studentData, setStudentData] = useState([]);
     const [showLoading, setShowLoading] = useState(false);
-    const [deleteShowLoading, setDeleteShowLoading] = useState(false);
-    const [deleteIdx, setDeleteIdx] = useState(0);
     const location = useLocation();
     const [uploadProgress, setUploadProgress] = useState(0);
     const [uploading, setUploading] = useState(false); // State for upload progress
@@ -39,6 +32,19 @@ function FacialRegAdboard() {
             }, 0);
         }
     }, [location.state]);
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [studentID, setStudentID] = useState("");
+
+    const closePopup = () => {
+
+        setIsPopupOpen(false);
+        setStudentID("");
+
+    };
+    const openPopup = (id) => {
+        setStudentID(id);
+        setIsPopupOpen(true);
+    };
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -80,58 +86,46 @@ function FacialRegAdboard() {
     const goToAddStudent = () => {
         navigate("/adboard/student/add");
     };
-    const [isDelete, setIsDelete] = useState(false);
 
-    const closeIsDelete = () => {
-        setIsDelete(false);
-    };
-    const openIsDelete = (id) => {
-        setDeleteIdx(id);
-        setIsDelete(true);
-    };
-    const handleDelete = () => {
-        setDeleteShowLoading(true);
-        const id = studentData[deleteIdx]._id;
-        deleteManager.delete(id).then((value) => {
-            if (value == null) {
-            } else if (!value.error) {
-                const baseResponse = value.success;
-                if (baseResponse == true) {
-                    getAllStudent();
-                    closeIsDelete();
-                    setToastMessages([
-                        ...toastMessages,
-                        {
-                            type: "success",
-                            title: "Faculty Deleted",
-                            body: value.message,
-                        },
-                    ]);
-                    setDeleteShowLoading(false);
-                } else {
-                    setDeleteShowLoading(false);
-                    setToastMessages([
-                        ...toastMessages,
-                        {
-                            type: "invalid",
-                            title: "Error",
-                            body: value.message,
-                        },
-                    ]);
-                }
-            } else {
-                setDeleteShowLoading(false);
+    const handleRemove = async () => {
+        try {
+
+            const response = await createFaceIdManager.delete(studentID);
+            if (response.success) {
+                closePopup();
+                getAllStudent();
                 setToastMessages([
                     ...toastMessages,
                     {
-                        type: "error",
-                        title: "Error",
-                        body: value.error,
+                        type: "success",
+                        title: "Success",
+                        body: response.message,
                     },
                 ]);
             }
-        });
-    };
+            else { // Hide progress bar
+                setToastMessages([
+                    ...toastMessages,
+                    {
+                        type: "invalid",
+                        title: "Error",
+                        body: response.message,
+                    },
+                ]);
+            }
+            // Handle success response if needed
+        } catch (error) {
+
+            setToastMessages([
+                ...toastMessages,
+                {
+                    type: "invalid",
+                    title: "Error",
+                    body: error,
+                },
+            ]);
+        }
+    }
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
@@ -157,7 +151,6 @@ function FacialRegAdboard() {
     };
     const [videoFile, setVideoFile] = useState(null);
     const [videoSizeError, setVideoSizeError] = useState("");
-    const [videoUploadLoading, setVideoUploadLoading] = useState(false);
 
     const handleVideoUpload = (event) => {
         const file = event.target.files[0];
@@ -215,7 +208,7 @@ function FacialRegAdboard() {
 
             return;
         }
-        if(videoSizeError){
+        if (videoSizeError) {
             setToastMessages([
                 ...toastMessages,
                 {
@@ -228,10 +221,10 @@ function FacialRegAdboard() {
 
             return;
         }
-     
+
         try {
-            setUploading(true);      
-            response = await createFaceIdManager.createFaceId(studentId, videoFile);         
+            setUploading(true);
+            response = await createFaceIdManager.createFaceId(studentId, videoFile);
             if (response.success) {
                 responseReceived = true;
                 getAllStudent();
@@ -278,7 +271,7 @@ function FacialRegAdboard() {
                 // Stop progress estimation
                 setUploadProgress(0);
             }
-            else{
+            else {
                 setToastMessages([
                     ...toastMessages,
                     {
@@ -313,7 +306,7 @@ function FacialRegAdboard() {
                 if (responseReceived) {
                     clearInterval(uploadInterval);
                     setUploadProgress(100);
-                  
+
                 }
             }, 1000);
         }
@@ -342,7 +335,7 @@ function FacialRegAdboard() {
                 </div>
             ) : (
                 <div className="w-full">
-                    <div className="md:mt-8 md:ml-8 mt-16 md:flex md:items-start md:justify-start">
+                    <div className="md:mt-8 md:ml-8 mt-16 md:flex md:items-start  md:justify-start">
                         <span className="text-sa-maroon  font-bold text-2xl md:text-3xl">
                             Face Registration Dashboard
                         </span>
@@ -353,37 +346,7 @@ function FacialRegAdboard() {
                             <span className="text-sa-maroon font-bold text-xl md:mt-0 mt-2 md:text-2xl">
                                 Student List
                             </span>
-                            {/* <Button
-               onClick={goToAddStudent}
-    variant="contained"
-    startIcon={<AddBoxIcon />}
-    sx={{
-      backgroundColor: '#925454',
-        cursor: 'pointer',
-        color: 'white',
-        display: 'inline-flex',
-        alignItems: 'center',
-        borderRadius: '6px',
-        padding: '10px 14px',
-        fontSize: '16px',
-        '&:hover': {
-            opacity: 0.9,
-            transform: 'scale(1.05)',
-            backgroundColor: '#925454',
-        },
-        transition: 'all 300ms ease-in-out',
-    }}
->
-    Add Student
-</Button> */}
-                            {/* <button
-                //className="transition-opacity hover:opacity-85 text-sa-maroon font-bold text-lg pt-0.5 underline hover:cursor-pointer"
-                className="bg-sa-maroon cursor-pointer text-white inline-flex items-center gap-2 rounded-md lg:px-6 px-3 py-2 text-md hover:opacity-90 hover:scale-105 transition-all duration-300 ease-in-out hover:text-gray-300 focus:relative"
-                
-                onClick={goToAddStudent}
-              >
-                Add Student
-              </button> */}
+
                         </div>
                         <div className="mb-20 overflow-x-auto mt-10 mx-10 lg:ml-[6%] lg:w-[90%] lg:shadow-xl rounded-2xl">
                             <table className="table-fixed min-w-full bg-sa-pink w-[800px] lg:w-[50vw] rounded-2xl">
@@ -430,7 +393,7 @@ function FacialRegAdboard() {
                                                     {student && student.registered_face === true ? (
                                                         <button
                                                             className="px-[15%] h-full xl:mt-0 items-center rounded-md bg-[#d9534f] hover:scale-105 transition-all duration-300 ease-in-out py-2 text-sm lg:text-base text-white hover:opacity-90 hover:text-gray-300 shadow-sm focus:relative"
-                                                        //   onClick={() => handleStatusUpdate(faculty.courseReqId, 'removed')}
+                                                            onClick={() => openPopup(student._id)}
                                                         >
                                                             {showLoading ? <Spinner /> : 'Remove'}
                                                         </button>
@@ -513,6 +476,39 @@ function FacialRegAdboard() {
                                             </td>
                                         </tr>
                                     ))}
+                                    {isPopupOpen && (
+                                        <div
+                                            className=" fixed inset-0 flex items-center justify-center z-50"
+                                            onClick={closePopup}
+                                        >
+                                            <div className=" bg-black opacity-50 absolute inset-0"></div>
+                                            <div
+                                                className=" bg-white rounded-3xl md:w-auto w-80  p-8 px-12 relative z-10"
+                                                onClick={(e) => e.stopPropagation()}
+                                            >
+                                                <h2 className="text-black font-bold text-xl md:w-auto w-60 text-left mb-4">
+                                                    Confirm
+                                                </h2>
+                                                <p className="text-black text-filter-heading md:w-auto w-60 text-left">
+                                                    Are you sure you want to remove facial registeration of this student?
+                                                </p>
+                                                <div className="flex justify-end mt-6">
+                                                    <button
+                                                        onClick={closePopup}
+                                                        className="text-filter-heading hover:scale-105 transition-all duration-300 ease-in-out   hover:opacity-70 mr-4 border-2 border-gray-400 rounded-[9px] border-filter-heading py-1 px-6"
+                                                    >
+                                                        Cancel
+                                                    </button>
+                                                    <button className="bg-[#d9534f]  hover:scale-105 transition-all duration-300 ease-in-out  hover:opacity-70 text-white md:px-7 px-4 rounded-[9px] py-3 md:py-2 "
+                                                        onClick={() => handleRemove()}
+                                                    >
+
+                                                        Remove
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
                                     <tr className="border-b-0">
                                         <td className="md:py-28 py-16 border-r border-sa-grey w-[100px]"></td>
                                         <td className="md:py-28 py-16 border-r border-sa-grey"></td>
@@ -540,39 +536,7 @@ function FacialRegAdboard() {
                     </div>
                 </div>
             )}
-            {/* {isDelete && (
-                <div
-                    className=" fixed inset-0 flex items-center justify-center z-50"
-                    onClick={closeIsDelete}
-                >
-                    <div className=" bg-black opacity-50 absolute inset-0"></div>
-                    <div
-                        className=" bg-white rounded-3xl md:w-auto w-80  p-8 px-12 relative z-10"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <h2 className="text-black font-semibold md:w-auto w-60 text-left mb-4">
-                            Confirm
-                        </h2>
-                        <p className="text-black text-filter-heading md:w-auto w-60 text-left">
-                            Are you sure you want to delete this student?
-                        </p>
-                        <div className="flex justify-end mt-6">
-                            <button
-                                onClick={closeIsDelete}
-                                className="text-filter-heading hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-70 mr-4 border-2 border-gray-400 rounded-[9px] border-filter-heading py-1 px-6"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                className="bg-sa-maroon hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-70 text-white md:px-7 px-5 rounded-[9px] py-1 "
-                                onClick={handleDelete}
-                            >
-                                {deleteShowLoading ? <Spinner /> : <span>Delete</span>}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )} */}
+
         </div>
     );
 }
