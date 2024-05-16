@@ -180,7 +180,11 @@ function FacultyLeaveDashboard() {
       <div>
         <FacultyNavbar />
       </div>
-      
+      {showLoading && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center ">
+          <Spinner />
+        </div>
+      )}
       <div className="w-full">
       {toastMessages.map((toast, index) => (
                 <Toast
@@ -194,18 +198,14 @@ function FacultyLeaveDashboard() {
                     }}
                 />
             ))}
-        {/* <div className="md:mt-10 md:ml-14 mt-16 md:flex md:items-start md:justify-start">
-          <span className="text-sa-maroon  font-bold text-[32px] md:text-[36px]">
-              Dashboard
-          </span>
-        </div> */}
         <div className="md:mt-14 mt-10">
           <div className="flex justify-between mx-10 md:mx-24">
             <span className="text-sa-maroon font-bold text-[28px] md:text-[36px]">
               Leave Approval Dashboard
             </span>
           </div>
-          <div className="overflow-x-auto mt-10 mx-10 md:ml-[6%] md:w-[90%] md:shadow-xl rounded-2xl mb-20">
+          {!showLoading && (
+          <div className="mb-20 overflow-x-auto mt-10 mx-10 md:ml-[6%] md:w-[90%] md:shadow-xl rounded-2xl ">
             <table className="table-fixed min-w-full bg-sa-pink w-[800px] md:w-[50vw] rounded-2xl">
               <thead>
                 <tr className="border-b border-sa-grey">
@@ -301,7 +301,7 @@ function FacultyLeaveDashboard() {
                 </tr>
               </tbody>
             </table>
-          </div>
+          </div>)}
         </div>
       </div>
       {isDetails && (

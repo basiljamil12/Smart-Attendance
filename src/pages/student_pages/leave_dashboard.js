@@ -158,6 +158,11 @@ function StudentLeaveDashboard() {
             <div>
                 <StudentNavbar />
             </div>
+            {showLoading && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center ">
+          <Spinner />
+        </div>
+      )}
             <div className="w-full">
                 {/* <div className="md:mt-10 md:ml-14 mt-16 md:flex md:items-start md:justify-start">
           <span className="text-sa-maroon  font-bold text-[32px] md:text-[36px]">
@@ -171,7 +176,8 @@ function StudentLeaveDashboard() {
                         </span>
 
                     </div>
-                    <div className="overflow-x-auto mt-10 mx-10 md:ml-[6%] md:w-[90%] md:shadow-xl rounded-2xl">
+                    {!showLoading && (
+                    <div className="mb-20 overflow-x-auto mt-10 mx-10 md:ml-[6%] md:w-[90%] md:shadow-xl rounded-2xl">
                         <table className="table-fixed min-w-full bg-sa-pink w-[800px] md:w-[50vw] rounded-2xl">
                             <thead>
                                 <tr className="border-b border-sa-grey">
@@ -269,16 +275,17 @@ function StudentLeaveDashboard() {
                                     </tr>
                                 ))}
                                 <tr className="border-b-0">
-                                    <td className="md:py-32 py-16 border-r border-sa-grey w-[100px]"></td>
-                                    <td className="md:py-32 py-16 border-r border-sa-grey"></td>
-                                    <td className="md:py-32 py-16 border-r border-sa-grey"></td>
-                                    <td className="md:py-32 py-16 border-r border-sa-grey"></td>
-                                    <td className="md:py-32 py-16 border-r border-sa-grey"></td>
-                                    <td className="md:py-32 py-16 border-r border-sa-grey"></td>
+                                    <td className="md:py-16 py-16 border-r border-sa-grey w-[100px]"></td>
+                                    <td className="md:py-16 py-16 border-r border-sa-grey"></td>
+                                    <td className="md:py-16 py-16 border-r border-sa-grey"></td>
+                                    <td className="md:py-16 py-16 border-r border-sa-grey"></td>
+                                    <td className="md:py-16 py-16 border-r border-sa-grey"></td>
+                                    <td className="md:py-16 py-16 border-r border-sa-grey"></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
+                  )}
                 </div>
                 {isDetails && (
         <div

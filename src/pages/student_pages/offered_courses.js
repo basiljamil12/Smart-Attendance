@@ -221,7 +221,7 @@ function OfferedCourses() {
           <div className="flex justify-between mx-10 md:mx-24 mt-2 italic font-semibold text-red-600">
   *Note: Contact your student advisor in case of removal or rejection of course.*
 </div>
-          <div className="overflow-x-auto mt-10 mx-10 md:ml-[6%] md:w-[90%] md:shadow-xl rounded-2xl">
+          <div className="mb-20 overflow-x-auto mt-10 mx-10 md:ml-[6%] md:w-[90%] md:shadow-xl rounded-2xl">
             <table className="table-fixed min-w-full bg-sa-pink w-[800px] md:w-[50vw] rounded-2xl">
               <thead>
                 <tr className="border-b border-sa-grey">
@@ -342,10 +342,10 @@ function OfferedCourses() {
                   </tr>
                 ))}
                 <tr className="border-b-0">
-                  <td className="md:py-32 py-16 border-r border-sa-grey w-[100px]"></td>
-                  <td className="md:py-32 py-16 border-r border-sa-grey"></td>
-                  <td className="md:py-32 py-16 border-r border-sa-grey"></td>
-                  <td className="md:py-32 py-16 border-r border-sa-grey"></td>
+                  <td className="md:py-16 py-16 border-r border-sa-grey w-[100px]"></td>
+                  <td className="md:py-16 py-16 border-r border-sa-grey"></td>
+                  <td className="md:py-16 py-16 border-r border-sa-grey"></td>
+                  <td className="md:py-16 py-16 border-r border-sa-grey"></td>
                  
                 </tr>
               </tbody>

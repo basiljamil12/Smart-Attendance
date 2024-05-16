@@ -334,7 +334,7 @@ function AssignCourse() {
                         </span>
                     </div>
 
-                    <div className="overflow-x-auto mt-10 mb-10 mx-10 md:ml-[6%] md:w-[90%] md:shadow-xl rounded-2xl">
+                    <div className="mb-20 overflow-x-auto mt-10  mx-10 md:ml-[6%] md:w-[90%] md:shadow-xl rounded-2xl ">
                         <table className="table-fixed min-w-full bg-sa-pink w-[800px] md:w-[50vw] rounded-2xl">
                             <thead>
                                 <tr className="border-b border-sa-grey">
@@ -476,12 +476,12 @@ function AssignCourse() {
           </div>
         )}
                                 <tr className="border-b-0">
-                                    <td className="md:py-32 py-16 border-r border-sa-grey w-[100px]"></td>
-                                    <td className="md:py-32 py-16 border-r border-sa-grey"></td>
-                                    <td className="md:py-32 py-16 border-r border-sa-grey"></td>
-                                    <td className="md:py-32 py-16 border-r border-sa-grey"></td>
-                                    <td className="md:py-32 py-16 border-r border-sa-grey"></td>
-                                    <td className="md:py-32 py-16 border-r border-sa-grey"></td>
+                                    <td className="md:py-16 py-16 border-r border-sa-grey w-[100px]"></td>
+                                    <td className="md:py-16 py-16 border-r border-sa-grey"></td>
+                                    <td className="md:py-16 py-16 border-r border-sa-grey"></td>
+                                    <td className="md:py-16 py-16 border-r border-sa-grey"></td>
+                                    <td className="md:py-16 py-16 border-r border-sa-grey"></td>
+                                    <td className="md:py-16 py-16 border-r border-sa-grey"></td>
 
                                 </tr>
                             </tbody>

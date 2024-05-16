@@ -312,12 +312,12 @@ function FacultyAdboard() {
                     </tr>
                   ))}
                   <tr className="border-b-0 ">
-                    <td className="md:py-28 py-16 border-r border-sa-grey w-[100px]"></td>
-                    <td className="md:py-28 py-16 border-r border-sa-grey"></td>
-                    <td className="md:py-28 py-16 border-r border-sa-grey"></td>
-                    <td className="md:py-28 py-16 border-r border-sa-grey"></td>
-                    <td className="md:py-28 py-16 border-r border-sa-grey"></td>
-                    <td className="md:py-28 py-16 border-sa-grey"></td>
+                    <td className="md:py-16 py-16 border-r border-sa-grey w-[100px]"></td>
+                    <td className="md:py-16 py-16 border-r border-sa-grey"></td>
+                    <td className="md:py-16 py-16 border-r border-sa-grey"></td>
+                    <td className="md:py-16 py-16 border-r border-sa-grey"></td>
+                    <td className="md:py-16 py-16 border-r border-sa-grey"></td>
+                    <td className="md:py-16 py-16 border-sa-grey"></td>
                   </tr>
                 </tbody>
               </table>
