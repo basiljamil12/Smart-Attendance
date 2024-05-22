@@ -27,7 +27,69 @@
       };
     }
   }
+  class Data {
+    constructor({ attendance_records, no_of_students_in_image }) {
+      this.attendance_records = attendance_records.map(record => new AttendanceRecord(record));
+      this.no_of_students_in_image = no_of_students_in_image;
+    }
   
+    static fromJson(json) {
+      return new Data({
+        attendance_records: json.attendance_records,
+        no_of_students_in_image: json.no_of_students_in_image,
+      });
+    }
+  
+    toJson() {
+      return {
+        attendance_records: this.attendance_records.map(record => record.toJson()),
+        no_of_students_in_image: this.no_of_students_in_image,
+      };
+    }
+  }
+  class AttendanceRecord {
+    constructor({ status, studentId }) {
+      this.status = status;
+      this.studentId = studentId;
+    }
+  
+    static fromJson(json) {
+      return new AttendanceRecord({
+        status: json.status,
+        studentId: json.studentId,
+      });
+    }
+  
+    toJson() {
+      return {
+        status: this.status,
+        studentId: this.studentId,
+      };
+    }
+  }
+  export class FaceBaseResponse {
+    constructor({ success, data, message }) {
+      this.success = success;
+      this.data = data ? new Data(data) : null;
+      this.message = message;
+    }
+  
+    static fromJson(json) {
+      return new FaceBaseResponse({
+        success: json.success,
+        data: json.data ? Data.fromJson(json.data) : null,
+        message: json.message,
+      });
+    }
+  
+    toJson() {
+      return {
+        success: this.success,
+        data: this.data ? this.data.toJson() : null,
+        message: this.message,
+      };
+    }
+  }
   export class BaseResponse {
     constructor({ success, data, message }) {
       this.success = success;

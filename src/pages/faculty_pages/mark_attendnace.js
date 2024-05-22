@@ -8,13 +8,16 @@ import { useNavigate, useLocation } from "react-router";
 import GetFacultyCourseManager from "../../models/courses/http/getCourseByFaculty";
 import CreateAttendanceManager from "../../models/attendance/http/create_attendance";
 import AttendanceManager from "../../models/attendance/http/get_attendance";
+import FaceIdManager from "../../models/admin/student/http/faceId_http";
 function MarkAttendance() {
+    const faceIdManager = new FaceIdManager();
     const createAttendanceManager = new CreateAttendanceManager();
     const attendanceManager = new AttendanceManager();
     const [facultyData, setFacultyData] = useState(null);
     const [initialAttendanceData, setInitialAttendanceData] = useState(null);
     const [submitShowLoading, setSubmitShowLoading] = useState(false);
     const [showLoading, setShowLoading] = useState(false);
+    const [confirmLoading, setConfirmLoading] = useState(false);
     const [toastMessages, setToastMessages] = useState([]); //
     const [isAttendanceMarked, setisAttendanceMarked] = useState(false); //
     const location = useLocation();
@@ -24,6 +27,9 @@ function MarkAttendance() {
     const getFacultyCourseManager = new GetFacultyCourseManager();
     const [selectedHour, setSelectedHour] = useState(null);
     const [topic, setTopic] = useState("");
+    const [attachment, setAttachment] = useState("");
+    const [selectedImage, setSelectedImage] = useState(null);
+
 
     useEffect(() => {
         const firstFetchData = async () => {
@@ -104,8 +110,8 @@ function MarkAttendance() {
         fetchData();
     }, []);
     const AttendanceData = facultyData
-        ? [
-            {
+            ? [
+                 {
                 courseCode: facultyData.courseCode,
                 courseTitle: facultyData.courseName,
                 courseTeacherName: facultyData.courseTeacher.name,
@@ -122,74 +128,165 @@ function MarkAttendance() {
                 // stdName: facultyData.studentsEnrolled.map(student => student.name),
             },
         ]
-        : [];
-    const [attachment, setAttachment] = useState("");
-    const [selectedImage, setSelectedImage] = useState(null);
+    : 
+[];
 
- 
     const handleTopicChange = (e) => {
         setTopic(e.target.value);
     };
     const [isConfirm, setisConfirm] = useState(false);
 
-    const handleConfirm = () => {
-        setisConfirm(true);
-    };
 
-    
+
+
+    // function updateFileName(event) {
+    //     const files = event.target.files;
+    //     let fileNames = "";
+
+    //     if (files && files.length > 0) {
+    //         for (let i = 0; i < files.length; i++) {
+    //             const file = files[i];
+    //             setAttachment(file);
+    //             const fileName = file.name;
+    //             const allowedExtensions = [".png", ".jpeg", ".jpg"];
+    //             const extension = fileName.substring(fileName.lastIndexOf("."));
+
+    //             if (allowedExtensions.includes(extension)) {
+    //                 fileNames += fileName;
+    //                 if (i !== files.length - 1) {
+    //                     fileNames += ", ";
+    //                 }
+    //                 const reader = new FileReader();
+    //                 reader.onload = () => {
+    //                     setSelectedImage(reader.result);
+    //                 };
+    //                 reader.readAsDataURL(file);
+    //             } else {
+    //                 setToastMessages([
+    //                     ...toastMessages,
+    //                     {
+    //                         type: "invalid",
+    //                         title: "Invalid File",
+    //                         body: "Only .png, jpeg, and JPG files are allowed",
+    //                     },
+    //                 ]);
+    //                 // Clear the input field
+    //                 document.getElementById("fileInput").value = "";
+
+    //                 return; // Exit the function if an invalid file is found
+    //             }
+    //         }
+    //         document.getElementById("attachements").value = fileNames;
+    //     } else {
+    //         // Clear the input field if no file is selected
+    //         document.getElementById("attachements").value = "";
+    //         setSelectedImage(null);
+    //     }
+    // }
     function updateFileName(event) {
-        const files = event.target.files;
-        let fileNames = "";
+        const file = event.target.files[0]; // Get the first file from the input
+        if (!file) return; // Exit if no file is selected
 
-        if (files && files.length > 0) {
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                setAttachment(file);
-                const fileName = file.name;
-                const allowedExtensions = [".png", ".jpeg", ".jpg"];
-                const extension = fileName.substring(fileName.lastIndexOf("."));
+        const fileName = file.name;
+        const allowedExtensions = [".png", ".jpeg", ".jpg"];
+        const extension = fileName.substring(fileName.lastIndexOf("."));
 
-                if (allowedExtensions.includes(extension)) {
-                    fileNames += fileName;
-                    if (i !== files.length - 1) {
-                        fileNames += ", ";
-                    }
-                    const reader = new FileReader();
-                    reader.onload = () => {
-                        setSelectedImage(reader.result);
-                    };
-                    reader.readAsDataURL(file);
-                } else {
-                    setToastMessages([
-                        ...toastMessages,
-                        {
-                            type: "invalid",
-                            title: "Invalid File",
-                            body: "Only .png, jpeg, and JPG files are allowed",
-                        },
-                    ]);
-                    // Clear the input field
-                    document.getElementById("fileInput").value = "";
+        if (allowedExtensions.includes(extension)) {
+            setAttachment(file);
 
-                    return; // Exit the function if an invalid file is found
-                }
-            }
-            document.getElementById("attachements").value = fileNames;
+            const reader = new FileReader();
+            reader.onload = () => {
+                setSelectedImage(reader.result);
+            };
+            reader.readAsDataURL(file);
+
+            document.getElementById("attachements").value = fileName;
         } else {
-            // Clear the input field if no file is selected
-            document.getElementById("attachements").value = "";
-            setSelectedImage(null);
+            setToastMessages([
+                ...toastMessages,
+                {
+                    type: "invalid",
+                    title: "Invalid File",
+                    body: "Only .png, jpeg, and JPG files are allowed",
+                },
+            ]);
+
+            // Clear the input field
+            document.getElementById("fileInput").value = "";
         }
     }
+    const handleRemove = () => {
+        setSelectedRadio("");
+        setSelectedImage(null);
+        setisConfirm(false);
+        setAttachment("");
+        document.getElementById("attachements").value = ""; // Clear the filename
+        document.getElementById("fileInput").value = ""; // Clear the file input
 
+    }
+    
+    useEffect(() => {
+        if (isConfirm) {
+            window.scrollTo({
+                top: window.scrollY + 800,
+                behavior: 'smooth',
+            });
+        }
+    }, [isConfirm]);
+    const handleConfirm = async () => {
+        if (!attachment) {
+            setToastMessages([
+                ...toastMessages,
+                {
+                    type: "invalid",
+                    title: "Error",
+                    body: "Image is missing",
+                },
+            ]);
+            return;
+        }
+        try {
+            setConfirmLoading(true);
+            const response = await faceIdManager.recognize(attachment, forId)
+            if (response.success) {
+                console.log(response.data);
+                setisConfirm(true);
+                const initialRadioState = response.data.attendance_records
+                    .map(({ status }) => {
+                        return status === 'present' ? 0 : 1;
+                    });
+                setSelectedRadio(initialRadioState);
+
+            }
+            else {
+                setisConfirm(false);
+            }
+        }
+        catch (response) {
+            setToastMessages([
+                ...toastMessages,
+                {
+                    type: "invalid",
+                    title: "Error",
+                    body: response.message,
+                },
+            ]);
+
+        }
+        finally {
+            setConfirmLoading(false);
+
+        }
+
+    };
     const [isManualAttendance, setisManualAttendance] = useState(false);
     useEffect(() => {
         setisManualAttendance(isAttendanceMarked);
-        setisConfirm(isAttendanceMarked);
+        // setisConfirm(isAttendanceMarked);
     }, [isAttendanceMarked])
 
     const [selectedRadio, setSelectedRadio] = useState(Array.from({ length: facultyData?.studentsEnrolled?.length || 0 }, () => 0));
-   
+
 
     const handleRadioChange = (radioIndex, rowIndex) => {
         const updatedSelectedRadio = [...selectedRadio];
@@ -203,7 +300,28 @@ function MarkAttendance() {
     };
 
     const handleSubmit = async () => {
-
+if(!selectedHour){
+    setToastMessages([
+        ...toastMessages,
+        {
+            type: "invalid",
+            title: "Error",
+            body: "Hours must be selected",
+        },
+    ]);
+    return;
+}
+if(!topic){
+    setToastMessages([
+        ...toastMessages,
+        {
+            type: "invalid",
+            title: "Error",
+            body: "Topic Name is required",
+        },
+    ]);
+    return;
+}
         try {
             setSubmitShowLoading(true);
             const courseId = searchParams.get("courseId"); // Assuming courseId is obtained from somewhere
@@ -334,21 +452,26 @@ function MarkAttendance() {
                                 <span className="text-sa-maroon text-xl font-semibold">Manual Attendance</span>
                                 <div className="ml-5 mt-1">
                                     <label className="relative inline-flex items-center cursor-pointer">
-                                   
+
                                         <input
                                             type="checkbox"
                                             id="manualAttendance"
-                                            className="sr-only peer"
+                                            className="sr-only peer "
                                             checked={isManualAttendance}
                                             onClick={() => {
                                                 setisManualAttendance(!isManualAttendance);
-                                                
-                                                setisConfirm(!isManualAttendance);
-                                                console.log("mew",isConfirm); // Set isConfirm based on isManualAttendance
+
+                                                // setisConfirm(!isManualAttendance);
+                                                console.log("mew", !isManualAttendance); // Set isConfirm based on isManualAttendance
                                             }}
                                             disabled={isAttendanceMarked} // Conditionally disable checkbox
                                         />
-                                        <div className={`w-11 h-6 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-clue-purchase rounded-full peer bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-sa-maroon ${isAttendanceMarked ? 'peer-checked:bg-gray-700 cursor-not-allowed' : ''}`}>
+                                        <div
+                                            className={`w-11 h-6 peer-focus:outline-none  rounded-full 
+                                         peer bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] 
+                                         after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 
+                                         ${isAttendanceMarked ? 'peer-checked:bg-sa-maroon opacity-50 cursor-not-allowed' : 'peer-checked:bg-sa-maroon'}`}
+                                        >
 
                                         </div>
                                     </label>
@@ -462,31 +585,43 @@ function MarkAttendance() {
                                 </div>
                                 <div className="flex mb-20 mt-10 justify-center items-center">
                                     <button
-                                        //className="mb-4 h-[45px] md:h-[56px] bg-sa-maroon rounded-[20px] md:w-[102%] w-[245px] md:mr-3  shadow-md mx-5 text-white font-bold text-[26px]"
-                                        class=" hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px]   rounded-[20px]   bg-clip-padding md:px-24  px-6 py-2  leading-tight text-white text-[20px] md:text-[24px]"
+                                        className={`hover:scale-105 transition-all duration-300 ease-in-out font-bold shadow-xl focus:outline-none focus:ring-0 
+    bg-sa-maroon focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px] rounded-[20px] bg-clip-padding md:px-24 px-6 py-2 
+    leading-tight text-white text-[20px] md:text-[24px] ${isConfirm ? 'opacity-75 cursor-not-allowed' : 'hover:opacity-90'}`}
                                         onClick={handleConfirm}
-                                    >Confirm</button>
+                                        disabled={isConfirm}
+                                    >
+                                        {confirmLoading ? <Spinner /> : 'Confirm'}
+
+                                    </button>
                                     <button
+                                        onClick={handleRemove}
+
+
                                         //className="mb-4 h-[45px] md:h-[56px] bg-sa-maroon rounded-[20px] md:w-[102%] w-[245px] md:mr-3  shadow-md mx-5 text-white font-bold text-[26px]"
                                         class=" md:ml-12  ml-5 hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px]   md:px-24 px-6  rounded-[20px]   bg-clip-padding  py-2  leading-tight text-white text-[20px] md:text-[24px]"
 
                                     >Remove</button>
                                 </div>
                             </>)}
-                        {isManualAttendance && (
+
+                        {(isManualAttendance || isConfirm || isAttendanceMarked) && (
                             <>
-                                <div className="flex justify-between  md:ml-[5%] mx-10">
-                                    {isAttendanceMarked ? (
+                                <div className="flex justify-between md:ml-[5%] mx-10">
+                                    {(isManualAttendance && !isAttendanceMarked) ? (
                                         <span className="text-sa-maroon font-bold md:ml-5 md:mt-6 mt-4 text-[28px] md:text-3xl">
-                                            Attendance
+                                            Mark Attendance
                                         </span>
                                     ) : (
                                         <span className="text-sa-maroon font-bold md:ml-5 md:mt-10 mt-4 text-[28px] md:text-3xl">
-                                            Mark Attendance
+                                            Edit Attendance
                                         </span>
                                     )}
                                 </div>
-
+                            </>
+                        )}
+                        {(isManualAttendance || isConfirm) && (
+                            <>
                                 <div className="overflow-x-auto md:mt-8 mt-6 mb-14  mx-10 md:ml-[6%] md:w-[90%] md:shadow-xl rounded-2xl">
                                     <table className="table-fixed min-w-full bg-sa-pink w-[800px] md:w-[50vw] rounded-2xl">
                                         <thead>
@@ -564,17 +699,18 @@ function MarkAttendance() {
                                         </tbody>
                                     </table>
                                 </div>
-                            </>)}
-                            {(isManualAttendance || isConfirm) && ( // Render if manual attendance is false or isConfirm is true
-    <div className="flex mb-14 justify-center items-center">
-        <button
-            onClick={handleSubmit}
-            className="hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px] rounded-[20px] bg-clip-padding md:px-32 px-20 py-2 leading-tight text-white text-[20px] md:text-[24px]"
-        >
-            {submitShowLoading ? <Spinner /> : 'Submit'}
-        </button>
-    </div>
-)}
+                            </>
+                        )}
+                        {(isManualAttendance || isConfirm) && ( // Render if manual attendance is false or isConfirm is true
+                            <div className="flex mb-14 justify-center items-center">
+                                <button
+                                    onClick={handleSubmit}
+                                    className="hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px] rounded-[20px] bg-clip-padding md:px-32 px-20 py-2 leading-tight text-white text-[20px] md:text-[24px]"
+                                >
+                                    {submitShowLoading ? <Spinner /> : 'Submit'}
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
             )}
