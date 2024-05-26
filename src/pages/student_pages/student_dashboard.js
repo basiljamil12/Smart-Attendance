@@ -93,6 +93,11 @@ function StudentDashboard() {
       <div>
         <StudentNavbar />
       </div>
+      {showLoading && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <Spinner />
+        </div>
+      )}
       <div className="w-full">
 
         <div className="md:mt-14 mt-10">

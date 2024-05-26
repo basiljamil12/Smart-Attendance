@@ -76,7 +76,7 @@ class CourseManager {
       }
       if (response.ok) {
         const responseBody = await response.json();
-        return new ListResponse(responseBody);
+        return (responseBody);
       } else {
         const errorBody = await response.text();
         throw new Error(errorBody);

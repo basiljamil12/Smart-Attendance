@@ -85,7 +85,7 @@ class AttendanceManager {
       }
       if (response.ok) {
         const responseBody = await response.json();
-        return new ListResponseByStudent(responseBody);
+        return(responseBody);
       } else {
         const errorBody = await response.text();
         throw new Error(errorBody);
@@ -117,8 +117,8 @@ class AttendanceManager {
       }
       if (response.ok) {
         const responseBody = await response.json();
-        console.log(responseBody);
-        return new BaseResponseByStudent(responseBody);
+
+        return (responseBody);
       } else {
         const errorBody = await response.text();
         throw new Error(errorBody);
@@ -150,8 +150,7 @@ class AttendanceManager {
       }
       if (response.ok) {
         const responseBody = await response.json();
-        console.log("new",responseBody);
-        return new BaseResponse(responseBody);
+        return (responseBody);
       } else {
         const errorBody = await response.text();
         throw new Error(errorBody);

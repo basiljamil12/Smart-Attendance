@@ -24,11 +24,11 @@ function StudentAttendanceDetails() {
       setShowLoading(true);
       try {
         const response = await attendanceManager.getByCourseID(forId);
-        console.log("Response:", response);
 
         if (response.success) {
-          setStudentData(response.data);
-          console.log("AB", response.data); // Update here
+        console.log("Response:", response);
+
+          setStudentData(response.data); 
         } else {
           setToastMessages([
             ...toastMessages,
@@ -56,21 +56,25 @@ function StudentAttendanceDetails() {
     fetchData();
   }, [forId]);
   
-  const AttendanceData = studentData ? [studentData].map(data => ({
-    courseID: data?.courseId?._id,
-    courseTitle: data?.courseId?.courseName,
-    courseTeacher: data?.courseId?.courseTeacher,
-    attendanceRecords: data?.attendance?.map(record => ({
-      date: record?.date,
-      topic: record?.topics,
-      presenthrs: record?.present_hours,
-      absenthrs: record?.absent_hours,
-      hours: record?.hours,
-    })),
-    presentHours: data?.present_hours,
-    absentHours: data?.absent_hours,
-    totalHours: data?.total_hours,
-  })) : [];
+  const AttendanceData = studentData
+    ? [studentData].map((data) => ({
+        courseID: data?.courseId?._id,
+        courseTitle: data?.courseId?.courseName,
+        courseTeacher: data?.courseId?.courseTeacher,
+        attendanceRecords: data?.attendance
+          ? data.attendance.map((record) => ({
+              date: record?.date,
+              topic: record?.topics,
+              presenthrs: record?.present_hours,
+              absenthrs: record?.absent_hours,
+              hours: record?.hours,
+            }))
+          : [],
+        presentHours: data?.present_hours,
+        absentHours: data?.absent_hours,
+        totalHours: data?.total_hours,
+      }))
+    : [];
   const convertDateFormat = (startDate) => {
     const parsedDate = new Date(startDate);
 
@@ -86,6 +90,11 @@ function StudentAttendanceDetails() {
       <div>
         <StudentNavbar />
       </div>
+      {showLoading && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <Spinner />
+        </div>
+      )}
       {toastMessages.map((toast, index) => (
         <Toast
           className="mb-0"
@@ -100,7 +109,7 @@ function StudentAttendanceDetails() {
         />
       ))}
       <div className="w-full">
-  
+    
         <div className="md:mt-14 mt-10">
           <div className="flex justify-between mx-10 md:mx-24">
             <span className="text-sa-maroon font-bold text-[28px] md:text-[36px]">
@@ -111,17 +120,21 @@ function StudentAttendanceDetails() {
           <div className="flex justify-start md:mt-10 mx-10 md:mx-24">
   <span className="text-sa-maroon font-bold text-xl">Course Title:</span>
   <span className="text-sa-black font-bold ml-2 text-xl">
-    {AttendanceData && AttendanceData?.map((data, index) => (
+    {/* {AttendanceData && AttendanceData?.map((data, index) => (
       <span key={index}>{data?.courseTitle}</span>
-    ))}
+    ))} */}
+    {studentData?.courseId.courseName}
+   
   </span>
 </div>
 <div className="flex justify-start md:mt-4 mx-10 md:mx-24">
   <span className="text-sa-maroon font-bold text-xl">Teacher Name:</span>
   <span className="text-sa-black font-bold ml-2 text-xl">
-    {AttendanceData && AttendanceData?.map((data, index) => (
+    {/* {AttendanceData && AttendanceData?.map((data, index) => (
       <span key={index}>{data?.courseTeacher}</span>
-    ))}
+    ))} */}
+    {studentData?.courseId.courseTeacher}
+
   </span>
 </div>
 

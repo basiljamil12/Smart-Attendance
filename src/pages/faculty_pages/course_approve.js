@@ -182,6 +182,11 @@ function CourseApproval() {
       <div>
         <FacultyNavbar />
       </div>
+      {showLoading2 && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <Spinner />
+        </div>
+      )}
       <div className="w-full">
       {toastMessages.map((toast, index) => (
         <Toast
@@ -196,11 +201,7 @@ function CourseApproval() {
           }}
         />
       ))}
-      {showLoading2 && (
-        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center ">
-          <Spinner />
-        </div>
-      )}
+   
         {/* <div className="md:mt-10 md:ml-14 mt-16 md:flex md:items-start md:justify-start">
           <span className="text-sa-maroon  font-bold text-[32px] md:text-[36px]">
               Dashboard

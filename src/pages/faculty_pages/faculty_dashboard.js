@@ -143,6 +143,11 @@ function FacultyDashboard() {
       <div>
         <FacultyNavbar />
       </div>
+      {showLoading && (
+                    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center ">
+                        <Spinner />
+                    </div>
+                )}
       {toastMessages.map((toast, index) => (
         <Toast
           className="mb-0"
@@ -157,6 +162,7 @@ function FacultyDashboard() {
         />
       ))}
       <div className="w-full">
+     
         {/* <div className="md:mt-10 md:ml-14 mt-16 md:flex md:items-start md:justify-start">
           <span className="text-sa-maroon  font-bold text-[32px] md:text-[36px]">
               Dashboard

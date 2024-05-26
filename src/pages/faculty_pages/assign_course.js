@@ -249,8 +249,8 @@ function AssignCourse() {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
     const handleAssign = async (courseId,facultyName) => {
-        
-        setShowLoading(true);
+      
+      setAssignLoading(true);
         try {
           const response = await courseAssignManager.assign(courseId,facultyName );
           if (response.success) {
@@ -300,7 +300,7 @@ function AssignCourse() {
           ]);
         }
         finally{
-          setShowLoading(false);
+          setAssignLoading(false);
         }
       };
     return (
@@ -308,6 +308,11 @@ function AssignCourse() {
             <div>
                 <FacultyNavbar />
             </div>
+            {showLoading && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <Spinner />
+        </div>
+      )}
             {toastMessages.map((toast, index) => (
                 <Toast
                     className="mb-0"
@@ -322,11 +327,7 @@ function AssignCourse() {
                 />
             ))}
             <div className="w-full">
-                {showLoading && (
-                    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center ">
-                        <Spinner />
-                    </div>
-                )}
+              
                 <div className="md:mt-14 mt-10">
                     <div className="flex justify-between mx-10 md:mx-24">
                         <span className="text-sa-maroon font-bold text-[28px] md:text-[36px]">

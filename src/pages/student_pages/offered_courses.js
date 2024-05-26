@@ -193,6 +193,11 @@ function OfferedCourses() {
       <div>
         <StudentNavbar />
       </div>
+      {showLoading && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <Spinner />
+        </div>
+      )}
       {toastMessages.map((toast, index) => (
         <Toast
           className="mb-0"
@@ -207,11 +212,7 @@ function OfferedCourses() {
         />
       ))}
       <div className="w-full">
-      {showLoading && (
-        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center ">
-          <Spinner />
-        </div>
-      )}
+     
         <div className="md:mt-14 mt-10">
           <div className="flex justify-between mx-10 md:mx-24">
             <span className="text-sa-maroon font-bold text-[28px] md:text-[36px]">
