@@ -26,7 +26,6 @@ function StudentAttendanceDetails() {
         const response = await attendanceManager.getByCourseID(forId);
 
         if (response.success) {
-        console.log("Response:", response);
 
           setStudentData(response.data); 
         } else {

@@ -158,12 +158,26 @@ function StudentLeaveDashboard() {
             <div>
                 <StudentNavbar />
             </div>
+            
             {showLoading && (
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
           <Spinner />
         </div>
       )}
             <div className="w-full">
+            {toastMessages.map((toast, index) => (
+        <Toast
+          className="mb-0"
+          key={index}
+          toasts={[toast]}
+          onClose={() => {
+            // Remove the toast message when it's closed
+            const updatedToasts = [...toastMessages];
+            updatedToasts.splice(index, 1);
+            setToastMessages(updatedToasts);
+          }}
+        />
+      ))}
                 {/* <div className="md:mt-10 md:ml-14 mt-16 md:flex md:items-start md:justify-start">
           <span className="text-sa-maroon  font-bold text-[32px] md:text-[36px]">
               Dashboard

@@ -147,11 +147,11 @@ function CourseAdboard() {
         />
       ))}
 
-      {showLoading ? (
-        <div className="flex justify-center items-center w-full h-screen">
+{showLoading && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
           <Spinner />
         </div>
-      ) : (
+      )}
         <div className="w-full">
           <div className="md:mt-8 md:ml-8 mt-16 md:flex md:items-start md:justify-start">
             <span className="text-sa-maroon  font-bold text-2xl md:text-3xl">
@@ -316,7 +316,7 @@ function CourseAdboard() {
             </div>
           </div>
         </div>
-      )}
+     
          {isDelete && (
         <div
           className=" fixed inset-0 flex items-center justify-center z-50"

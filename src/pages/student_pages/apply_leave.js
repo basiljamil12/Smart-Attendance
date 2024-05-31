@@ -10,6 +10,7 @@ function ApplyLeave() {
   const navigate = useNavigate();
   const leaveManager = new CreateLeaveManager();
   const [showLoading, setShowLoading] = useState(false);
+  const [showSubmitloading, setShowSubmitLoading] = useState(false);
 
   const [startDate1, setStartDate] = useState();
   const [endDate1, setEndDate] = useState();
@@ -89,7 +90,7 @@ function ApplyLeave() {
       return; // Prevent form submission
     }
     try {
-      setShowLoading(true);
+      setShowSubmitLoading(true);
       const response = await leaveManager.create(
         subject,
         startDate1,
@@ -100,7 +101,6 @@ function ApplyLeave() {
 
       if (response.success) {
         const updatedToastMessages = [
-          ...toastMessages,
           {
             type: "success",
             title: "Success",
@@ -131,7 +131,7 @@ function ApplyLeave() {
         },
       ]);
     } finally {
-      setShowLoading(false); // Stop loading
+      setShowSubmitLoading(false); // Stop loading
     }
   };
   function updateFileName(event) {
@@ -320,7 +320,7 @@ function ApplyLeave() {
             class=" hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px]  md:w-[280px] w-[220px]  rounded-[20px]   bg-clip-padding px-3 py-2  leading-tight text-white text-[20px] md:text-[24px]"
             onClick={handleSubmit}
           >
-            {showLoading ? <Spinner /> : "Submit"}
+            {showSubmitloading ? <Spinner /> : "Submit"}
           </button>
         </div>
       </div>

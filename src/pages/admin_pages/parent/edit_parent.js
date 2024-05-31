@@ -14,6 +14,7 @@ function EditParent() {
   const studentManager = new StudentManager();
   const parentManager = new ParentManager();
   const [showLoading, setShowLoading] = useState(false);
+  const [showEditloading, setEditLoading] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -31,76 +32,95 @@ function EditParent() {
   const searchParams = new URLSearchParams(location.search);
   const id = searchParams.get("id");
 
-  useEffect(() => {
-    getAllStudent();
-  }, []);
 
-  useEffect(() => {
-    setShowLoading(true);
-    parentManager.get(id).then((value) => {
-      if (value == null) {
-      } else if (!value.error) {
-        const baseResponse = value.success;
-        if (baseResponse == true) {
-          setParentName(value.data.name);
-          setContactno(value.data.contactno);
-          setEmail(value.data.email);
-          setSelectedStudentEmail(value.data.studentID.email);
-          setShowLoading(false);
-        } else {
-          setToastMessages([
-            ...toastMessages,
-            {
-              type: "invalid",
-              title: "Error",
-              body: value.message,
-            },
-          ]);
-        }
-      } else {
-        setToastMessages([
-          ...toastMessages,
-          {
-            type: "error",
-            title: "Error",
-            body: value.error,
-          },
-        ]);
-      }
-    });
-  }, [id]);
 
-  const getAllStudent = () => {
-    setShowLoading(true);
-    studentManager.getAll().then((value) => {
-      if (value == null) {
-      } else if (!value.error) {
-        const baseResponse = value.success;
-        if (baseResponse == true) {
-          setStudentData(value.data);
-          setShowLoading(false);
+
+  const firstFetchData = async () => {
+    return parentManager.get(id).then((value) => {
+        if (value == null) {
+            // Handle null response if needed
+        } else if (!value.error) {
+            const baseResponse = value.success;
+            if (baseResponse === true) {
+                setParentName(value.data.name);
+                setContactno(value.data.contactno);
+                setEmail(value.data.email);
+                setSelectedStudentEmail(value.data.studentID.email);
+            } else {
+                setToastMessages((prevMessages) => [
+                    ...prevMessages,
+                    {
+                        type: "invalid",
+                        title: "Error",
+                        body: value.message,
+                    },
+                ]);
+            }
         } else {
-          setToastMessages([
-            ...toastMessages,
-            {
-              type: "invalid",
-              title: "Error",
-              body: value.message,
-            },
-          ]);
+            setToastMessages((prevMessages) => [
+                ...prevMessages,
+                {
+                    type: "error",
+                    title: "Error",
+                    body: value.error,
+                },
+            ]);
         }
-      } else {
-        setToastMessages([
-          ...toastMessages,
-          {
-            type: "error",
-            title: "Error",
-            body: value.error,
-          },
-        ]);
-      }
     });
-  };
+};
+
+const getAllStudent = async () => {
+    return studentManager.getAll().then((value) => {
+        if (value == null) {
+            // Handle null response if needed
+        } else if (!value.error) {
+            const baseResponse = value.success;
+            if (baseResponse === true) {
+                setStudentData(value.data);
+            } else {
+                setToastMessages((prevMessages) => [
+                    ...prevMessages,
+                    {
+                        type: "invalid",
+                        title: "Error",
+                        body: value.message,
+                    },
+                ]);
+            }
+        } else {
+            setToastMessages((prevMessages) => [
+                ...prevMessages,
+                {
+                    type: "error",
+                    title: "Error",
+                    body: value.error,
+                },
+            ]);
+        }
+    });
+};
+
+useEffect(() => {
+    const fetchDataWrapper = async () => {
+        setShowLoading(true);
+        try {
+            await Promise.all([firstFetchData(), getAllStudent()]);
+        } catch (e) {
+            setToastMessages((prevMessages) => [
+                ...prevMessages,
+                {
+                    type: "invalid",
+                    title: "Error",
+                    body: e.message,
+                },
+            ]);
+        } finally {
+            setShowLoading(false);
+        }
+    };
+
+    fetchDataWrapper();
+}, [id]);
   const handleParentNameChange = (e) => {
     setParentName(e.target.value);
   };
@@ -181,7 +201,7 @@ function EditParent() {
       return;
     }
     try {
-      setShowLoading(true);
+      setEditLoading(true);
       const response = await editParentManager.edit(
         id,
         parentName,
@@ -192,7 +212,6 @@ function EditParent() {
 
       if (response.success) {
         const updatedToastMessages = [
-          ...toastMessages,
           {
             type: "success",
             title: "Success",
@@ -223,7 +242,7 @@ function EditParent() {
         },
       ]);
     } finally {
-      setShowLoading(false); // Stop loading
+      setEditLoading(false); // Stop loading
     }
 
     // Perform create action, navigate, etc.
@@ -274,6 +293,8 @@ function EditParent() {
 
   const closeIsPassword = () => {
     setIsPassword(false);
+    setPassword("");
+
   };
   const openIsPassword = (id) => {
     setPasswordIdx(id);
@@ -297,14 +318,15 @@ function EditParent() {
       const response = await editParentManager.editPassword(id, password);
 
       if (response.success) {
-        setToastMessages([
-          ...toastMessages,
+        const updatedToastMessages = [
           {
-            type: "success",
-            title: "Success",
-            body: response.message,
+              type: "success",
+              title: "Success",
+              body: response.message,
           },
-        ]);
+      ];
+      setToastMessages(updatedToastMessages);
+        navigate("/adboard/parent", { state: { toastMessages: updatedToastMessages } });
       } else {
         setToastMessages([
           ...toastMessages,
@@ -345,6 +367,11 @@ function EditParent() {
           }}
         />
       ))}
+       {showLoading && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <Spinner />
+        </div>
+      )}
       <div className="md:ml-14 ml-5 w-full mx-[6%] ">
         <p className="text-sa-maroon text-[36px]  mb-5 text-left md:mt-10 mt-20 font-bold">
           Edit Parent
@@ -421,13 +448,13 @@ function EditParent() {
             class=" hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px]  md:w-[250px] w-[200px]  rounded-[20px]   bg-clip-padding px-3 md:py-2   leading-tight text-white text-[14px] md:text-[24px]"
             onClick={handleEdit}
           >
-            {showLoading ? <Spinner /> : "Save"}
+            {showEditloading ? <Spinner /> : "Save"}
           </button>
           <button
-            class="ml-5 hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px]  md:w-[280px] w-[200px]  rounded-[20px]   bg-clip-padding px-3 md:py-2   leading-tight text-white text-[14px] md:text-[24px]"
+            class="ml-5 hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px]  md:w-[280px] w-[200px]  rounded-[20px]   bg-clip-padding md:py-2   leading-tight text-white text-[14px] md:text-[24px]"
             onClick={openIsPassword}
           >
-            {showLoading ? <Spinner /> : "Change Password"}
+            Change Password
           </button>
         </div>
       </div>
@@ -486,10 +513,10 @@ function EditParent() {
                   Cancel
                 </button>
                 <button
-                  className="bg-sa-maroon md:text-base hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-70 text-white md:px-8 px-7 rounded-[9px] py-2 "
+                  className="bg-sa-maroon md:text-base hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-70 text-white min-w-28 rounded-[9px] py-2 "
                   onClick={handlePasswordUpdate}
                 >
-                  {passwordShowLoading ? <Spinner /> : <span>Save</span>}
+                  {passwordShowLoading ? <Spinner size="h-6 w-6"/> : <span>Save</span>}
                 </button>
               </div>
             </div>

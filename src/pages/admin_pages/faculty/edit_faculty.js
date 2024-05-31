@@ -25,6 +25,8 @@ function EditFaculty() {
 
   const searchParams = new URLSearchParams(location.search);
   const id = searchParams.get("id");
+  const [showLoading, setShowLoading] = useState(false);
+  const [showEditloading, setEditLoading] = useState(false);
 
   useEffect(() => {
     setShowLoading(true);
@@ -37,7 +39,6 @@ function EditFaculty() {
           setContactno(value.data.contactno);
           setEmail(value.data.email);
           setIsAdvisor(value.data.isStudentAdvisor.toString());
-          setShowLoading(false);
         } else {
           setToastMessages([
             ...toastMessages,
@@ -58,6 +59,8 @@ function EditFaculty() {
           },
         ]);
       }
+      setShowLoading(false);
+
     });
   }, []);
 
@@ -85,7 +88,6 @@ function EditFaculty() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
-  const [showLoading, setShowLoading] = useState(false);
 
   const handleEdit = async () => {
     if (!facultyName.trim()) {
@@ -155,7 +157,7 @@ function EditFaculty() {
       return;
     }
     try {
-      setShowLoading(true);
+      setEditLoading(true);
       const response = await editFacultyManager.edit(
         id,
         facultyName,
@@ -165,15 +167,15 @@ function EditFaculty() {
       );
 
       if (response.success) {
-        setToastMessages([
-          ...toastMessages,
+        const updatedToastMessages = [
           {
-            type: "success",
-            title: "Success",
-            body: response.message,
+              type: "success",
+              title: "Success",
+              body: response.message,
           },
-        ]);
-        navigate("/adboard/faculty");
+      ];
+    setToastMessages(updatedToastMessages);
+    navigate("/adboard/faculty", { state: { toastMessages: updatedToastMessages } });
       } else {
         setToastMessages([
           ...toastMessages,
@@ -194,7 +196,7 @@ function EditFaculty() {
         },
       ]);
     } finally {
-      setShowLoading(false); // Stop loading
+      setEditLoading(false); // Stop loading
     }
     // Perform create action, navigate, etc.
   };
@@ -223,6 +225,7 @@ function EditFaculty() {
 
   const closeIsPassword = () => {
     setIsPassword(false);
+    setPassword("");
   };
   const openIsPassword = (id) => {
     setPasswordIdx(id);
@@ -293,6 +296,11 @@ function EditFaculty() {
           }}
         />
       ))}
+      {showLoading && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <Spinner />
+        </div>
+      )}
       <div className="w-full mx-[6%]">
         <p className="text-sa-maroon text-[32px] md:text-[36px]  mb-5 text-left md:mt-14 mt-20 font-bold">
           Edit Faculty
@@ -372,7 +380,7 @@ function EditFaculty() {
             class=" hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-sa-maroon peer m-0 block h-[40px] md:h-[56px]  md:w-[250px] w-[200px]  rounded-[20px]   bg-clip-padding px-3 md:py-2   leading-tight text-white text-[14px] md:text-[24px]"
             onClick={handleEdit}
           >
-            {showLoading ? <Spinner /> : "Save"}
+            {showEditloading ? <Spinner /> : "Save"}
           </button>
           <button
             class="md:ml-5 hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-sa-maroon peer m-0 block h-[40px] md:h-[56px]  md:w-[280px] w-[200px]  rounded-[20px]   bg-clip-padding px-3 md:py-2   leading-tight text-white text-[14px] md:text-[24px]"
@@ -436,10 +444,10 @@ function EditFaculty() {
                   Cancel
                 </button>
                 <button
-                  className="bg-sa-maroon md:text-base hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-70 text-white md:px-8 px-7 rounded-[9px] py-2 "
+                  className="bg-sa-maroon md:text-base hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-70 text-white min-w-28 rounded-[9px] py-2 "
                   onClick={handlePasswordUpdate}
                 >
-                  {passwordShowLoading ? <Spinner /> : <span>Save</span>}
+                  {passwordShowLoading ? <Spinner size="h-6 w-6"/> : <span>Save</span>}
                 </button>
               </div>
             </div>

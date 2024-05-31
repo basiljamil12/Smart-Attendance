@@ -14,7 +14,6 @@ class StudentValidateTokenManager {
           });
     
           if (response.status === 401) {
-       console.log(token);
 
             window.location.href = "/student/login";
             localStorage.removeItem("studentToken");

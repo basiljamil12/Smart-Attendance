@@ -16,7 +16,6 @@ class StudentDetailsManager {
         },
             
       });
-      console.log(response);
 
       if (response.status === 401) {
         

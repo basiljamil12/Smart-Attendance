@@ -233,7 +233,6 @@ function AssignCourse() {
     const [assignCourse, setassignCourse] = useState("");
   
     const openAssignCoursePopup = (id) => {
-        console.log("a",id);
         getAllFaculty();
         setassignCourseIdx(id);
         setassignCourse(true);
@@ -414,7 +413,8 @@ function AssignCourse() {
                                                      onClick={() => openPopup(course.courseID)}
                                                     
                                                     >
-                                                        {showLoading ? <Spinner /> : "Remove"}
+                                                      Remove
+                                                        {/* {showLoading ? <Spinner size="h-6 w-6"/> : "Remove"} */}
                                                     </button>
                                                 ) : (
                                                     <button
@@ -422,7 +422,8 @@ function AssignCourse() {
                                                     // onClick={() => handleRegister(course.courseID)}
                                                     onClick={() => openAssignCoursePopup(course.courseID)} 
                                                     >
-                                                        {showLoading ? <Spinner /> : "Assign Course"}
+                                                      Assign Course
+                                                        {/* {showLoading ? <Spinner size="h-6 w-6"/> : "Assign Course"} */}
                                                     </button>
                                                 )}
                                             </div>
@@ -467,10 +468,11 @@ function AssignCourse() {
                 >
                   Cancel
                 </button>
-                <button className="bg-[#d9534f] hover:scale-105 transition-all duration-300 ease-in-out  hover:opacity-70 text-white md:px-7 px-4 rounded-[9px] py-3 md:py-2 "
+                <button className="bg-[#d9534f] hover:scale-105 transition-all duration-300 ease-in-out min-w-28 hover:opacity-70 text-white  rounded-[9px] py-3 md:py-2 "
                  onClick={() => handleAssign(courseID,null)}>
                 
-                Remove
+                {assignLoading ? <Spinner size="h-6 w-6"/> : "Remove"}
+
                 </button>
               </div>
             </div>
@@ -525,13 +527,13 @@ function AssignCourse() {
                 </button>
              
                 <button
-    className={`bg-sa-maroon hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-70 text-white md:px-8 px-5 rounded-[9px] py-1 ${
+    className={`bg-sa-maroon hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-70 text-white min-w-28 rounded-[9px] py-1 ${
         !selectedFacultyName ? 'opacity-50 cursor-not-allowed' : '' // Disable button if no faculty is selected
     }`}
     onClick={() => handleAssign(assignCourseIdx, selectedFacultyName?.value)} // Pass selectedFacultyName.value as facultyName
     disabled={!selectedFacultyName} // Disable button if no faculty is selected
 >
-    {assignLoading ? <Spinner /> : 'Assign'}
+    {assignLoading ? <Spinner size="h-6 w-6"/> : 'Assign'}
 </button>
               </div>
             </div>

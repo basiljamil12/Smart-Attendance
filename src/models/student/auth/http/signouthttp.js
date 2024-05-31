@@ -13,7 +13,6 @@ class StudentSignoutManager {
         },
             
       });
-      console.log(response);
 
       if (response.status === 401) {
         

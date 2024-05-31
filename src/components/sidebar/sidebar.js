@@ -1,7 +1,7 @@
 import CloseIcon from "@mui/icons-material/Close";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate,useLocation } from "react-router";
 import SignoutManager from "../../models/admin/auth/https/signouthttp"; 
 import Books from "../../assets/images/course.png"
 import Faculty from "../../assets/images/teacherAdboard.png"
@@ -10,11 +10,16 @@ import Student from "../../assets/images/studentAdboard.png"
 import LogoutIcon from '@mui/icons-material/Logout';
 import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
 import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
+import Spinner from "../spinner/spinner";
 function Sidebar() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [open, setOpen] = useState(window.innerWidth >= 768);
   const signoutManager = new SignoutManager();
-
+  const [showLoading, setShowLoading] = useState(false);
+  const [toastMessages, setToastMessages] = useState(
+    location.state?.toastMessages || []
+  );
   useEffect(() => {
     const handleResize = () => {
       setOpen(window.innerWidth >= 768);
@@ -60,13 +65,33 @@ function Sidebar() {
     setIsSignout(true);
   };
   const handleSignout=async()=>{
-
+      setShowLoading(true);
+      try{
+        
       const response = await signoutManager.signout();
         if (response.success) {
-          navigate('/adboard/signin');
+          const updatedToastMessages = [
+            ...toastMessages,
+            {
+              type: "success",
+              title: "Success",
+              body: response.message,
+            },
+          ];
+          setToastMessages(updatedToastMessages);
+          navigate("/adboard/signin", {
+            state: { toastMessages: updatedToastMessages },
+          });
+          // navigate('/adboard/signin');
         } else {
           console.error("Invalid token", response);
-        }
+        } 
+      }catch(e){
+
+      }
+      finally{
+        setShowLoading(false);
+      }
 
   }
   return (
@@ -213,14 +238,15 @@ function Sidebar() {
               <div className="flex justify-end mt-6">
                 <button
                   onClick={closeSignOut}
-                  className="text-filter-heading transition-opacity hover:opacity-70 mr-4 border-2 border-gray-400 rounded-[9px] border-filter-heading py-1 px-6"
+                  className="text-filter-heading hover:opacity-80 hover:scale-105 transition-all duration-300 ease-in-out mr-4 border-2 border-gray-400 rounded-[9px] border-filter-heading py-1 px-6"
                 >
                   Cancel
                 </button>
-                <button className="bg-sa-maroon transition-opacity hover:opacity-70 text-white md:px-7 px-4 rounded-[9px] py-3 md:py-2 "
+                <button className="bg-sa-maroon hover:opacity-80 hover:scale-105 transition-all duration-300 ease-in-out text-white min-w-28 rounded-[9px] py-3 md:py-2 "
                 onClick={handleSignout}>
                 
-                Sign Out
+                {showLoading ? <Spinner size="h-6 w-6"/> :'Sign Out'}
+
                 </button>
               </div>
             </div>

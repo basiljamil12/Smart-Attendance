@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import FacultySignoutManager from "../../models/faculty/auth/http/signouthttp";
 import FacultyDetailsManager from "../../models/faculty/auth/http/getdetails";
-
+import Spinner from "../spinner/spinner";
 function FacultyNavbar() {
   const navigate = useNavigate();
   const facultySignoutManager = new FacultySignoutManager();
@@ -18,6 +18,8 @@ function FacultyNavbar() {
   const [leaveMenuOpen, setLeaveMenuOpen] = useState(false);
   const [courseMenuOpen, setCourseMenuOpen] = useState(false);
   const [HomeMenuOpen, setHomeMenuOpen] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
+
   const location = useLocation();
 
   useEffect(() => {
@@ -86,6 +88,8 @@ function FacultyNavbar() {
     setOpen(false);
   };
   const handleSignout = async () => {
+    setShowLoading(true);
+try{
     const response = await facultySignoutManager.signout();
     if (response.success) {
       const updatedToastMessages = [
@@ -110,6 +114,19 @@ function FacultyNavbar() {
         },
       ]);
     }
+  }catch(e){
+    setToastMessages([
+      ...toastMessages,
+      {
+        type: "invalid",
+        title: "Error",
+        body: e.message,
+      },
+    ]);
+  }
+  finally{
+    setShowLoading(false);
+  }
   };
   const toggleAccountMenu = () => {
     if (leaveMenuOpen == true) {
@@ -376,7 +393,7 @@ function FacultyNavbar() {
                   className="bg-sa-maroon transition-opacity hover:opacity-70 text-white md:px-7 px-4  rounded-[9px] md:py-2 py-3 "
                   onClick={handleSignout}
                 >
-                  Sign Out
+                   {showLoading ? <Spinner /> :'Sign Out'}
                 </button>
               </div>
             </div>

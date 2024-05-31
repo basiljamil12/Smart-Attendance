@@ -5,12 +5,13 @@ import { useNavigate } from "react-router-dom";
 import Toast from "../toast/toast";
 import ParentSignoutManager from "../../models/parent/auth/http/signouthttp";
 import { useLocation } from "react-router-dom";
-
+import Spinner from "../spinner/spinner";
 function ParentNavbar() {
   const parentSignoutManager = new ParentSignoutManager();
   const [open, setOpen] = useState(false);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const location = useLocation();
+  const [showLoading, setShowLoading] = useState(false);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -40,6 +41,9 @@ function ParentNavbar() {
     setIsSignout(true);
   };
   const handleSignout = async () => {
+    setShowLoading(true);
+
+    try{
     const response = await parentSignoutManager.signout();
     if (response.success) {
       const updatedToastMessages = [
@@ -64,6 +68,21 @@ function ParentNavbar() {
         },
       ]);
     }
+  }
+  catch(e){
+    setToastMessages([
+      ...toastMessages,
+      {
+        type: "invalid",
+        title: "Error",
+        body: e.message,
+      },
+    ]);
+  }
+  finally{
+    setShowLoading(false);
+  }
+
   };
   const handleHomeClick = () => {
     navigate("/parent/dashboard");
@@ -205,7 +224,7 @@ function ParentNavbar() {
                   className="bg-sa-maroon transition-opacity hover:opacity-70 text-white md:px-7 px-4  rounded-[9px] md:py-2 py-3 "
                   onClick={handleSignout}
                 >
-                  Sign Out
+                   {showLoading ? <Spinner /> :'Sign Out'}
                 </button>
               </div>
             </div>

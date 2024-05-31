@@ -18,7 +18,6 @@ function StudentDashboard() {
         const response = await attendanceManager.getByStudent();
         if (response.success) {
           setStudentData(response.data);
-          console.log(response.data);
         } else {
           setToastMessages([
             ...toastMessages,

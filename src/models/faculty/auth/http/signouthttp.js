@@ -15,7 +15,6 @@ class FacultySignoutManager {
         },
             
       });
-      console.log(response);
 
       if (response.status === 401) {
         

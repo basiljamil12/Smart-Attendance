@@ -5,15 +5,30 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import HttpManager from "../../models/admin/auth/https/signinhttp.js";
 import Toast from "../../components/toast/toast.js";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import Spinner from "../../components/spinner/spinner.js";
 function AdminLogin() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
-  const [toastMessages, setToastMessages] = useState([]);
-  const navigate = useNavigate();
+  const [toastMessages, setToastMessages] = useState(location.state?.toastMessages || []); // Set initial toastMessages from location state
+  useEffect(() => {
+    // Check if there are toast messages in the location state
+    if (location.state?.toastMessages) {
+      // Display the toast message
+      const toastMessage = location.state.toastMessages[0]; // Assuming there's only one toast message
+      setToastMessages([toastMessage]);
+
+      // Clear the location state after showing the toast message
+      setTimeout(() => {
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }, 0);
+    }
+  }, [location.state]);
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);

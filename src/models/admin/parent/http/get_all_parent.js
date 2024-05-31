@@ -22,8 +22,6 @@ class ParentManager {
       }
       if (response.ok) {
         const responseBody = await response.json();
-        console.log(responseBody);
-        console.log(new ListResponse(responseBody));
         return new ListResponse(responseBody);
       } else {
         const errorBody = await response.text();

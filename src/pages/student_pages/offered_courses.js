@@ -11,6 +11,7 @@ function OfferedCourses() {
   const courseManager = new CourseManager();
   const studentCourseManager = new StudentCourseManager();
   const [showLoading, setShowLoading] = useState(false);
+  const [showRegisterloading, setShowRegisterLoading] = useState(false);
   const location = useLocation(); 
 
   const [toastMessages, setToastMessages] = useState(location.state?.toastMessages || []); // Set initial toastMessages from location state
@@ -30,14 +31,13 @@ function OfferedCourses() {
     setCourseID(id);
     setIsPopupOpen(true);
   };
-  useEffect(() => {
+  // useEffect(() => {
     const getCoursesReq = async () => {
-      setShowLoading(true);
+      // setShowLoading(true);
       try {
         const response = await studentCourseManager.getStudentCourses();
         if (response.success) {
           setCoursesReq(response.data);
-          console.log(coursesReq);
           const initialRegistrationStatus = {};
           response.data.map(course => {
             if (course.status === 'pending') {
@@ -74,20 +74,20 @@ function OfferedCourses() {
           },
         ]);
       } finally {
-        setShowLoading(false);
+        // setShowLoading(false);
       }
     };
   
     // Call fetchData function when component mounts
-    getCoursesReq();
+    // getCoursesReq();
   
     // Add dependencies if needed (e.g., studentToken, confirmPassword)
-  }, []);
+  // }, []);
   
   
-  useEffect(() => {
+  // useEffect(() => {
     const fetchData = async () => {
-      setShowLoading(true);
+      // setShowLoading(true);
       try {
         const response = await courseManager.getAll("student");
         if (response.success) {
@@ -124,16 +124,40 @@ function OfferedCourses() {
           },
         ]);
       } finally {
-        setShowLoading(false);
       }
     };
   
     // Call fetchData function when component mounts
-    fetchData();
+    // fetchData();
   
     // Add dependencies if needed (e.g., studentToken, confirmPassword)
-  }, []);
-  
+  // }, []);
+  useEffect(() => {      
+    const fetchDataWrapper = async () => {
+        setShowLoading(true);
+        try{
+            await Promise.all([
+                fetchData(),
+                getCoursesReq(),
+            ]);
+        }
+        catch(e){
+            setToastMessages((prevMessages) => [
+                ...prevMessages,
+                {
+                  type: "invalid",
+                  title: "Error",
+                  body: e.message,
+                },
+              ]);
+        }
+        finally{
+            setShowLoading(false);
+
+        }
+    };
+    fetchDataWrapper();
+}, []);
   const coursesData = courses.map(course => ({
     courseID:course._id,
     courseCode: course.courseCode,
@@ -145,7 +169,7 @@ function OfferedCourses() {
 
 
   const handleRegister = async (courseId) => {
-    setShowLoading(true);
+    setShowRegisterLoading(true);
     try {
       const response = await studentCourseManager.createCourse(courseId, 'pending');
       if (response.success) {
@@ -183,7 +207,7 @@ function OfferedCourses() {
       ]);
     }
     finally{
-      setShowLoading(false);
+      setShowRegisterLoading(false);
     }
   };
 
@@ -298,7 +322,7 @@ function OfferedCourses() {
         className="bg-sa-maroon cursor-pointer  text-white inline-flex items-center gap-2 rounded-md px-6 py-2 md:text-base text-sm hover:opacity-90 hover:scale-105 transition-all duration-300 ease-in-out hover:text-gray-300 focus:relative"
         onClick={() => openPopup(course.courseID)}
       >
-        {showLoading ? <Spinner /> : 'Register'}
+        Register
       </button>
     )}
 
@@ -325,10 +349,10 @@ function OfferedCourses() {
                 >
                   Cancel
                 </button>
-                <button className="bg-sa-maroon hover:scale-105 transition-all duration-300 ease-in-out  hover:opacity-70 text-white md:px-7 px-4 rounded-[9px] py-3 md:py-2 "
+                <button className="bg-sa-maroon hover:scale-105 transition-all duration-300 ease-in-out  hover:opacity-70 text-white min-w-28 rounded-[9px] py-3 md:py-2 "
                  onClick={() => handleRegister(courseID)}>
                 
-                Register
+                {showRegisterloading ? <Spinner /> : 'Register'}
                 </button>
               </div>
             </div>

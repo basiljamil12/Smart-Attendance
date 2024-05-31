@@ -14,7 +14,6 @@ class ParentValidateTokenManager {
           });
     
           if (response.status === 401) {
-       console.log(token);
 
             window.location.href = "/parent/login";
             localStorage.removeItem("parentToken");

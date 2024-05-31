@@ -4,7 +4,6 @@ import { BaseResponse } from "../authmodels/facultymodel.js";
 class FacultyDetailsManager {
   async get() {
     const url = facultyApiConstants.GET_DETAILS;
-    console.log(url);
     const token = localStorage.getItem("facultyToken");
     try {
       const response = await fetch(url, {

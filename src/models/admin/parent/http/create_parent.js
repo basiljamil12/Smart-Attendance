@@ -11,7 +11,6 @@ class CreateParentManager {
             contactno: contactno,
             studentID: studentID,
         };
-        console.log(params);
         const token = localStorage.getItem("adminToken");
         try {
       

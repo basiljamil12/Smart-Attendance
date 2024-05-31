@@ -55,7 +55,6 @@ function ParentDashboard() {
         const response = await attendanceManager.getByStudent(fromParent);
         if (response.success) {
           setStudentData(response.data);
-          console.log(response.data);
         } else {
           setToastMessages([
             ...toastMessages,

@@ -24,7 +24,6 @@ function ChangePassword() {
   const parentToken = localStorage.getItem("parentToken");
   const studentToken = localStorage.getItem("studentToken");
   const facultyToken = localStorage.getItem("facultyToken");
-console.log(parentToken);
   // const location = useLocation();
   // const searchParams = new URLSearchParams(location.search);
   // const studentToken = searchParams.get("studentToken");

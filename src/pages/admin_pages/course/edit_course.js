@@ -36,6 +36,7 @@ function EditCourse() {
     setCredHours(e.target.value);
   };
   const [showLoading, setShowLoading] = useState(false);
+  const [showEditloading, setEditLoading] = useState(false);
 
   useEffect(() => {
     setShowLoading(true);
@@ -97,10 +98,8 @@ function EditCourse() {
       // If subject is empty or contains only whitespace
       return; // Prevent form submission
     }
-    if (
-      !courseCode.trim() ||
-      !/^([A-Za-z]{3})-([0-9]{3})$/.test(courseCode.trim())
-    ) {
+    if (!courseCode.trim() || !/^([A-Za-z]{3})-([0-9]{3})$/.test(courseCode.trim()) ) 
+      {
       setToastMessages([
         ...toastMessages,
         {
@@ -136,7 +135,7 @@ function EditCourse() {
       return; // Prevent form submission
     }
     try {
-      setShowLoading(true);
+      setEditLoading(true);
       const response = await editCourseManager.edit(
         id,
         courseName,
@@ -147,7 +146,6 @@ function EditCourse() {
 
       if (response.success) {
         const updatedToastMessages = [
-          ...toastMessages,
           {
             type: "success",
             title: "Success",
@@ -178,7 +176,7 @@ function EditCourse() {
         },
       ]);
     } finally {
-      setShowLoading(false); // Stop loading
+      setEditLoading(false); // Stop loading
     }
   };
 
@@ -197,6 +195,11 @@ function EditCourse() {
           }}
         />
       ))}
+       {showLoading && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <Spinner />
+        </div>
+      )}
       <div className="md:ml-14 ml-5  w-full mx-[6%] ">
         <p className="text-sa-maroon  text-[36px] mb-5 text-left md:mt-10 mt-20 font-bold">
           Edit Course
@@ -246,7 +249,7 @@ function EditCourse() {
             class=" hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px]  md:w-[250px] w-[220px]  rounded-[20px]   bg-clip-padding px-3 md:py-2   leading-tight text-white text-[20px] md:text-[24px]"
             onClick={handleEdit}
           >
-            {showLoading ? <Spinner /> : "Save"}
+            {showEditloading ? <Spinner /> : "Save"}
           </button>
         </div>
       </div>

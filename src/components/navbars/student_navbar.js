@@ -5,10 +5,11 @@ import { useNavigate } from "react-router-dom";
 import Toast from "../toast/toast";
 import { useLocation } from "react-router-dom";
 import StudentSignoutManager from "../../models/student/auth/http/signouthttp";
-
+import Spinner from "../spinner/spinner";
 function StudentNavbar() {
   const studentSignoutManager = new StudentSignoutManager();
   const location = useLocation();
+  const [showLoading, setShowLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -44,6 +45,8 @@ function StudentNavbar() {
     setIsSignout(true);
   };
   const handleSignout = async () => {
+    setShowLoading(true);
+    try{
     const response = await studentSignoutManager.signout();
     if (response.success) {
       const updatedToastMessages = [
@@ -68,6 +71,20 @@ function StudentNavbar() {
         },
       ]);
     }
+  }
+  catch(e){
+    setToastMessages([
+      ...toastMessages,
+      {
+        type: "invalid",
+        title: "Error",
+        body: e.message,
+      },
+    ]);
+  }
+  finally{
+    setShowLoading(false);
+  }
   };
   const handleLeaveClick = () => {
     navigate("/student/leave");
@@ -140,11 +157,7 @@ function StudentNavbar() {
     setAccountMenuOpen(false);
   };
 
-  const handleSignoutClick = () => {
-    // Handle click on Signout
-    // You can add your logic here
-    setAccountMenuOpen(false);
-  };
+  
 
   const handleStatusClick = () => {
     // You can add your logic here
@@ -425,7 +438,9 @@ function StudentNavbar() {
                   className="bg-sa-maroon transition-opacity hover:opacity-70 text-white md:px-7 px-4  rounded-[9px] md:py-2 py-3 "
                   onClick={handleSignout}
                 >
-                  Sign Out
+                {showLoading ? <Spinner /> :'Sign Out'}
+
+                 
                 </button>
               </div>
             </div>

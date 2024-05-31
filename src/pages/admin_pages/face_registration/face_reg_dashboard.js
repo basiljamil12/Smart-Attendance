@@ -15,6 +15,7 @@ function FacialRegAdboard() {
     const location = useLocation();
     const [uploadProgress, setUploadProgress] = useState(0);
     const [uploading, setUploading] = useState(false); // State for upload progress
+    const [removeShowloading, setRemoveShowLoading] = useState(false); // State for upload progress
 
     const [toastMessages, setToastMessages] = useState(
         location.state?.toastMessages || []
@@ -88,6 +89,7 @@ function FacialRegAdboard() {
     };
 
     const handleRemove = async () => {
+        setRemoveShowLoading(true);
         try {
 
             const response = await createFaceIdManager.delete(studentID);
@@ -124,6 +126,10 @@ function FacialRegAdboard() {
                     body: error,
                 },
             ]);
+        }
+        finally{
+        setRemoveShowLoading(false);
+
         }
     }
     function capitalizeFirstLetter(string) {
@@ -224,7 +230,7 @@ function FacialRegAdboard() {
 
         try {
             setUploading(true);
-            response = await createFaceIdManager.createFaceId(studentId, videoFile);
+            response = await createFaceIdManager.create(studentId, videoFile);
             if (response.success) {
                 responseReceived = true;
                 getAllStudent();
@@ -329,199 +335,202 @@ function FacialRegAdboard() {
                 />
             ))}
 
-            {showLoading ? (
-                <div className="flex justify-center items-center w-full h-screen">
+            {showLoading && (
+                <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <Spinner />
                 </div>
-            ) : (
-                <div className="w-full">
-                    <div className="md:mt-8 md:ml-8 mt-16 md:flex md:items-start  md:justify-start">
-                        <span className="text-sa-maroon  font-bold text-2xl md:text-3xl">
-                            Face Registration Dashboard
+            )}
+            <div className="w-full">
+                <div className="md:mt-8 md:ml-8 mt-16 md:flex md:items-start  md:justify-start">
+                    <span className="text-sa-maroon  font-bold text-2xl md:text-3xl">
+                        Face Registration Dashboard
+                    </span>
+                </div>
+                <div className="md:mt-14 mt-10">
+                    <div className="flex justify-between xl:mx-16 mx-10">
+
+                        <span className="text-sa-maroon font-bold text-xl md:mt-0 mt-2 md:text-2xl">
+                            Student List
                         </span>
+
                     </div>
-                    <div className="md:mt-14 mt-10">
-                        <div className="flex justify-between xl:mx-16 mx-10">
+                    <div className="mb-20 overflow-x-auto mt-10 mx-10 lg:ml-[6%] lg:w-[90%] lg:shadow-xl rounded-2xl">
+                        <table className="table-fixed min-w-full bg-sa-pink w-[800px] lg:w-[50vw] rounded-2xl">
+                            <thead>
+                                <tr className="border-b border-sa-grey">
+                                    <th className="p-0 py-5  border-r border-sa-grey w-[100px]">
+                                        #
+                                    </th>
+                                    <th className="p-0 py-5  border-r border-sa-grey">
+                                        Student Name
+                                    </th>
+                                    <th className="p-0 py-5  border-r border-sa-grey">Email</th>
 
-                            <span className="text-sa-maroon font-bold text-xl md:mt-0 mt-2 md:text-2xl">
-                                Student List
-                            </span>
+                                    <th className="p-2 py-5 border-r border-sa-grey">Actions</th>
+                                    <th className="p-2 py-5  border-sa-grey">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {studentData.map((student, index) => (
+                                    <tr key={index} className="border-b border-sa-grey">
+                                        <td className="p-0 py-5  border-r border-sa-grey w-[100px]">
+                                            {index + 1}
+                                        </td>
+                                        <td className="p-0 py-5  border-r border-sa-grey">
+                                            <span
+                                                className="block w-full h-full overflow-hidden overflow-ellipsis"
+                                                style={{ wordWrap: "break-word" }}
+                                            >
+                                                {student.name}
+                                            </span>
+                                        </td>
+                                        <td className="p-0 py-5  border-r border-sa-grey">
+                                            <span
+                                                className="block mx-2 h-full overflow-hidden overflow-ellipsis"
+                                                style={{ wordWrap: "break-word" }}
+                                            >
+                                                {student.email}
+                                            </span>
+                                        </td>
 
-                        </div>
-                        <div className="mb-20 overflow-x-auto mt-10 mx-10 lg:ml-[6%] lg:w-[90%] lg:shadow-xl rounded-2xl">
-                            <table className="table-fixed min-w-full bg-sa-pink w-[800px] lg:w-[50vw] rounded-2xl">
-                                <thead>
-                                    <tr className="border-b border-sa-grey">
-                                        <th className="p-0 py-5  border-r border-sa-grey w-[100px]">
-                                            #
-                                        </th>
-                                        <th className="p-0 py-5  border-r border-sa-grey">
-                                            Student Name
-                                        </th>
-                                        <th className="p-0 py-5  border-r border-sa-grey">Email</th>
+                                        <td className="p-2 py-5 border-r  border-sa-grey">
 
-                                        <th className="p-2 py-5 border-r border-sa-grey">Actions</th>
-                                        <th className="p-2 py-5  border-sa-grey">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {studentData.map((student, index) => (
-                                        <tr key={index} className="border-b border-sa-grey">
-                                            <td className="p-0 py-5  border-r border-sa-grey w-[100px]">
-                                                {index + 1}
-                                            </td>
-                                            <td className="p-0 py-5  border-r border-sa-grey">
-                                                <span
-                                                    className="block w-full h-full overflow-hidden overflow-ellipsis"
-                                                    style={{ wordWrap: "break-word" }}
-                                                >
-                                                    {student.name}
-                                                </span>
-                                            </td>
-                                            <td className="p-0 py-5  border-r border-sa-grey">
-                                                <span
-                                                    className="block mx-2 h-full overflow-hidden overflow-ellipsis"
-                                                    style={{ wordWrap: "break-word" }}
-                                                >
-                                                    {student.email}
-                                                </span>
-                                            </td>
-
-                                            <td className="p-2 py-5 border-r  border-sa-grey">
-
-                                                <div className="xl:inline-flex items-center justify-center w-full h-full overflow-hidden overflow-ellipsis rounded-lg border bg-sa-pink p-1" style={{ wordWrap: "break-word" }}>
-                                                    {student && student.registered_face === true ? (
-                                                        <button
-                                                            className="px-[15%] h-full xl:mt-0 items-center rounded-md bg-[#d9534f] hover:scale-105 transition-all duration-300 ease-in-out py-2 text-sm lg:text-base text-white hover:opacity-90 hover:text-gray-300 shadow-sm focus:relative"
-                                                            onClick={() => openPopup(student._id)}
-                                                        >
-                                                            {showLoading ? <Spinner /> : 'Remove'}
-                                                        </button>
-                                                    ) : (
-                                                        <button
-                                                            className=" h-full bg-[#198754]  hover:scale-105 transition-all duration-300 ease-in-out text-white inline-flex items-center gap-2 rounded-md px-[15%] py-2 lg:text-base text-sm hover:opacity-90 hover:text-gray-300 focus:relative"
-                                                            //   onClick={() => handleStatusUpdate(faculty.courseReqId, 'accepted')}
-                                                            onClick={() => openIsUpload(student._id)}
-
-                                                        >
-                                                            {showLoading ? <Spinner /> : 'Register'}
-                                                        </button>
-                                                    )}
-                                                </div>
-                                                {isUpload && (
-                                                    <div
-                                                        className=" fixed inset-0 flex items-center justify-center z-50"
-                                                        onClick={closeIsUpload}
+                                            <div className="xl:inline-flex items-center justify-center w-full h-full overflow-hidden overflow-ellipsis rounded-lg border bg-sa-pink p-1" style={{ wordWrap: "break-word" }}>
+                                                {student && student.registered_face === true ? (
+                                                    <button
+                                                        className="px-[15%] h-full xl:mt-0 items-center rounded-md bg-[#d9534f] hover:scale-105 transition-all duration-300 ease-in-out py-2 text-sm lg:text-base text-white hover:opacity-90 hover:text-gray-300 shadow-sm focus:relative"
+                                                        onClick={() => openPopup(student._id)}
                                                     >
-                                                        {toastMessages.map((toast, index) => (
-                                                            <Toast
-                                                                className="mb-0"
-                                                                key={index}
-                                                                toasts={[toast]}
-                                                                onClose={() => {
-                                                                    const updatedToasts = [...toastMessages];
-                                                                    updatedToasts.splice(index, 1);
-                                                                    setToastMessages(updatedToasts);
-                                                                }}
-                                                            />
-                                                        ))}
-                                                        <div className=" bg-black opacity-50 absolute inset-0"></div>
-                                                        <div
-                                                            className=" bg-white rounded-3xl md:w-[40rem] w-80  p-8 px-12 relative z-10"
-                                                            onClick={(e) => e.stopPropagation()}
-                                                        >
-                                                            <h2 className="text-sa-maroon text-xl md:text-2xl  font-semibold md:w-auto w-60 text-left mb-4">
-                                                                Face Registration
-                                                            </h2>
-                                                            <p className="text-black font-bold mb-4 text-filter-heading md:w-auto w-60 text-left">
-                                                                Upload video for face registeration:
-                                                            </p>
-                                                            <div class="relative mb-6 ">
-                                                                <input
-                                                                    type="file"
-                                                                    accept="video/*"
-                                                                    className="shadow-xl cursor-pointer focus:outline-none focus:ring-0 focus:border-clue-purchase peer m-0 block h-[60px] md:h-[60px] md:mr-44 md:w-[102%] w-[245px] rounded-[14px] border-[1px] border-solid border-black bg-transparent bg-clip-padding px-3 py-4 text-base font-normal leading-tight text-black"
-                                                                    id="videoUpload"
-                                                                    onChange={handleVideoUpload}
-                                                                />
+                                                        Remove
+                                                        {/* {showLoading ? <Spinner /> : 'Remove'} */}
+                                                    </button>
+                                                ) : (
+                                                    <button
+                                                        className=" h-full bg-[#198754]  hover:scale-105 transition-all duration-300 ease-in-out text-white inline-flex items-center gap-2 rounded-md px-[15%] py-2 lg:text-base text-sm hover:opacity-90 hover:text-gray-300 focus:relative"
+                                                        //   onClick={() => handleStatusUpdate(faculty.courseReqId, 'accepted')}
+                                                        onClick={() => openIsUpload(student._id)}
 
-                                                            </div>
-                                                            <div className="flex justify-end mt-6">
-                                                                <button
-                                                                    onClick={closeIsUpload}
-                                                                    className="text-filter-heading md:text-base hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-70 mr-4 border-2 border-gray-400 rounded-[9px] border-filter-heading py-2 px-4 md:px-4"
-                                                                >
-                                                                    Cancel
-                                                                </button>
-                                                                <button
-                                                                    className="bg-sa-maroon md:text-base hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-70 text-white md:px-8 px-7 rounded-[9px] py-2 "
-                                                                    onClick={uploadVideo}
-                                                                >
-                                                                    {uploadShowLoading ? <Spinner /> : <span>Upload</span>}
-                                                                </button>
-                                                            </div>
+                                                    >
+                                                        Register
+                                                        {/* {showLoading ? <Spinner /> : 'Register'} */}
+                                                    </button>
+                                                )}
+                                            </div>
+                                            {isUpload && (
+                                                <div
+                                                    className=" fixed inset-0 flex items-center justify-center z-50"
+                                                    onClick={closeIsUpload}
+                                                >
+                                                    {toastMessages.map((toast, index) => (
+                                                        <Toast
+                                                            className="mb-0"
+                                                            key={index}
+                                                            toasts={[toast]}
+                                                            onClose={() => {
+                                                                const updatedToasts = [...toastMessages];
+                                                                updatedToasts.splice(index, 1);
+                                                                setToastMessages(updatedToasts);
+                                                            }}
+                                                        />
+                                                    ))}
+                                                    <div className=" bg-black opacity-50 absolute inset-0"></div>
+                                                    <div
+                                                        className=" bg-white rounded-3xl md:w-[40rem] w-80  p-8 px-12 relative z-10"
+                                                        onClick={(e) => e.stopPropagation()}
+                                                    >
+                                                        <h2 className="text-sa-maroon text-xl md:text-2xl  font-semibold md:w-auto w-60 text-left mb-4">
+                                                            Face Registration
+                                                        </h2>
+                                                        <p className="text-black font-bold mb-4 text-filter-heading md:w-auto w-60 text-left">
+                                                            Upload video for face registeration:
+                                                        </p>
+                                                        <div class="relative mb-6 ">
+                                                            <input
+                                                                type="file"
+                                                                accept="video/*"
+                                                                className="shadow-xl cursor-pointer focus:outline-none focus:ring-0 focus:border-clue-purchase peer m-0 block h-[60px] md:h-[60px] md:mr-44 md:w-[102%] w-[245px] rounded-[14px] border-[1px] border-solid border-black bg-transparent bg-clip-padding px-3 py-4 text-base font-normal leading-tight text-black"
+                                                                id="videoUpload"
+                                                                onChange={handleVideoUpload}
+                                                            />
+
+                                                        </div>
+                                                        <div className="flex justify-end mt-6">
+                                                            <button
+                                                                onClick={closeIsUpload}
+                                                                className="text-filter-heading md:text-base hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-70 mr-4 border-2 border-gray-400 rounded-[9px] border-filter-heading py-2 px-4 md:px-4"
+                                                            >
+                                                                Cancel
+                                                            </button>
+                                                            <button
+                                                                className="bg-sa-maroon md:text-base hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-70 text-white md:px-8 px-7 rounded-[9px] py-2 "
+                                                                onClick={uploadVideo}
+                                                            >
+                                                                {uploadShowLoading ? <Spinner /> : <span>Upload</span>}
+                                                            </button>
                                                         </div>
                                                     </div>
-                                                )}
-
-                                            </td>
-                                            <td className="p-0 py-5 border-sa-grey">
-                                                <span
-                                                    className={`block text-base w-full h-full overflow-hidden overflow-ellipsis font-semibold ${student.registered_face === false ? 'text-red-600' : 'text-green-600'
-                                                        }`}
-                                                    style={{ wordWrap: "break-word" }}
-                                                >
-                                                    {student.registered_face === false ? 'Unregistered' : 'Registered'}
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                    {isPopupOpen && (
-                                        <div
-                                            className=" fixed inset-0 flex items-center justify-center z-50"
-                                            onClick={closePopup}
-                                        >
-                                            <div className=" bg-black opacity-50 absolute inset-0"></div>
-                                            <div
-                                                className=" bg-white rounded-3xl md:w-auto w-80  p-8 px-12 relative z-10"
-                                                onClick={(e) => e.stopPropagation()}
-                                            >
-                                                <h2 className="text-black font-bold text-xl md:w-auto w-60 text-left mb-4">
-                                                    Confirm
-                                                </h2>
-                                                <p className="text-black text-filter-heading md:w-auto w-60 text-left">
-                                                    Are you sure you want to remove facial registeration of this student?
-                                                </p>
-                                                <div className="flex justify-end mt-6">
-                                                    <button
-                                                        onClick={closePopup}
-                                                        className="text-filter-heading hover:scale-105 transition-all duration-300 ease-in-out   hover:opacity-70 mr-4 border-2 border-gray-400 rounded-[9px] border-filter-heading py-1 px-6"
-                                                    >
-                                                        Cancel
-                                                    </button>
-                                                    <button className="bg-[#d9534f]  hover:scale-105 transition-all duration-300 ease-in-out  hover:opacity-70 text-white md:px-7 px-4 rounded-[9px] py-3 md:py-2 "
-                                                        onClick={() => handleRemove()}
-                                                    >
-
-                                                        Remove
-                                                    </button>
                                                 </div>
+                                            )}
+
+                                        </td>
+                                        <td className="p-0 py-5 border-sa-grey">
+                                            <span
+                                                className={`block text-base w-full h-full overflow-hidden overflow-ellipsis font-semibold ${student.registered_face === false ? 'text-red-600' : 'text-green-600'
+                                                    }`}
+                                                style={{ wordWrap: "break-word" }}
+                                            >
+                                                {student.registered_face === false ? 'Unregistered' : 'Registered'}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                ))}
+                                {isPopupOpen && (
+                                    <div
+                                        className=" fixed inset-0 flex items-center justify-center z-50"
+                                        onClick={closePopup}
+                                    >
+                                        <div className=" bg-black opacity-50 absolute inset-0"></div>
+                                        <div
+                                            className=" bg-white rounded-3xl md:w-auto w-80  p-8 px-12 relative z-10"
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            <h2 className="text-black font-bold text-xl md:w-auto w-60 text-left mb-4">
+                                                Confirm
+                                            </h2>
+                                            <p className="text-black text-filter-heading md:w-auto w-60 text-left">
+                                                Are you sure you want to remove facial registeration of this student?
+                                            </p>
+                                            <div className="flex justify-end mt-6">
+                                                <button
+                                                    onClick={closePopup}
+                                                    className="text-filter-heading hover:scale-105 transition-all duration-300 ease-in-out   hover:opacity-70 mr-4 border-2 border-gray-400 rounded-[9px] border-filter-heading py-1 px-6"
+                                                >
+                                                    Cancel
+                                                </button>
+                                                <button className="bg-[#d9534f]  hover:scale-105 transition-all duration-300 ease-in-out  hover:opacity-70 text-white min-w-28 rounded-[9px] py-3 md:py-2 "
+                                                    onClick={() => handleRemove()}
+                                                >
+                                                        {removeShowloading ? <Spinner size="h-6 w-6"/> : 'Remove'}
+
+                                                    
+                                                </button>
                                             </div>
                                         </div>
-                                    )}
-                                    <tr className="border-b-0">
-                                        <td className="md:py-16 py-16 border-r border-sa-grey w-[100px]"></td>
-                                        <td className="md:py-16 py-16 border-r border-sa-grey"></td>
-                                        <td className="md:py-16 py-16 border-r border-sa-grey"></td>
-                                        <td className="md:py-16 py-16 border-r border-sa-grey"></td>
-                                        <td className="md:py-16 py-16  border-sa-grey"></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                                    </div>
+                                )}
+                                <tr className="border-b-0">
+                                    <td className="md:py-16 py-16 border-r border-sa-grey w-[100px]"></td>
+                                    <td className="md:py-16 py-16 border-r border-sa-grey"></td>
+                                    <td className="md:py-16 py-16 border-r border-sa-grey"></td>
+                                    <td className="md:py-16 py-16 border-r border-sa-grey"></td>
+                                    <td className="md:py-16 py-16  border-sa-grey"></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            )}
+            </div>
+
             {uploading && (
                 <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white p-4 w-[20%] rounded-lg">

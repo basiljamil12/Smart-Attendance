@@ -275,7 +275,8 @@ function CourseApproval() {
         className=" lg:w-[55%] w-[88px]    h-full bg-[#198754] xl:ml-2 text-white  items-center gap-2 rounded-md py-2 lg:text-base text-sm hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300 focus:relative"
         onClick={() => openPopup(faculty.courseReqId, 'accepted')}
       >
-        {showLoading ? <Spinner /> : 'Approve'}
+        Approve
+        {/* {showLoading ? <Spinner /> : 'Approve'} */}
       </button>
     ) : (
       <>
@@ -284,7 +285,8 @@ function CourseApproval() {
             className="  lg:w-[55%] w-[88px] h-full xl:mt-0 items-center rounded-md bg-orange-500 hover:scale-105 transition-all duration-300 ease-in-out  py-2.5 text-sm lg:text-base text-white hover:opacity-90 hover:text-gray-300 shadow-sm focus:relative"
             onClick={() => openPopup(faculty.courseReqId, 'removed')}
           >
-            {showLoading ? <Spinner /> : 'Remove'}
+            Remove
+            {/* {showLoading ? <Spinner /> : 'Remove'} */}
           </button>
         ) : (
           <>
@@ -292,7 +294,8 @@ function CourseApproval() {
               className=" xl:w-[6rem] lg:w-[6rem]    h-full bg-[#198754] xl:ml-2 hover:scale-105 transition-all duration-300 ease-in-out text-white inline-flex items-center gap-2 rounded-md px-4 py-2 lg:text-base text-sm  hover:opacity-90 hover:text-gray-300 focus:relative"
               onClick={() => openPopup(faculty.courseReqId, 'accepted')}
             >
-              {showLoading ? <Spinner /> : 'Approve'}
+              Approve
+              {/* {showLoading ? <Spinner /> : 'Approve'} */}
             </button>
             <div className="xl:border-l border-[1px] h-[30px] xl:border-solid xl:mx-3 xl:border-gray-300 hidden xl:block"></div>
             {/* <div className="xl:border-l xl:border-solid xl:mx-3 xl:border-sa-grey hidden xl:block"></div> */}
@@ -302,7 +305,8 @@ function CourseApproval() {
               onClick={() => openPopup(faculty.courseReqId, 'rejected')}
               style={{ wordWrap: "break-word" }}
             >
-              {showLoading ? <Spinner /> : 'Reject'}
+              Reject
+              {/* {showLoading ? <Spinner /> : 'Reject'} */}
             </button>
           </>
         )}
@@ -366,20 +370,22 @@ function CourseApproval() {
                   Cancel
                 </button>
                 {approveStatus && (
-  <button className="bg-green-700 hover:scale-105 transition-all duration-300 ease-in-out  hover:opacity-70 text-white md:px-7 px-4 rounded-[9px] py-3 md:py-2" onClick={() => handleStatusUpdate(courseReqID, "accepted")}>
-    Approve
+  <button className="bg-green-700 hover:scale-105 transition-all duration-300 ease-in-out min-w-28 hover:opacity-70 text-white  rounded-[9px] py-3 md:py-2" onClick={() => handleStatusUpdate(courseReqID, "accepted")}>
+          {showLoading ? <Spinner size="h-6 w-6"/> : 'Approve'}
   </button>
 )}
 
 {rejectStatus && (
-  <button className="bg-red-500 hover:scale-105 transition-all duration-300 ease-in-out  hover:opacity-70 text-white md:px-7 px-4 rounded-[9px] py-3 md:py-2" onClick={() => handleStatusUpdate(courseReqID, "rejected")}>
-    Reject
+  <button className="bg-red-500 hover:scale-105 transition-all duration-300 ease-in-out  hover:opacity-70 text-white min-w-28 rounded-[9px] py-3 md:py-2" onClick={() => handleStatusUpdate(courseReqID, "rejected")}>
+                 {showLoading ? <Spinner size="h-6 w-6"/> : 'Reject'}
+
   </button>
 )}
 
 {removeStatus && (
-  <button className="bg-orange-600 hover:scale-105 transition-all duration-300 ease-in-out  hover:opacity-70 text-white md:px-7 px-4 rounded-[9px] py-3 md:py-2" onClick={() => handleStatusUpdate(courseReqID, "removed")}>
-    Remove
+  <button className="bg-orange-600 hover:scale-105 transition-all duration-300 ease-in-out  hover:opacity-70 text-white min-w-28 rounded-[9px] py-3 md:py-2" onClick={() => handleStatusUpdate(courseReqID, "removed")}>
+                {showLoading ? <Spinner size="h-6 w-6"/> : 'Remove'}
+
   </button>
 )}
               </div>

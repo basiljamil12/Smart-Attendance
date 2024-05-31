@@ -7,7 +7,6 @@ import attendanceApiConstants from "../../../constants/attendanceconstants.js";
 
 class CreateAttendanceManager {
   async create(courseId,attendance_hours,topics,attendance) {
-    console.log("Attendance array:", attendance); 
     const url = attendanceApiConstants.CREATE_ATTENDANCE;
     const token = localStorage.getItem("facultyToken");
     const requestBody = {

@@ -394,25 +394,28 @@ function FacultyLeaveDashboard() {
               <div className="mt-10 w-full flex-col md:flex-row md:justify-center">
                 {leaveDetails.status != "accepted" && (
                   <button
-                    class="bg-sa-approve text-white items-center md:w-40 w-60 h-12 rounded-3xl md:mx-1 md:px-4 py-2 text-base  hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300  focus:relative"
+                    class="bg-sa-approve text-white items-center  md:w-40 w-60 h-12 rounded-3xl md:mx-1 min-w-28  text-base  hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300 "
                     onClick={() => handleUpdate("accepted")}
+                    
                   >
-                    {acceptLoading ? <Spinner /> : "Approve"}
+                    {acceptLoading ? <Spinner size="h-[12px] w-[12px]"/> : "Approve"}
                   </button>
                 )}
-                <br className="md:hidden inline"></br>
-                {leaveDetails.status != "rejected" && (
-                  <button
-                    class="bg-sa-reject text-white md:w-40 w-60 h-12 items-center gap-2 rounded-3xl  md:mt-0 mt-3 md:mx-1 md:px-4 py-2 text-base  hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300  focus:relative"
-                    onClick={() => handleUpdate("rejected")}
-                  >
-                    {rejectLoading ? <Spinner /> : "Reject"}
-                  </button>
-                )}
-
+               {leaveDetails.status != "rejected" && (
+  <>
+    <br className="md:hidden inline" />
+    <button
+      className="bg-sa-reject text-white md:w-40 w-60 h-12 items-center rounded-3xl md:mt-0 mt-3 md:mx-1 min-w-28  text-base hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300"
+      onClick={() => handleUpdate("rejected")}
+    >
+      {rejectLoading ? <Spinner size="h-[12px] w-[12px]" /> : "Reject"}
+    </button>
+  </>
+)}
+                
                 <br className="md:hidden inline"></br>
                 <button
-                  class="bg-sa-close text-white md:w-40 w-60 h-12 items-center gap-2 rounded-3xl  md:mt-0 mt-3 mx-1 md:mx-1 md:px-4 py-2 text-base  hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300  focus:relative"
+                  class="bg-sa-close text-white md:w-40 w-60 py-3 items-center gap-2 rounded-3xl  md:mt-0 mt-3 mx-1 md:mx-1 min-w-28  text-base  hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 hover:text-gray-300  "
                   onClick={closeDetails}
                 >
                   Close

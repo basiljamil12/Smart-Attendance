@@ -32,7 +32,6 @@ class CreateLeaveManager {
       }
       if (response.ok) {
         const responseBody = await response.json();
-        console.log(responseBody);
         return new BaseResponse(responseBody);
       } else {
         const errorBody = await response.text();

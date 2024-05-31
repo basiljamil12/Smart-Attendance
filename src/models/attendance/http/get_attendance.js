@@ -49,7 +49,6 @@ class AttendanceManager {
       url = attendanceApiConstants.GET_ATTENDANCE_BY_STUDENT;
 
     }
-    console.log(url);
     let token;
     if (fromParent) {
       token = localStorage.getItem("parentToken");
