@@ -20,7 +20,6 @@ import AdminLogin from "../pages/admin_pages/admin_login";
 import ApplyLeave from "../pages/student_pages/apply_leave";
 import CreateCourse from "../pages/admin_pages/course/create_course";
 import ResetPassword from "../pages/reset_pw";
-import AdminDashboard from "../pages/admin_pages/admin_dashboard";
 import CreateParent from "../pages/admin_pages/parent/create_parent";
 import FacultyAdboard from "../pages/admin_pages/faculty/admin_faculty_board";
 import CreateFaculty from "../pages/admin_pages/faculty/create_faculty";
@@ -153,7 +152,6 @@ function Layout() {
             path="/parent/account/change-password"
             element={<ChangePasswordRoute />}
           />
-          <Route path="/adboard/dashboard" element={<AdminDashboard />} />
           <Route path="/adboard/faculty" element={<FacultyAdboard />} />
           <Route path="/adboard/student" element={<StudentAdboard />} />
           <Route path="/adboard/parent" element={<ParentAdboard />} />

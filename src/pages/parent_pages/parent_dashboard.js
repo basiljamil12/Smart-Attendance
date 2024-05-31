@@ -13,14 +13,16 @@ function ParentDashboard() {
   const parentDetailsManager = new ParentDetailsManager();
   const [parentData, setParentData] = useState(null);
   const [studentData, setStudentData] = useState(null);
+  const [studentName, setStudentName] = useState(null);
 
-  useEffect(() => {
+  // useEffect(() => {
     const fetchData = async () => {
-      setShowLoading(true);
+      // setShowLoading(true);
       try {
         const response = await parentDetailsManager.get();
         if (response.success) {
           setParentData(response.data);
+          setStudentName(response.data.studentID.name);
         } else {
           setToastMessages([
             ...toastMessages,
@@ -41,15 +43,15 @@ function ParentDashboard() {
           },
         ]);
       } finally {
-        setShowLoading(false);
+        // setShowLoading(false);
       }
     };
 
-    fetchData();
-  }, []);
-  useEffect(() => {
-    const fetchData = async () => {
-      setShowLoading(true);
+    // fetchData();
+  // }, []);
+  // useEffect(() => {
+    const fetchDataByStudent = async () => {
+      // setShowLoading(true);
       try {
         const fromParent=true;
         const response = await attendanceManager.getByStudent(fromParent);
@@ -75,12 +77,33 @@ function ParentDashboard() {
           },
         ]);
       } finally {
-        setShowLoading(false);
+        // setShowLoading(false);
       }
     };
 
-    fetchData();
-  }, []);
+    // fetchData();
+  // }, []);
+  useEffect(() => {
+    const fetchDataWrapper = async () => {
+        setShowLoading(true);
+        try {
+            await Promise.all([fetchData(), fetchDataByStudent()]);
+        } catch (e) {
+            setToastMessages((prevMessages) => [
+                ...prevMessages,
+                {
+                    type: "invalid",
+                    title: "Error",
+                    body: e.message,
+                },
+            ]);
+        } finally {
+            setShowLoading(false);
+        }
+    };
+
+    fetchDataWrapper();
+}, []);
 
   const AttendanceData = studentData ? studentData.map(data => ({
     courseID: data.courseId._id,
@@ -103,13 +126,20 @@ function ParentDashboard() {
   };
   
   const navigate = useNavigate();
-
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
  
   return (
     <div className="flex-col">
       <div>
         <ParentNavbar />
       </div>
+      {showLoading && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <Spinner />
+        </div>
+      )}
       {toastMessages.map((toast, index) => (
         <Toast
           className="mb-0"
@@ -137,6 +167,7 @@ function ParentDashboard() {
             <span
               className="text-sa-maroon font-bold text-xl md:text-2xl pt-0.5 mt-3"
             >
+              {studentName ? capitalizeFirstLetter(studentName) : ""}
               {/* {parentData.map((data, index) => (
                 <span key={index}>{data.StdName}</span>
               ))} */}
@@ -185,7 +216,7 @@ function ParentDashboard() {
                         className="block w-full h-full overflow-hidden overflow-ellipsis"
                         style={{ wordWrap: "break-word" }}
                       >
-                        {faculty.courseTeacher}
+                        {faculty.courseTeacher ? faculty.courseTeacher : "N/A"}
                       </span>
                     </td>
                     <td className="p-0 py-5  border-r border-sa-grey">

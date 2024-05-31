@@ -68,7 +68,9 @@ function ParentAccountDetails() {
   //   },
   // ];
 
- 
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
   return (
     <div className="flex-col">
@@ -104,7 +106,7 @@ function ParentAccountDetails() {
             </span>
             <span className="text-sa-black font-bold ml-2 md:text-xl">
               {data.map((data, index) => (
-                <span key={index}>{data.Name}</span>
+                <span key={index}>{capitalizeFirstLetter(data.Name)}</span>
               ))}
             </span>
           </div>
@@ -134,7 +136,7 @@ function ParentAccountDetails() {
             </span>
             <span className="text-sa-black font-bold ml-2 md:text-xl">
               {data.map((data, index) => (
-                <span key={index}>{data.StdName}</span>
+                <span key={index}>{capitalizeFirstLetter(data.StdName)}</span>
               ))}
             </span>
           </div>

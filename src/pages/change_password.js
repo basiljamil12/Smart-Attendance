@@ -177,6 +177,7 @@ function ChangePassword() {
       ]);
       return; // Prevent form submission
     }
+    
 
     if (pathname.includes('/student/') ) {
       setShowLoading(true);
@@ -389,7 +390,7 @@ function ChangePassword() {
           id="password2"
           value={confirmPassword}
           onChange={handleConfirmPasswordChange}
-          placeholder="Confirm Password"
+          placeholder="New Password"
         />
         {showPassword2 ? (
           <VisibilityOutlinedIcon
