@@ -28,6 +28,9 @@ function MarkAttendance() {
     const [selectedHour, setSelectedHour] = useState(null);
     const [topic, setTopic] = useState("");
     const [attachment, setAttachment] = useState("");
+    const [detectedStudentsno, setDetectedStudentsNo] = useState("");
+    const [recognizeStudentsno, setRecognizeStudentsNo] = useState("");
+    const [unrecognizeStudentsno, setUnrecognizeStudentsNo] = useState("");
     const [selectedImage, setSelectedImage] = useState(null);
 
 
@@ -109,91 +112,91 @@ function MarkAttendance() {
 
     //     fetchData();
     // }, []);
-     const firstFetchData = async () => {
-            if (!forId) {
-                navigate("/faculty/dashboard");
-                return;
+    const firstFetchData = async () => {
+        if (!forId) {
+            navigate("/faculty/dashboard");
+            return;
+        }
+
+        try {
+            const response = await attendanceManager.getByDate(forId);
+            if (response.success) {
+                setisAttendanceMarked(true);
+                setSelectedHour(response.data.attendance_hours);
+                setTopic(response.data.topics);
+                setInitialAttendanceData(response.data.attendance);
+
+                // Set initial state for radio buttons
+                const initialRadioState = response.data.attendance.map(({ status }) => status === 'present' ? 0 : 1);
+                setSelectedRadio(initialRadioState);
+            } else {
+                setisAttendanceMarked(false);
             }
+        } catch (error) {
+            setToastMessages(prev => [
+                ...prev,
+                {
+                    type: "invalid",
+                    title: "Error",
+                    body: error.message,
+                },
+            ]);
+        }
+    };
 
-            try {
-                const response = await attendanceManager.getByDate(forId);
-                if (response.success) {
-                    setisAttendanceMarked(true);
-                    setSelectedHour(response.data.attendance_hours);
-                    setTopic(response.data.topics);
-                    setInitialAttendanceData(response.data.attendance);
+    const fetchData = async () => {
+        if (!forId) {
+            navigate("/faculty/dashboard");
+            return;
+        }
 
-                    // Set initial state for radio buttons
-                    const initialRadioState = response.data.attendance.map(({ status }) => status === 'present' ? 0 : 1);
-                    setSelectedRadio(initialRadioState);
-                } else {
-                    setisAttendanceMarked(false);
-                }
-            } catch (error) {
+        try {
+            const response = await getFacultyCourseManager.getbyId(forId);
+            if (response.success) {
+                setFacultyData(response.data);
+            } else {
+                navigate("/faculty/dashboard");
                 setToastMessages(prev => [
                     ...prev,
                     {
                         type: "invalid",
                         title: "Error",
-                        body: error.message,
+                        body: response.message,
                     },
                 ]);
             }
-        };
-
-        const fetchData = async () => {
-            if (!forId) {
-                navigate("/faculty/dashboard");
-                return;
-            }
-
-            try {
-                const response = await getFacultyCourseManager.getbyId(forId);
-                if (response.success) {
-                    setFacultyData(response.data);
-                } else {
-                    navigate("/faculty/dashboard");
-                    setToastMessages(prev => [
-                        ...prev,
-                        {
-                            type: "invalid",
-                            title: "Error",
-                            body: response.message,
-                        },
-                    ]);
-                }
-            } catch (error) {
-                setToastMessages(prev => [
-                    ...prev,
-                    {
-                        type: "invalid",
-                        title: "Error",
-                        body: error.message,
-                    },
-                ]);
-            }
-        };
-    useEffect(() => {      
+        } catch (error) {
+            setToastMessages(prev => [
+                ...prev,
+                {
+                    type: "invalid",
+                    title: "Error",
+                    body: error.message,
+                },
+            ]);
+        }
+    };
+    useEffect(() => {
         const fetchDataWrapper = async () => {
             setShowLoading(true);
-            try{
+            try {
                 await Promise.all([
-                    firstFetchData(), 
+                    firstFetchData(),
                     fetchData()
                 ]);
 
             }
-            catch(e){
+            catch (e) {
                 setToastMessages((prevMessages) => [
                     ...prevMessages,
                     {
-                      type: "invalid",
-                      title: "Error",
-                      body: e.message,
+                        type: "invalid",
+                        title: "Error",
+                        body: e.message,
                     },
-                  ]);
+                ]);
             }
-            finally{
+            finally {
                 setShowLoading(false);
 
             }
@@ -340,6 +343,10 @@ function MarkAttendance() {
             setConfirmLoading(true);
             const response = await faceIdManager.recognize(attachment, forId)
             if (response.success) {
+                setSelectedImage(`data:image/jpeg;base64,${response.data.detected_image}`);
+                setDetectedStudentsNo(response.data.detected_students_in_image);
+                setRecognizeStudentsNo(response.data.recognized_students_in_image);
+                setUnrecognizeStudentsNo(response.data.unrecognized_students_in_image);
                 setisConfirm(true);
                 const initialRadioState = response.data.attendance_records
                     .map(({ status }) => {
@@ -654,10 +661,10 @@ function MarkAttendance() {
                                         </div>
                                     </form>
                                 </div>
-                                <div className=" md:ml-3 ml-2 border-sa-maroon  flex justify-center items-center md:mt-14">
-                                    <div className="border rounded-xl flex justify-center items-center border-sa-maroon h-[300px] md:h-[500px] w-[80%] md:w-[45%]">
+                                <div className=" md:ml-3 ml-2 border-sa-maroon  flex justify-center items-center md:mt-14 mt-10">
+                                    <div className={`border rounded-xl flex justify-center items-center border-sa-maroon  w-[80%] lg:w-[65%] xl:w-[45%] ${!selectedImage ? 'h-[500px] ' : ''}`}>
                                         {!selectedImage && (
-                                            <div className="text-center text-xl font-semibold text-sa-maroon">
+                                            <div className={`border rounded-xl flex justify-center items-center border-sa-maroon w-[80%] lg:w-[60%] xl:w-[45%] ${!selectedImage ? ' border-none ' : ''}`}>
                                                 Image of classroom
                                             </div>
                                         )}
@@ -665,17 +672,16 @@ function MarkAttendance() {
                                             <img
                                                 src={selectedImage}
                                                 alt="Selected"
-                                                className="  max-h-[500px] w-full rounded-xl"
+                                                className={`  xl:max-h-[500px]  w-full rounded-xl`}
                                             />
 
                                         )}
                                     </div>
                                 </div>
-                            </div>
-                            <div className="flex mb-20 mt-10 justify-center items-center">
+                                <div className="flex lg:mb-20 mb-10 mt-10 md:mt-10 justify-center items-center">
                                 <button
                                     className={`hover:scale-105 transition-all duration-300 ease-in-out font-bold shadow-xl focus:outline-none focus:ring-0 
-    bg-sa-maroon focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px] rounded-[20px] bg-clip-padding md:px-24 px-6 py-2 
+    bg-sa-maroon focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px] rounded-[20px] bg-clip-padding md:px-[6%] px-10 py-2 
     leading-tight text-white text-[20px] md:text-[24px] ${isConfirm ? 'opacity-75 cursor-not-allowed' : 'hover:opacity-90'}`}
                                     onClick={handleConfirm}
                                     disabled={isConfirm}
@@ -688,11 +694,33 @@ function MarkAttendance() {
 
 
                                     //className="mb-4 h-[45px] md:h-[56px] bg-sa-maroon rounded-[20px] md:w-[102%] w-[245px] md:mr-3  shadow-md mx-5 text-white font-bold text-[26px]"
-                                    class=" md:ml-12  ml-5 hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px]   md:px-24 px-6  rounded-[20px]   bg-clip-padding  py-2  leading-tight text-white text-[20px] md:text-[24px]"
+                                    class=" md:ml-12  ml-5 hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px]   md:px-[6%] px-10  rounded-[20px]   bg-clip-padding  py-2  leading-tight text-white text-[20px] md:text-[24px]"
 
                                 >Remove</button>
                             </div>
+                            </div>
+                         
                         </>)}
+                    {isConfirm && (
+                        <div className="xl:ml-[6%] lg:ml-[7%] md:ml-[7%] ml-10  grid xl:grid-cols-[25rem,25rem,25rem] lg:grid-cols-[18rem,19rem,19rem]">
+                           
+                           <div className="flex ">
+                                <div className="text-sa-maroon text-left font-bold text-lg   mt-4  md:text-xl">
+                                    Total Detected Students: <span>{detectedStudentsno ? detectedStudentsno:"0"}</span>
+                                </div>
+                            </div>
+                            <div className="flex ">
+                                <div className="text-sa-maroon text-left font-bold text-lg   mt-4  md:text-xl">
+                                    Total Recognized Students: <span>{recognizeStudentsno ? recognizeStudentsno:"0"}</span>
+                                </div>
+                            </div>
+                            <div className="flex ">
+                                <div className="text-sa-maroon text-left font-bold text-lg   mt-4  md:text-xl">
+                                    Total Unrecognized Students: <span>{unrecognizeStudentsno ? unrecognizeStudentsno: "0"}</span>
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
                     {(isManualAttendance || isConfirm || isAttendanceMarked) && (
                         <>

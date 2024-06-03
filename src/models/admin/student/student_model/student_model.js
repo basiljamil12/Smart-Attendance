@@ -28,22 +28,31 @@
     }
   }
   class Data {
-    constructor({ attendance_records, no_of_students_in_image }) {
+    constructor({ attendance_records,detected_image,detected_students_in_image,no_of_niqaabi_students_in_image,recognized_students_in_image,unrecognized_students_in_image }) {
       this.attendance_records = attendance_records.map(record => new AttendanceRecord(record));
-      this.no_of_students_in_image = no_of_students_in_image;
+      this.detected_image = detected_image;
+      this.detected_students_in_image = detected_students_in_image;
+      this.recognized_students_in_image = recognized_students_in_image;
+      this.unrecognized_students_in_image = unrecognized_students_in_image;
     }
   
     static fromJson(json) {
       return new Data({
         attendance_records: json.attendance_records,
-        no_of_students_in_image: json.no_of_students_in_image,
+        detected_image: json.detected_image,
+        detected_students_in_image: json.detected_students_in_image,
+        recognized_students_in_image: json.recognized_students_in_image,
+        unrecognized_students_in_image: json.unrecognized_students_in_image,
       });
     }
   
     toJson() {
       return {
         attendance_records: this.attendance_records.map(record => record.toJson()),
-        no_of_students_in_image: this.no_of_students_in_image,
+        detected_image: this.detected_image,
+        detected_students_in_image: this.detected_students_in_image,
+        recognized_students_in_image: this.recognized_students_in_image,
+        unrecognized_students_in_image: this.unrecognized_students_in_image,
       };
     }
   }

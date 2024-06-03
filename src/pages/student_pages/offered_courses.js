@@ -352,7 +352,7 @@ function OfferedCourses() {
                 <button className="bg-sa-maroon hover:scale-105 transition-all duration-300 ease-in-out  hover:opacity-70 text-white min-w-28 rounded-[9px] py-3 md:py-2 "
                  onClick={() => handleRegister(courseID)}>
                 
-                {showRegisterloading ? <Spinner /> : 'Register'}
+                {showRegisterloading ? <Spinner size="h-6 w-6"/> : 'Register'}
                 </button>
               </div>
             </div>
