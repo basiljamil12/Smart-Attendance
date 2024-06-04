@@ -171,7 +171,7 @@ function FacialRegAdboard() {
 
         video.onloadedmetadata = () => {
             const { duration } = video;
-            if (duration > 5) {
+            if (duration > 8) {
                 setVideoSizeError(true);
                 setVideoFile(file);
                 setToastMessages([

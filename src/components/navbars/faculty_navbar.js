@@ -390,10 +390,10 @@ try{
                   Cancel
                 </button>
                 <button
-                  className="bg-sa-maroon hover:opacity-80 hover:scale-105 transition-all duration-300 ease-in-out text-white md:px-7 px-4  rounded-[9px] md:py-2 py-3 "
+                  className="bg-sa-maroon hover:opacity-80 hover:scale-105 transition-all duration-300 ease-in-out text-white min-w-28 rounded-[9px] md:py-2 py-3 "
                   onClick={handleSignout}
                 >
-                   {showLoading ? <Spinner /> :'Sign Out'}
+                   {showLoading ? <Spinner size="h-6 w-6" /> :'Sign Out'}
                 </button>
               </div>
             </div>

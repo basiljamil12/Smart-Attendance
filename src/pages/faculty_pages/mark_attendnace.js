@@ -372,10 +372,9 @@ function MarkAttendance() {
         }
         finally {
             setConfirmLoading(false);
-
         }
-
     };
+
     const [isManualAttendance, setisManualAttendance] = useState(false);
     useEffect(() => {
         setisManualAttendance(isAttendanceMarked);
@@ -679,44 +678,44 @@ function MarkAttendance() {
                                     </div>
                                 </div>
                                 <div className="flex lg:mb-20 mb-10 mt-10 md:mt-10 justify-center items-center">
-                                <button
-                                    className={`hover:scale-105 transition-all duration-300 ease-in-out font-bold shadow-xl focus:outline-none focus:ring-0 
-    bg-sa-maroon focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px] rounded-[20px] bg-clip-padding md:px-[6%] px-10 py-2 
-    leading-tight text-white text-[20px] md:text-[24px] ${isConfirm ? 'opacity-75 cursor-not-allowed' : 'hover:opacity-90'}`}
-                                    onClick={handleConfirm}
-                                    disabled={isConfirm}
-                                >
-                                    {confirmLoading ? <Spinner /> : 'Confirm'}
+                                    <button
+                                        className={`hover:scale-105 transition-all duration-300 ease-in-out font-bold shadow-xl focus:outline-none focus:ring-0 
+                                                    bg-sa-maroon focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px] rounded-[20px] bg-clip-padding lg:min-w-[25%] xl:min-w-[18%] min-w-[28%] py-2 
+                                                        leading-tight text-white text-[20px] md:text-[24px] ${isConfirm ? 'opacity-75 cursor-not-allowed' : 'hover:opacity-90'}`}
+                                        onClick={handleConfirm}
+                                        disabled={isConfirm}
+                                    >
+                                        {confirmLoading ? <Spinner /> : 'Confirm'}
 
-                                </button>
-                                <button
-                                    onClick={handleRemove}
+                                    </button>
+                                    <button
+                                        onClick={handleRemove}
 
 
-                                    //className="mb-4 h-[45px] md:h-[56px] bg-sa-maroon rounded-[20px] md:w-[102%] w-[245px] md:mr-3  shadow-md mx-5 text-white font-bold text-[26px]"
-                                    class=" md:ml-12  ml-5 hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px]   md:px-[6%] px-10  rounded-[20px]   bg-clip-padding  py-2  leading-tight text-white text-[20px] md:text-[24px]"
+                                        //className="mb-4 h-[45px] md:h-[56px] bg-sa-maroon rounded-[20px] md:w-[102%] w-[245px] md:mr-3  shadow-md mx-5 text-white font-bold text-[26px]"
+                                        class=" md:ml-12  ml-5 hover:scale-105 transition-all duration-300 ease-in-out hover:opacity-90 font-bold shadow-xl focus:outline-none focus:ring-0 bg-sa-maroon  focus:border-sa-maroon peer m-0 block h-[55px] md:h-[56px]  lg:min-w-[25%] xl:min-w-[18%] min-w-[28%]  rounded-[20px]   bg-clip-padding  py-2  leading-tight text-white text-[20px] md:text-[24px]"
 
-                                >Remove</button>
+                                    >Remove</button>
+                                </div>
                             </div>
-                            </div>
-                         
+
                         </>)}
                     {isConfirm && (
                         <div className="xl:ml-[6%] lg:ml-[7%] md:ml-[7%] ml-10  grid xl:grid-cols-[25rem,25rem,25rem] lg:grid-cols-[18rem,19rem,19rem]">
-                           
-                           <div className="flex ">
+
+                            <div className="flex ">
                                 <div className="text-sa-maroon text-left font-bold text-lg   mt-4  md:text-xl">
-                                    Total Detected Students: <span>{detectedStudentsno ? detectedStudentsno:"0"}</span>
+                                    Total Detected Students: <span>{detectedStudentsno ? detectedStudentsno : "0"}</span>
                                 </div>
                             </div>
                             <div className="flex ">
                                 <div className="text-sa-maroon text-left font-bold text-lg   mt-4  md:text-xl">
-                                    Total Recognized Students: <span>{recognizeStudentsno ? recognizeStudentsno:"0"}</span>
+                                    Total Recognized Students: <span>{recognizeStudentsno ? recognizeStudentsno : "0"}</span>
                                 </div>
                             </div>
                             <div className="flex ">
                                 <div className="text-sa-maroon text-left font-bold text-lg   mt-4  md:text-xl">
-                                    Total Unrecognized Students: <span>{unrecognizeStudentsno ? unrecognizeStudentsno: "0"}</span>
+                                    Total Unrecognized Students: <span>{unrecognizeStudentsno ? unrecognizeStudentsno : "0"}</span>
                                 </div>
                             </div>
                         </div>
