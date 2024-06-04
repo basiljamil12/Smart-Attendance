@@ -28,7 +28,7 @@
     }
   }
   class Data {
-    constructor({ attendance_records,detected_image,detected_students_in_image,no_of_niqaabi_students_in_image,recognized_students_in_image,unrecognized_students_in_image }) {
+    constructor({ attendance_records,detected_image,detected_students_in_image,recognized_students_in_image,unrecognized_students_in_image }) {
       this.attendance_records = attendance_records.map(record => new AttendanceRecord(record));
       this.detected_image = detected_image;
       this.detected_students_in_image = detected_students_in_image;
